@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "HarmonyOS Sans SC", "MiSans", "Microsoft YaHei UI", "Noto Sans SC", sans-serif;
+    --font-mono: "JetBrains Mono", "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #f6f7f9;
+    color: #1e293b;
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 600;
+    line-height: 1.35;
+    color: #0f172a;
+  }
+
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 42px;
+    max-width: 100%;
+    overflow: auto;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  }
+}
+
+.font-mono {
+  font-family: var(--font-mono) !important;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 小字号可读性兜底：应用内大量 9-11px 文本，统一抬到可读范围 */
+.text-\[9px\],
+.text-\[10px\] {
+  font-size: 11.5px !important;
+  line-height: 1.45 !important;
+}
+
+.text-\[11px\] {
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+}
+
+.sidebar-micro-label {
+  font-size: 11px;
+  line-height: 1.45;
+  letter-spacing: 0.03em;
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* 兼容旧类名：主按钮（扁平实色） */
+.iridescent-btn,
+.ice-lens-btn {
+  background-color: #4f46e5;
+  border: 1px solid transparent;
+  color: #ffffff;
+}
+
+.iridescent-btn:hover:not(:disabled),
+.ice-lens-btn:hover:not(:disabled) {
+  background-color: #4338ca;
+}
+
+/* 兼容旧类名：浅色徽章 */
+.iridescent-badge {
+  background-color: #eef2ff;
+  border: 1px solid #e0e7ff;
+  color: #4338ca;
+}
+
+/* 兼容旧类名：面板容器（白底细边框） */
+.glass-panel,
+.iridescent-surface,
+.iridescent-hero-box {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.widescreen-adaptive-grid {
+  display: grid;
+  gap: clamp(0.75rem, 1.2vw, 1.25rem);
+}
+
+.resizable-input-box {
+  resize: vertical;
+  min-height: 44px;
+}

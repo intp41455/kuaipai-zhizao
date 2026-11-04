@@ -1,0 +1,336 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Pillar 1 & Phase 4.1: Global Safety Net (Default-Deny Catch-All)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Phase 3: Hardened Global Helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedUser() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function userProfileExists() {
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    // Bounded string array helper (Pillar 5: Total Array Guarding)
+    function isValidStringArray(arr, maxLen) {
+      return arr is list
+        && arr.size() >= 1
+        && arr.size() <= maxLen
+        && arr[0] is string
+        && arr[0].size() >= 1
+        && arr[0].size() <= 600;
+    }
+
+    // Validation Blueprint: UserProfile (/users/{userId})
+    function isValidUserProfile(data) {
+      return data.keys().hasAll([
+          'uid', 'displayName', 'brandName', 'industry',
+          'planTier', 'credits', 'createdAt', 'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'uid', 'displayName', 'brandName', 'industry',
+          'planTier', 'credits', 'createdAt', 'updatedAt'
+        ])
+        && data.uid is string && data.uid.size() >= 1 && data.uid.size() <= 128 && data.uid.matches('^[a-zA-Z0-9_\\-]+$')
+        && data.uid == request.auth.uid
+        && data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 80
+        && data.brandName is string && data.brandName.size() <= 80
+        && data.industry is string && data.industry.size() >= 1 && data.industry.size() <= 60
+        && data.planTier is string && data.planTier.size() <= 20 && data.planTier in ['free', 'pro', 'enterprise']
+        && data.credits is number && data.credits >= 0 && data.credits <= 1000000
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    // Validation Blueprint: VideoProject (/projects/{projectId})
+    function isValidVideoProject(data) {
+      return data.keys().hasAll([
+          'ownerId', 'title', 'productName', 'sellingPoints', 'targetAudience',
+          'category', 'aspectRatio', 'bgmStyle', 'voiceTone', 'pacingTip',
+          'sceneLines', 'visualCues', 'cameraAngles', 'createdAt', 'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'ownerId', 'title', 'productName', 'sellingPoints', 'targetAudience',
+          'category', 'aspectRatio', 'bgmStyle', 'voiceTone', 'pacingTip',
+          'sceneLines', 'visualCues', 'cameraAngles', 'createdAt', 'updatedAt'
+        ])
+        && data.ownerId is string && data.ownerId.size() >= 1 && data.ownerId.size() <= 128 && data.ownerId.matches('^[a-zA-Z0-9_\\-]+$')
+        && data.ownerId == request.auth.uid
+        && data.title is string && data.title.size() >= 1 && data.title.size() <= 120
+        && data.productName is string && data.productName.size() >= 1 && data.productName.size() <= 100
+        && data.sellingPoints is string && data.sellingPoints.size() >= 1 && data.sellingPoints.size() <= 500
+        && data.targetAudience is string && data.targetAudience.size() >= 1 && data.targetAudience.size() <= 100
+        && data.category is string && data.category.size() >= 1 && data.category.size() <= 40
+        && data.aspectRatio is string && data.aspectRatio.size() <= 10 && data.aspectRatio in ['9:16', '16:9', '4:3']
+        && data.bgmStyle is string && data.bgmStyle.size() >= 1 && data.bgmStyle.size() <= 60
+        && data.voiceTone is string && data.voiceTone.size() >= 1 && data.voiceTone.size() <= 60
+        && data.pacingTip is string && data.pacingTip.size() <= 400
+        && isValidStringArray(data.sceneLines, 8)
+        && isValidStringArray(data.visualCues, 8)
+        && isValidStringArray(data.cameraAngles, 8)
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    // Validation Blueprint: ViralTemplate (/templates/{templateId})
+    function isValidViralTemplate(data) {
+      return data.keys().hasAll([
+          'ownerId', 'title', 'category', 'hookFormula', 'structureSummary',
+          'pacingStyle', 'bgmStyle', 'sceneLines', 'visualCues', 'cameraAngles', 'createdAt'
+        ])
+        && data.keys().hasOnly([
+          'ownerId', 'title', 'category', 'hookFormula', 'structureSummary',
+          'pacingStyle', 'bgmStyle', 'sceneLines', 'visualCues', 'cameraAngles', 'createdAt'
+        ])
+        && data.ownerId is string && data.ownerId.size() >= 1 && data.ownerId.size() <= 128 && data.ownerId.matches('^[a-zA-Z0-9_\\-]+$')
+        && data.ownerId == request.auth.uid
+        && data.title is string && data.title.size() >= 1 && data.title.size() <= 120
+        && data.category is string && data.category.size() >= 1 && data.category.size() <= 40
+        && data.hookFormula is string && data.hookFormula.size() >= 1 && data.hookFormula.size() <= 300
+        && data.structureSummary is string && data.structureSummary.size() >= 1 && data.structureSummary.size() <= 600
+        && data.pacingStyle is string && data.pacingStyle.size() >= 1 && data.pacingStyle.size() <= 60
+        && data.bgmStyle is string && data.bgmStyle.size() >= 1 && data.bgmStyle.size() <= 60
+        && isValidStringArray(data.sceneLines, 8)
+        && isValidStringArray(data.visualCues, 8)
+        && isValidStringArray(data.cameraAngles, 8)
+        && data.createdAt is timestamp;
+    }
+
+    // Validation Blueprint: VideoDissection (/dissections/{dissectionId})
+    function isValidVideoDissection(data) {
+      return data.keys().hasAll([
+          'ownerId', 'sourceTitle', 'sourceContent', 'hookAnalysis',
+          'retentionSecret', 'conversionTrigger', 'extractedFormula',
+          'sceneBreakdown', 'createdAt'
+        ])
+        && data.keys().hasOnly([
+          'ownerId', 'sourceTitle', 'sourceContent', 'hookAnalysis',
+          'retentionSecret', 'conversionTrigger', 'extractedFormula',
+          'sceneBreakdown', 'createdAt'
+        ])
+        && data.ownerId is string && data.ownerId.size() >= 1 && data.ownerId.size() <= 128 && data.ownerId.matches('^[a-zA-Z0-9_\\-]+$')
+        && data.ownerId == request.auth.uid
+        && data.sourceTitle is string && data.sourceTitle.size() >= 1 && data.sourceTitle.size() <= 120
+        && data.sourceContent is string && data.sourceContent.size() >= 1 && data.sourceContent.size() <= 2000
+        && data.hookAnalysis is string && data.hookAnalysis.size() >= 1 && data.hookAnalysis.size() <= 500
+        && data.retentionSecret is string && data.retentionSecret.size() >= 1 && data.retentionSecret.size() <= 500
+        && data.conversionTrigger is string && data.conversionTrigger.size() >= 1 && data.conversionTrigger.size() <= 500
+        && data.extractedFormula is string && data.extractedFormula.size() >= 1 && data.extractedFormula.size() <= 500
+        && isValidStringArray(data.sceneBreakdown, 8)
+        && data.createdAt is timestamp;
+    }
+
+    // Validation Blueprint: SharedProjectLink (/shared_links/{shareId})
+    function isValidSharedProjectLink(data) {
+      return data.keys().hasAll([
+          'ownerId', 'title', 'productName', 'category', 'aspectRatio',
+          'pacingTip', 'sceneLines', 'visualCues', 'cameraAngles', 'expiresAtMs', 'createdAt'
+        ])
+        && data.keys().hasOnly([
+          'ownerId', 'title', 'productName', 'category', 'aspectRatio',
+          'pacingTip', 'sceneLines', 'visualCues', 'cameraAngles', 'expiresAtMs', 'createdAt'
+        ])
+        && data.ownerId is string && data.ownerId.size() >= 1 && data.ownerId.size() <= 128 && data.ownerId.matches('^[a-zA-Z0-9_\\-]+$')
+        && data.ownerId == request.auth.uid
+        && data.title is string && data.title.size() >= 1 && data.title.size() <= 120
+        && data.productName is string && data.productName.size() >= 1 && data.productName.size() <= 100
+        && data.category is string && data.category.size() >= 1 && data.category.size() <= 40
+        && data.aspectRatio is string && data.aspectRatio.size() <= 10 && data.aspectRatio in ['9:16', '16:9', '4:3']
+        && data.pacingTip is string && data.pacingTip.size() <= 400
+        && isValidStringArray(data.sceneLines, 8)
+        && isValidStringArray(data.visualCues, 8)
+        && isValidStringArray(data.cameraAngles, 8)
+        && data.expiresAtMs is number && data.expiresAtMs > 0
+        && data.createdAt is timestamp;
+    }
+
+    // Validation Blueprint: StoreProfile (/store_profiles/{storeId})
+    function isValidStoreProfile(data) {
+      return data.keys().hasAll([
+          'ownerId', 'storeName', 'storeType', 'industry', 'cityLocation',
+          'signatureProducts', 'storePersona', 'targetAudience', 'memoryAnchors',
+          'createdAt', 'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'ownerId', 'storeName', 'storeType', 'industry', 'cityLocation',
+          'signatureProducts', 'storePersona', 'targetAudience', 'memoryAnchors',
+          'createdAt', 'updatedAt'
+        ])
+        && data.ownerId is string && data.ownerId.size() >= 1 && data.ownerId.size() <= 128 && data.ownerId.matches('^[a-zA-Z0-9_\\-]+$')
+        && data.ownerId == request.auth.uid
+        && data.storeName is string && data.storeName.size() >= 1 && data.storeName.size() <= 100
+        && data.storeType is string && data.storeType.size() >= 1 && data.storeType.size() <= 60
+        && data.industry is string && data.industry.size() >= 1 && data.industry.size() <= 40
+        && data.cityLocation is string && data.cityLocation.size() >= 1 && data.cityLocation.size() <= 80
+        && data.signatureProducts is string && data.signatureProducts.size() >= 1 && data.signatureProducts.size() <= 400
+        && data.storePersona is string && data.storePersona.size() >= 1 && data.storePersona.size() <= 200
+        && data.targetAudience is string && data.targetAudience.size() >= 1 && data.targetAudience.size() <= 200
+        && data.memoryAnchors is string && data.memoryAnchors.size() >= 1 && data.memoryAnchors.size() <= 500
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    // Connection validation probe path
+    match /test/{docId} {
+      allow get: if isSignedIn() && isValidId(docId);
+      allow list, create, update, delete: if false;
+    }
+
+    // Collection 1: /users/{userId}
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow list: if false;
+      allow create: if isVerifiedUser()
+        && isOwner(userId)
+        && isValidId(userId)
+        && isValidUserProfile(incoming())
+        && incoming().planTier == 'free'
+        && incoming().credits == 100
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+      allow update: if isVerifiedUser()
+        && isOwner(userId)
+        && isValidId(userId)
+        && isValidUserProfile(incoming())
+        && incoming().uid == existing().uid
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && (
+          incoming().diff(existing()).affectedKeys().hasOnly([
+            'displayName', 'brandName', 'industry', 'planTier', 'credits', 'updatedAt'
+          ])
+        );
+      allow delete: if false;
+    }
+
+    // Collection 2: /projects/{projectId}
+    match /projects/{projectId} {
+      allow get: if isSignedIn() && isValidId(projectId) && existing().ownerId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+      allow create: if isVerifiedUser()
+        && isValidId(projectId)
+        && isValidVideoProject(incoming())
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time
+        && userProfileExists();
+      allow update: if isVerifiedUser()
+        && isValidId(projectId)
+        && isValidVideoProject(incoming())
+        && existing().ownerId == request.auth.uid
+        && incoming().ownerId == existing().ownerId
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && userProfileExists()
+        && (
+          incoming().diff(existing()).affectedKeys().hasOnly([
+            'title', 'productName', 'sellingPoints', 'targetAudience', 'category',
+            'aspectRatio', 'bgmStyle', 'voiceTone', 'pacingTip',
+            'sceneLines', 'visualCues', 'cameraAngles', 'updatedAt'
+          ])
+        );
+      allow delete: if isVerifiedUser()
+        && isValidId(projectId)
+        && existing().ownerId == request.auth.uid;
+    }
+
+    // Collection 3: /templates/{templateId}
+    match /templates/{templateId} {
+      allow get: if isSignedIn() && isValidId(templateId) && existing().ownerId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+      allow create: if isVerifiedUser()
+        && isValidId(templateId)
+        && isValidViralTemplate(incoming())
+        && incoming().createdAt == request.time
+        && userProfileExists();
+      allow update: if false;
+      allow delete: if isVerifiedUser()
+        && isValidId(templateId)
+        && existing().ownerId == request.auth.uid;
+    }
+
+    // Collection 4: /dissections/{dissectionId}
+    match /dissections/{dissectionId} {
+      allow get: if isSignedIn() && isValidId(dissectionId) && existing().ownerId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+      allow create: if isVerifiedUser()
+        && isValidId(dissectionId)
+        && isValidVideoDissection(incoming())
+        && incoming().createdAt == request.time
+        && userProfileExists();
+      allow update: if false;
+      allow delete: if isVerifiedUser()
+        && isValidId(dissectionId)
+        && existing().ownerId == request.auth.uid;
+    }
+
+    // Collection 5: /shared_links/{shareId}
+    match /shared_links/{shareId} {
+      allow get: if isSignedIn() && isValidId(shareId) && existing().expiresAtMs > 0;
+      allow list: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+      allow create: if isVerifiedUser()
+        && isValidId(shareId)
+        && isValidSharedProjectLink(incoming())
+        && incoming().createdAt == request.time
+        && userProfileExists();
+      allow update: if false;
+      allow delete: if isVerifiedUser()
+        && isValidId(shareId)
+        && existing().ownerId == request.auth.uid;
+    }
+
+    // Collection 6: /store_profiles/{storeId}
+    match /store_profiles/{storeId} {
+      allow get: if isSignedIn() && isValidId(storeId) && existing().ownerId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+      allow create: if isVerifiedUser()
+        && isValidId(storeId)
+        && isValidStoreProfile(incoming())
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time
+        && userProfileExists();
+      allow update: if isVerifiedUser()
+        && isValidId(storeId)
+        && isValidStoreProfile(incoming())
+        && existing().ownerId == request.auth.uid
+        && incoming().ownerId == existing().ownerId
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && userProfileExists()
+        && (
+          incoming().diff(existing()).affectedKeys().hasOnly([
+            'storeName', 'storeType', 'industry', 'cityLocation',
+            'signatureProducts', 'storePersona', 'targetAudience',
+            'memoryAnchors', 'updatedAt'
+          ])
+        );
+      allow delete: if isVerifiedUser()
+        && isValidId(storeId)
+        && existing().ownerId == request.auth.uid;
+    }
+  }
+}

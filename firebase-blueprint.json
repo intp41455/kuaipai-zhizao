@@ -1,0 +1,493 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User workspace profile, SaaS subscription tier, and AI compute credits balance.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Firebase Auth UID of the user."
+        },
+        "displayName": {
+          "type": "string",
+          "maxLength": 80,
+          "description": "Display name of the creator."
+        },
+        "brandName": {
+          "type": "string",
+          "maxLength": 80,
+          "description": "Default brand or store name used for one-click video generation."
+        },
+        "industry": {
+          "type": "string",
+          "maxLength": 60,
+          "description": "Primary product industry."
+        },
+        "planTier": {
+          "type": "string",
+          "enum": ["free", "pro", "enterprise"],
+          "maxLength": 20,
+          "description": "Current SaaS subscription tier."
+        },
+        "credits": {
+          "type": "number",
+          "description": "Available AI compute credits balance."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation server timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update server timestamp."
+        }
+      },
+      "required": [
+        "uid",
+        "displayName",
+        "brandName",
+        "industry",
+        "planTier",
+        "credits",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "VideoProject": {
+      "title": "VideoProject",
+      "description": "AI-generated short video project with storyboard shots, subtitles, and smart editing configuration.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID of the creator who owns this project."
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "Project title."
+        },
+        "productName": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Target product or service name."
+        },
+        "sellingPoints": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Core selling points and highlights."
+        },
+        "targetAudience": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Target audience persona."
+        },
+        "category": {
+          "type": "string",
+          "maxLength": 40,
+          "description": "Industry category."
+        },
+        "aspectRatio": {
+          "type": "string",
+          "enum": ["9:16", "16:9", "4:3"],
+          "maxLength": 10,
+          "description": "Video canvas aspect ratio."
+        },
+        "bgmStyle": {
+          "type": "string",
+          "maxLength": 60,
+          "description": "Background music rhythm style."
+        },
+        "voiceTone": {
+          "type": "string",
+          "maxLength": 60,
+          "description": "AI voiceover tone setting."
+        },
+        "pacingTip": {
+          "type": "string",
+          "maxLength": 400,
+          "description": "AI smart editing rhythm and hook optimization advice."
+        },
+        "sceneLines": {
+          "type": "array",
+          "maxLength": 8,
+          "description": "Bounded list of spoken subtitle lines per storyboard shot."
+        },
+        "visualCues": {
+          "type": "array",
+          "maxLength": 8,
+          "description": "Bounded list of visual descriptions per storyboard shot."
+        },
+        "cameraAngles": {
+          "type": "array",
+          "maxLength": 8,
+          "description": "Bounded list of camera framing instructions per shot."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when last updated."
+        }
+      },
+      "required": [
+        "ownerId",
+        "title",
+        "productName",
+        "sellingPoints",
+        "targetAudience",
+        "category",
+        "aspectRatio",
+        "bgmStyle",
+        "voiceTone",
+        "pacingTip",
+        "sceneLines",
+        "visualCues",
+        "cameraAngles",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ViralTemplate": {
+      "title": "ViralTemplate",
+      "description": "Custom reusable viral video script template saved by a creator.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID of the creator who owns this custom template."
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "Template name."
+        },
+        "category": {
+          "type": "string",
+          "maxLength": 40,
+          "description": "Industry category."
+        },
+        "hookFormula": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "First 3-second viral hook formula."
+        },
+        "structureSummary": {
+          "type": "string",
+          "maxLength": 600,
+          "description": "Step-by-step narrative structure formula."
+        },
+        "pacingStyle": {
+          "type": "string",
+          "maxLength": 60,
+          "description": "Editing cut frequency and rhythm style."
+        },
+        "bgmStyle": {
+          "type": "string",
+          "maxLength": 60,
+          "description": "Recommended BGM style."
+        },
+        "sceneLines": {
+          "type": "array",
+          "maxLength": 8,
+          "description": "Template placeholder script lines."
+        },
+        "visualCues": {
+          "type": "array",
+          "maxLength": 8,
+          "description": "Template visual shot cues."
+        },
+        "cameraAngles": {
+          "type": "array",
+          "maxLength": 8,
+          "description": "Template camera angles."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation server timestamp."
+        }
+      },
+      "required": [
+        "ownerId",
+        "title",
+        "category",
+        "hookFormula",
+        "structureSummary",
+        "pacingStyle",
+        "bgmStyle",
+        "sceneLines",
+        "visualCues",
+        "cameraAngles",
+        "createdAt"
+      ]
+    },
+    "VideoDissection": {
+      "title": "VideoDissection",
+      "description": "AI viral video breakdown record dissecting hook, retention, and conversion structure.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID of the creator who performed the breakdown."
+        },
+        "sourceTitle": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "Title or topic of the dissected viral video."
+        },
+        "sourceContent": {
+          "type": "string",
+          "maxLength": 2000,
+          "description": "Raw transcript, link context, or description dissected."
+        },
+        "hookAnalysis": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Analysis of the golden 3-second opening hook."
+        },
+        "retentionSecret": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Pacing and suspense mechanism keeping viewers watching."
+        },
+        "conversionTrigger": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Call-to-action and purchasing psychology analysis."
+        },
+        "extractedFormula": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Reusable template formula extracted from the video."
+        },
+        "sceneBreakdown": {
+          "type": "array",
+          "maxLength": 8,
+          "description": "Bounded list of shot-by-shot breakdown strings."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation server timestamp."
+        }
+      },
+      "required": [
+        "ownerId",
+        "sourceTitle",
+        "sourceContent",
+        "hookAnalysis",
+        "retentionSecret",
+        "conversionTrigger",
+        "extractedFormula",
+        "sceneBreakdown",
+        "createdAt"
+      ]
+    },
+    "SharedProjectLink": {
+      "title": "SharedProjectLink",
+      "description": "Temporary shareable snapshot of a video script project for client or collaborator review.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID of the creator who generated the share link."
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "Shared project title."
+        },
+        "productName": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Product name."
+        },
+        "category": {
+          "type": "string",
+          "maxLength": 40,
+          "description": "Industry category."
+        },
+        "aspectRatio": {
+          "type": "string",
+          "enum": ["9:16", "16:9", "4:3"],
+          "maxLength": 10,
+          "description": "Video aspect ratio."
+        },
+        "pacingTip": {
+          "type": "string",
+          "maxLength": 400,
+          "description": "Editing pacing note."
+        },
+        "sceneLines": {
+          "type": "array",
+          "maxLength": 8,
+          "description": "Spoken subtitle lines."
+        },
+        "visualCues": {
+          "type": "array",
+          "maxLength": 8,
+          "description": "Visual shot descriptions."
+        },
+        "cameraAngles": {
+          "type": "array",
+          "maxLength": 8,
+          "description": "Camera framing labels."
+        },
+        "expiresAtMs": {
+          "type": "number",
+          "description": "Expiration timestamp in epoch milliseconds."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation server timestamp."
+        }
+      },
+      "required": [
+        "ownerId",
+        "title",
+        "productName",
+        "category",
+        "aspectRatio",
+        "pacingTip",
+        "sceneLines",
+        "visualCues",
+        "cameraAngles",
+        "expiresAtMs",
+        "createdAt"
+      ]
+    },
+    "StoreProfile": {
+      "title": "StoreProfile",
+      "description": "Douyin Laike style store and brand long-term memory knowledge base for personalized AI script, title, and template generation.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID of the creator who owns this store profile."
+        },
+        "storeName": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Store or brand name."
+        },
+        "storeType": {
+          "type": "string",
+          "maxLength": 60,
+          "description": "Store business type (e.g., 抖音来客同城团购店, 品牌旗舰自播店, 小红书买手店)."
+        },
+        "industry": {
+          "type": "string",
+          "maxLength": 40,
+          "description": "Primary industry category."
+        },
+        "cityLocation": {
+          "type": "string",
+          "maxLength": 80,
+          "description": "City, business district, or POI location info."
+        },
+        "signatureProducts": {
+          "type": "string",
+          "maxLength": 400,
+          "description": "Signature group-buy packages, hero products, and pricing."
+        },
+        "storePersona": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Brand voice and speaker persona stored in long-term memory."
+        },
+        "targetAudience": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Target local or online customer persona."
+        },
+        "memoryAnchors": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Key store advantages, guarantees, and conversion hooks AI must remember."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation server timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update server timestamp."
+        }
+      },
+      "required": [
+        "ownerId",
+        "storeName",
+        "storeType",
+        "industry",
+        "cityLocation",
+        "signatureProducts",
+        "storePersona",
+        "targetAudience",
+        "memoryAnchors",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "User workspace profile, SaaS subscription tier, and credits balance."
+    },
+    "/projects/{projectId}": {
+      "schema": {
+        "$ref": "#/entities/VideoProject"
+      },
+      "description": "AI short video editing projects owned by individual users."
+    },
+    "/templates/{templateId}": {
+      "schema": {
+        "$ref": "#/entities/ViralTemplate"
+      },
+      "description": "Custom viral video templates saved by users."
+    },
+    "/dissections/{dissectionId}": {
+      "schema": {
+        "$ref": "#/entities/VideoDissection"
+      },
+      "description": "AI one-click viral video breakdown records owned by users."
+    },
+    "/shared_links/{shareId}": {
+      "schema": {
+        "$ref": "#/entities/SharedProjectLink"
+      },
+      "description": "Temporary shareable project links for client and collaborator review."
+    },
+    "/store_profiles/{storeId}": {
+      "schema": {
+        "$ref": "#/entities/StoreProfile"
+      },
+      "description": "Douyin Laike style store persona and long-term memory knowledge base."
+    }
+  }
+}

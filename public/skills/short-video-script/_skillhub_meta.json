@@ -1,0 +1,13 @@
+{
+  "name": "短视频口播脚本爆款生成器",
+  "installedAt": 1793614434442,
+  "source": "marketplace",
+  "version": "1.0.0",
+  "skillId": "skill_2095529922258796544",
+  "pay_mode": 0,
+  "description_zh": "专为自媒体创作者、知识博主与带货新手打造的短视频口播脚本工具。内置前3秒黄金黄金留人钩子、情绪共鸣翻转、干货交付与高完播率结尾结构。",
+  "description_en": "Generates high-retention short video scripts with 3-second attention hooks, emotional problem agitation, actionable value delivery, and comment-prompting CTAs.",
+  "iconSource": "https://openplatform-cdn.codebuddy.cn/public/common/capability_cover/b3b155aa-022d-4ed2-a5da-707c68a715a8/d6329dc8-7589-4907-8f1c-ac67324f6a36.png",
+  "iconLocalPath": "C:\\Users\\intpj\\.workbuddy\\skills\\short-video-script\\_icon.png",
+  "iconDownloadedFrom": "https://openplatform-cdn.codebuddy.cn/public/common/capability_cover/b3b155aa-022d-4ed2-a5da-707c68a715a8/d6329dc8-7589-4907-8f1c-ac67324f6a36.png"
+}
