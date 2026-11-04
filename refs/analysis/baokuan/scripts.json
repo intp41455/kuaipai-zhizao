@@ -1,0 +1,52 @@
+[
+  {
+    "url": "https://baokuan.jigouzhaosheng.com/index_files/355056.js",
+    "file": "01-355056.js.js",
+    "bytes": 25489
+  },
+  {
+    "url": "https://baokuan.jigouzhaosheng.com/index_files/c-dff85.js",
+    "file": "02-c-dff85.js.js",
+    "bytes": 643
+  },
+  {
+    "url": "https://baokuan.jigouzhaosheng.com/index_files/hm.js",
+    "file": "03-hm.js.js",
+    "bytes": 39765
+  },
+  {
+    "url": "https://baokuan.jigouzhaosheng.com/index_files/jquery-1.10.1.min.js",
+    "file": "04-jquery-1.10.1.min.js.js",
+    "bytes": 93064
+  },
+  {
+    "url": "https://baokuan.jigouzhaosheng.com/index_files/public.js",
+    "file": "05-public.js.js",
+    "bytes": 4326
+  },
+  {
+    "url": "https://baokuan.jigouzhaosheng.com/index_files/push.js",
+    "file": "06-push.js.js",
+    "bytes": 308
+  },
+  {
+    "url": "https://f.ibangkf.com/i/client/js/??kfbase.min.js,kfhide.min.js?v=54",
+    "file": "07-.js",
+    "bytes": 10663
+  },
+  {
+    "url": "https://hm.baidu.com/hm.js?6e64f6fb6712587c320367dd8d4611d6",
+    "file": "08-hm.js.js",
+    "bytes": 0
+  },
+  {
+    "url": "https://www.googleadservices.com/pagead/conversion_async.js",
+    "file": null,
+    "error": "调用“GetResult”并传入“0”个参数时发生异常：“请求的名称有效，但是找不到请求的类型的数据。 (www.googleadservices.com:443)”"
+  },
+  {
+    "url": "https://zz.bdstatic.com/linksubmit/push.js",
+    "file": "10-push.js.js",
+    "bytes": 308
+  }
+]

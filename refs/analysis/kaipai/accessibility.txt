@@ -1,0 +1,241 @@
+- document:
+  - complementary:
+    - link "logo":
+      - /url: /
+      - img "logo"
+    - link "首页":
+      - /url: /workspace
+      - img:
+        - img
+      - text: 首页
+    - link "AI消除":
+      - /url: /video-watermark-remover/upload
+      - img:
+        - img
+      - text: AI消除
+    - link "画质修复":
+      - /url: /video-enhancer/upload
+      - img:
+        - img
+      - text: 画质修复
+    - link "智能混剪":
+      - /url: /smart-cut
+      - img:
+        - img
+      - text: 智能混剪
+    - link "工具":
+      - /url: /all-tools
+      - img:
+        - img
+      - text: 工具
+    - link "历史":
+      - /url: /projects-records
+      - img:
+        - img
+      - text: 历史
+    - button "更多"
+  - main:
+    - link "API":
+      - /url: /developers
+    - link "下载电脑版":
+      - /url: /desktop-download?source=home_download_icon
+      - img:
+        - img
+      - text: 下载电脑版
+    - button "立即开通":
+      - img:
+        - img
+      - text: 立即开通
+    - img
+    - main:
+      - heading "开拍 - 让口播视频自带网感" [level=1]
+      - textbox: 描述你的想法，帮你做视频。
+      - button "Upload":
+        - img:
+          - img
+        - text: 上传
+      - button:
+        - img:
+          - img
+      - button "设置":
+        - img:
+          - img
+      - button "生成" [disabled]
+      - text: 💰 制作实体引流视频 👕 制作商品主页视频 🗣️ 制作商品口播视频
+      - link "商品营销":
+        - /url: /ai-avatar/create
+        - img:
+          - img
+        - text: 商品营销
+      - link "门店引流":
+        - /url: /product-live-case/create
+        - img:
+          - img
+        - text: 门店引流
+      - link "爆款复刻":
+        - /url: /recreate-video/create
+        - img:
+          - img
+        - text: 爆款复刻
+      - text: 快捷入口
+      - link "AI消除 无痕消除水印和字幕 去AI水印":
+        - /url: /video-watermark-remover/upload
+        - img:
+          - img
+        - text: AI消除 无痕消除水印和字幕
+        - img:
+          - img
+        - text: 去AI水印
+      - link "智能混剪 素材随手拍，一键出成片。":
+        - /url: /smart-cut
+        - img:
+          - img
+        - text: 智能混剪 素材随手拍，一键出成片。
+        - img:
+          - img
+      - link "网感剪辑 一键包装网感模板":
+        - /url: /desktop-download?showWebButton=true&source=smart_cut
+        - img:
+          - img
+        - text: 网感剪辑 一键包装网感模板
+        - img:
+          - img
+      - link "画质修复 渣糊画质变清晰":
+        - /url: /video-enhancer/upload
+        - img:
+          - img
+        - text: 画质修复 渣糊画质变清晰
+        - img:
+          - img
+      - link "AI提词器 智能语速跟随，轻松录制":
+        - /url: /cue-prompter
+        - img:
+          - img
+        - text: AI提词器 智能语速跟随，轻松录制
+        - img:
+          - img
+      - link "我的脚本 多设备同步，轻松管理脚本":
+        - /url: /account-script
+        - img:
+          - img
+        - text: 我的脚本 多设备同步，轻松管理脚本
+        - img:
+          - img
+      - link "白板视频 边讲边录，轻松成片 限免":
+        - /url: /whiteboard
+        - img:
+          - img
+        - text: 白板视频 边讲边录，轻松成片
+        - img:
+          - img
+        - text: 限免
+      - link "帮我做视频 你提需求，我给成片":
+        - /url: /anydesign
+        - img:
+          - img
+        - text: 帮我做视频 你提需求，我给成片
+        - img:
+          - img
+      - link "智能加字幕 一键get网感字幕":
+        - /url: /subtitle
+        - img:
+          - img
+        - text: 智能加字幕 一键get网感字幕
+        - img:
+          - img
+      - link "文案提取 支持视频链接提取文案":
+        - /url: /video-and-audio-to-text/upload
+        - img:
+          - img
+        - text: 文案提取 支持视频链接提取文案
+        - img:
+          - img
+      - link "视频降噪 去除噪音，打造录音棚效果":
+        - /url: /noise-reduction/upload
+        - img:
+          - img
+        - text: 视频降噪 去除噪音，打造录音棚效果
+        - img:
+          - img
+      - link "无损放大 提高分辨率，保留细节":
+        - /url: /video-upscaler/upload
+        - img:
+          - img
+        - text: 无损放大 提高分辨率，保留细节
+        - img:
+          - img
+      - text: 爆款复刻 AI智能拆解并复刻爆款结构。
+      - img:
+        - img
+      - text: 3567 带货口播-烧水壶
+      - button "复刻"
+      - img:
+        - img
+      - text: 6283 带货口播-榨汁机
+      - button "复刻"
+      - img:
+        - img
+      - text: 5372 带货口播-精华水
+      - button "复刻"
+      - img:
+        - img
+      - text: 5784 带货口播-桌面风扇
+      - button "复刻"
+      - img:
+        - img
+      - text: 2323 带货口播-镂空毛衣
+      - button "复刻"
+      - img:
+        - img
+      - text: 7163 带货口播-面包
+      - button "复刻"
+      - button "Previous":
+        - img:
+          - img
+      - button "Next":
+        - img:
+          - img
+      - text: 智能混剪 成堆素材不用愁，一键成片。 智能混剪-商品带货
+      - button "立即尝试"
+      - text: 智能混剪-商品带货
+      - button "立即尝试"
+      - text: 智能混剪-生活vlog
+      - button "立即尝试"
+      - text: 智能混剪-口播混剪
+      - button "立即尝试"
+      - text: 智能混剪-口播混剪
+      - button "立即尝试"
+      - text: 智能混剪-门店引流
+      - button "立即尝试"
+      - text: 智能混剪-门店引流
+      - button "立即尝试"
+      - button "Previous":
+        - img:
+          - img
+      - button "Next":
+        - img:
+          - img
+      - text: AI消除 一键无痕消除水印、字幕。 AI消除-视频消水印
+      - button "立即尝试"
+      - text: AI消除-图片消人物
+      - button "立即尝试"
+      - text: AI消除-图片消logo
+      - button "立即尝试"
+      - text: AI消除-消路人
+      - button "立即尝试"
+      - text: AI消除-去字幕
+      - button "立即尝试"
+      - text: AI消除-消文字
+      - button "立即尝试"
+      - text: AI消除-智能全消
+      - button "立即尝试"
+      - button "Previous":
+        - img:
+          - img
+      - button "Next":
+        - img:
+          - img
+    - button "回到顶部"
+    - paragraph: ©2026 Meitu.inc 美图公司版权所有 营业执照
+    - paragraph: 增值电信业务经营许可证：B2-20040192 网络文化经营许可证：闽网文〔2021〕3392-058号 闽公网安备 35020302000186号
+    - paragraph: 隐私协议 用户协议

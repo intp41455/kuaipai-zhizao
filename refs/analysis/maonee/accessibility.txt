@@ -1,0 +1,196 @@
+- document:
+  - banner:
+    - link "猫尼科技首页":
+      - /url: "#home"
+      - img "猫尼科技 · 数字化增长与智能技术服务"
+    - navigation "主导航":
+      - link "首页":
+        - /url: "#home"
+      - link "双轮业务":
+        - /url: "#business"
+      - link "帧析 6 大底座":
+        - /url: "#product"
+      - link "企业级定制":
+        - /url: "#custom"
+      - link "数字化营销智库":
+        - /url: "#insights"
+      - button "关于猫尼"
+    - button "帧析引擎 即将上线" [disabled]
+  - main:
+    - text: 国家级高新技术企业 · 数字化增长与 AI 商业应用专家
+    - paragraph: 猫尼科技 · MAONI TECH
+    - heading "数字化增长 与智能技术服务引擎" [level=1]
+    - paragraph:
+      - text: 响应「人工智能+」行动，将
+      - strong: 十年搜索流量算法积淀
+      - text: 与
+      - strong: 云端 AI 视频算力
+      - text: 深度融合，为企业打造从标准化工业内容生产到专属业务系统的增长生命线。
+    - link "探索「视界狗·帧析引擎」SaaS ↗":
+      - /url: "#product"
+    - link "获取企业定制开发方案 →":
+      - /url: "#custom"
+    - text: 50,000+ 旗下工具矩阵累计服务企业用户 SOP 中台 策划 / 摄影 / 剪辑同屏协同 私有化交付 深度业务流与 AI 智能体定制 GROWTH ENGINE / ONLINE 连接底层算力深度与商业获客广度
+    - paragraph: 01 / DUAL-ENGINE ECOSYSTEM
+    - heading "两大核心业务版图， 既提供标准武器，也定制专属中枢。" [level=2]
+    - paragraph: 中小团队可直接启用标准化 SaaS 快速跑通矩阵产能；中大型集团可基于我们成熟的算法底座，定制私有化业务系统。
+    - article:
+      - text: 标准化 SaaS 尖刀产品 01
+      - paragraph: INDUSTRIAL CONTENT ENGINE
+      - heading "视界狗·帧析引擎" [level=3]
+      - paragraph:
+        - text: 面向短视频矩阵团队的
+        - strong: 组织级内容生产中台
+        - text: 。把「发现爆款、拆解骨架、裂变脚本、扫码回传、云端混剪、主理人验收」收成一条可追踪、可复用的工业流水线。
+      - text: AI 爆款拆解与裂变 策划/摄影/剪辑同屏看板 共享云端算力池 声音克隆与口播对口型
+      - link "查看帧析 6 大核心能力 ↗":
+        - /url: "#product"
+    - article:
+      - text: 企业级私有化与深度定制 02
+      - paragraph: TAILORED DIGITAL ARCHITECTURE
+      - heading "数字化系统与 AI 商业定制" [level=3]
+      - paragraph:
+        - text: 拒绝传统外包式的“盲目堆代码”。基于猫尼科技十余年流量分发经验与高并发音视频架构积累，为企业量身定制
+        - strong: 私有化获客中枢、业务流管理系统与垂直行业 AI 应用
+        - text: 。
+      - text: 企业私有化独立部署 定制级软件系统研发 多端小程序与中台打通 专属 AI 工作流集成
+      - button "预约架构师沟通定制需求 ↗"
+    - text: 企业级定制全周期交付标准
+    - paragraph: 业务流与数据流梳理 → 高可用系统架构设计 → 敏捷研发与私有化部署 → 长期运维与迭代赋能
+    - paragraph: 02 / EVOLUTION & HERITAGE
+    - heading "穿越三次流量周期， 每一步迭代都有真实市场验证。" [level=2]
+    - strong: 2011 → 2026
+    - paragraph: 懂流量底层算法，更懂如何用工程技术实现增长
+    - article:
+      - paragraph: 2011 — 2015
+      - heading "搜索与流量算法时代" [level=3]
+      - paragraph: 创始团队深耕搜索引擎算法（SEO）与互联网精准获客，验证流量获取与内容分发底层规律，奠定“技术驱动增长”基因。
+      - text: SEARCH & TRAFFIC
+    - article:
+      - paragraph: 2016 — 2020
+      - heading "私域资产与同城获客" [level=3]
+      - paragraph: 研发推出「同城流量通」等数字化系统，将场景化视频与门店线索转化深度结合，帮助传统实体企业构建高转化私域资产池。
+      - text: PRIVATE DOMAIN
+    - article:
+      - paragraph: 2021 — 2024
+      - heading "短视频工具矩阵验证" [level=3]
+      - paragraph: 「拼接猫」等批量混剪系统面世，在微信生态累计服务超 50,000+ 真实用户，生成超 42 万条营销视频，跑通工业化去重与量产逻辑。
+      - text: 50,000+ USERS VERIFIED
+    - article:
+      - paragraph: 2024 — 至今
+      - heading "AI 工业化内容中台纪元" [level=3]
+      - paragraph: 斩获国家高新技术企业与省级创新型中小企业认证，全面推出「视界狗·帧析引擎」企业级矩阵 SaaS 与 AI 商业定制服务。
+      - text: AI-NATIVE SAAS ↗
+    - paragraph: 03 / CORE TECHNOLOGY PILLARS
+    - heading "为什么 5万+ 用户 信任我们的技术底座？" [level=2]
+    - paragraph: 把复杂留给底层算法，把简单留给团队协同。 视界狗·帧析引擎，让矩阵内容生产有章可循。 5万+ 为旗下工具矩阵累计企业用户口径
+    - tablist "视界狗·帧析引擎六大核心能力":
+      - tab "01 从凭直觉写稿 → 靠爆款公式 AI 拆解与矩阵裂变 →" [selected]:
+        - text: 01 从凭直觉写稿 → 靠爆款公式
+        - strong: AI 拆解与矩阵裂变
+        - text: →
+      - tab "02 从群聊催进度 → 同屏三角色协同 全域矩阵 SOP 看板 →":
+        - text: 02 从群聊催进度 → 同屏三角色协同
+        - strong: 全域矩阵 SOP 看板
+        - text: →
+      - tab "03 从网盘乱传 → 资产随组织留存 扫码回传与镜号对槽 →":
+        - text: 03 从网盘乱传 → 资产随组织留存
+        - strong: 扫码回传与镜号对槽
+        - text: →
+      - tab "04 从拼电脑显卡 → 团队共享算力池 内嵌剪辑与云端量产 →":
+        - text: 04 从拼电脑显卡 → 团队共享算力池
+        - strong: 内嵌剪辑与云端量产
+        - text: →
+      - tab "05 从真人反复重录 → 复刻品牌资产 声音克隆与口播对口型 →":
+        - text: 05 从真人反复重录 → 复刻品牌资产
+        - strong: 声音克隆与口播对口型
+        - text: →
+      - tab "06 从剪完直接发 → 质量闸门前置 主理人验收与权限隔离 →":
+        - text: 06 从剪完直接发 → 质量闸门前置
+        - strong: 主理人验收与权限隔离
+        - text: →
+    - tabpanel:
+      - text: 帧析 · 核心引擎可视化运转流程 01 / AI FORMULA ENGINE 爆款基因拆解 → 矩阵洗稿裂变流程 ✔ 违禁词健康分 98% 🔗
+      - strong: 输入对标视频
+      - text: 粘贴链接 / 提取原文 ➔ 🧬
+      - strong: AI 剥离爆款骨架
+      - text: 黄金3秒 + 情绪曲线 ➔ 📑
+      - strong: 裂变 10+ 矩阵稿
+      - text: 套入自家产品卖点 00:03 黄金钩子抓取 00:15 痛点共鸣拉升 00:30 转化行动号召 ✦ 悬停或点击左侧模块，切换查看系统底层工作流
+      - button "帧析引擎 即将上线" [disabled]
+    - paragraph: 04 / DIGITAL MARKETING THINK TANK
+    - heading "数字化营销智库与实战方法论" [level=2]
+    - paragraph: 沉淀可核验的行业结构化知识库，赋能企业在短视频矩阵建设与数字化系统定制中少走弯路。
+    - article:
+      - button "01 / INDUSTRY PLAYBOOK 制造业 × 场景化矩阵 × 询盘转化 行业实战指南 · 深度长文 制造业短视频矩阵搭建实战手册：从单条爆款到稳定询盘 传统装备与制造企业如何摆脱“拍摄成本高、内容单一”困局？拆解场景化矩阵生产与 SOP 协同全流程。 阅读完整方法论 ↗":
+        - text: 01 / INDUSTRY PLAYBOOK
+        - strong: 制造业 × 场景化矩阵 × 询盘转化
+        - paragraph: 行业实战指南 · 深度长文
+        - heading "制造业短视频矩阵搭建实战手册：从单条爆款到稳定询盘" [level=3]
+        - paragraph: 传统装备与制造企业如何摆脱“拍摄成本高、内容单一”困局？拆解场景化矩阵生产与 SOP 协同全流程。
+        - text: 阅读完整方法论 ↗
+    - article:
+      - button "02 / SYSTEM ARCHITECTURE 业务流梳理 × 权限边界 × 数据互通 企业定制开发 · 架构指南 企业数字化系统定制开发，如何避免沦为“数据孤岛”？ 从业务对象统一标识到私有化部署的接口规范，详解如何让定制软件真正长在企业的实际业务流里。 阅读完整方法论 ↗":
+        - text: 02 / SYSTEM ARCHITECTURE
+        - strong: 业务流梳理 × 权限边界 × 数据互通
+        - paragraph: 企业定制开发 · 架构指南
+        - heading "企业数字化系统定制开发，如何避免沦为“数据孤岛”？" [level=3]
+        - paragraph: 从业务对象统一标识到私有化部署的接口规范，详解如何让定制软件真正长在企业的实际业务流里。
+        - text: 阅读完整方法论 ↗
+    - article:
+      - button "03 / AI & GEO STRATEGY 黄金钩子 × 风控自检 × 组织级复盘 AI 营销演进 · 趋势洞察 从单机剪辑思维到组织级内容资产：AI 时代的矩阵破局点 普通人抄文案，高手复刻结构。如何利用 AI 拆解器、云端资产库与共享算力池构建不可复制的团队壁垒？ 阅读完整方法论 ↗":
+        - text: 03 / AI & GEO STRATEGY
+        - strong: 黄金钩子 × 风控自检 × 组织级复盘
+        - paragraph: AI 营销演进 · 趋势洞察
+        - heading "从单机剪辑思维到组织级内容资产：AI 时代的矩阵破局点" [level=3]
+        - paragraph: 普通人抄文案，高手复刻结构。如何利用 AI 拆解器、云端资产库与共享算力池构建不可复制的团队壁垒？
+        - text: 阅读完整方法论 ↗
+    - paragraph: 05 / AUTHORITATIVE CREDENTIALS
+    - heading "国家与省级双资质认证， 以硬核研发实力护航企业增长。" [level=2]
+    - img "高新技术企业标识"
+    - heading "国家级高新技术企业" [level=3]
+    - paragraph: 核心自主知识产权 · 持续研发创新
+    - paragraph:
+      - text: 企业证书编号
+      - strong: GR202551004463
+    - heading "省级创新型中小企业" [level=3]
+    - paragraph: 专业化技术沉淀 · 数字化赋能标杆
+    - paragraph:
+      - text: 资质序号
+      - strong: "343"
+    - paragraph: 准备好开启工业化内容生产或定制专属系统了吗？
+    - text: 无论是了解「视界狗·帧析引擎」产品规划，还是咨询企业私有化定制开发，我们都期待与您深入交流。
+    - button "帧析引擎 即将上线" [disabled]
+    - button "联系商务与架构师 →"
+  - contentinfo:
+    - link "猫尼科技 · 数字化增长与智能技术服务":
+      - /url: "#home"
+      - img "猫尼科技 · 数字化增长与智能技术服务"
+    - paragraph: 数字化增长与智能技术服务引擎。专注企业级短视频矩阵 SaaS 与数字化系统深度定制。
+    - heading "产品与服务" [level=4]
+    - link "视界狗·帧析引擎":
+      - /url: "#product"
+    - button "拼接猫矩阵工具"
+    - button "同城流量通系统"
+    - link "企业级软件定制开发":
+      - /url: "#custom"
+    - heading "了解猫尼" [level=4]
+    - link "技术演进历程":
+      - /url: "#journey"
+    - link "数字化营销智库":
+      - /url: "#insights"
+    - link "高新企业资质":
+      - /url: "#contact"
+    - heading "联系与商务合作" [level=4]
+    - link "商务邮箱 · maonee@126.com":
+      - /url: mailto:maonee@126.com
+    - paragraph: 公司地址 · 中国·成都
+    - text: Copyright © 2026 成都猫尼科技有限公司. 视界狗® 是本公司注册商标，搭载自研帧析视频数据处理引擎。 国家级高新技术企业 · 省级创新型中小企业
+    - link "返回顶部 ↑":
+      - /url: "#home"
+    - link "蜀ICP备19039194":
+      - /url: https://beian.miit.gov.cn/
+    - link "公安备案 川公网安备51019002010062号":
+      - /url: https://beian.mps.gov.cn/#/query/webSearch?code=51019002010062
+      - img "公安备案"
+      - text: 川公网安备51019002010062号

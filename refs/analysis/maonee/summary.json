@@ -1,0 +1,25 @@
+{
+  "site": "猫尼科技",
+  "slug": "maonee",
+  "start_url": "https://www.maonee.cn/",
+  "final_url": "https://www.maonee.cn/",
+  "title": "猫尼科技官网 - 数字化增长与智能技术引擎 | 短视频矩阵SaaS与企业系统定制开发",
+  "requests": 7,
+  "api_calls": 0,
+  "console_errors": 0,
+  "dom_bytes": 86771,
+  "screenshot_bytes": 740889,
+  "events_retained": 28,
+  "status": "completed",
+  "completeness": "incomplete",
+  "limitations": [
+    "Event sequence records provider receipt order; simultaneous browser causality is not inferred.",
+    "Network content is retained only when selected; Playwright response-body bytes are API results and are not guaranteed to match wire bytes.",
+    "Request bytes are limited to what Playwright exposes; not_exposed does not establish body absence or multipart file coverage.",
+    "Network content reads settle within 5 seconds each and the observer does not request bodies from unfinished responses.",
+    "Captured response-body bytes are the result of Playwright's Response.body() API. Playwright may satisfy that API with a credentialed follow-up load of the request URL when CDP has no body, so transaction and event links do not verify that retained bytes came from the original network transaction.",
+    "Playwright scenario events do not expose request initiator stacks; receipt order does not prove causality.",
+    "Storage values are hashed only after declared-secret redaction.",
+    "Some selected network content was unavailable; per-transaction content states retain the reason."
+  ]
+}

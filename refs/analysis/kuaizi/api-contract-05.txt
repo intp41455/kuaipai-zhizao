@@ -1,0 +1,18 @@
+== path literals: 11
+/api/userProxy
+/creative/dashboard/Data/accumulateCustomers
+/creative/dashboard/Data/totalMixture
+/statistics-dashboard/v1/city_count
+/statistics-dashboard/v1/commercial_video_count
+/statistics-dashboard/v1/copyright_ip_count
+/statistics-dashboard/v1/served_enterprise_count
+/user/user/Login/sendSmsCode
+/v1/internal/big_screen_data/counts
+/w20/
+/w40/
+
+== call sites: 0
+
+== host context: 0
+
+== baseURL: 0

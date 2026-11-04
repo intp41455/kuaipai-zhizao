@@ -1,0 +1,18 @@
+{
+  "kaipai": [],
+  "xinglian": [],
+  "kuaizi": [
+    "/api/sales-chat",
+    "/api/userProxy",
+    "/pc/fde",
+    "/pc/homeV2",
+    "/v1/auth/ws/advertiser",
+    "/v1/auth/ws/advertiser_temp",
+    "/v1/internal/big_screen_data/counts",
+    "/v1/leads-form/submit"
+  ],
+  "aichaoer": [],
+  "maonee": [],
+  "baokuan": [],
+  "k5r": []
+}

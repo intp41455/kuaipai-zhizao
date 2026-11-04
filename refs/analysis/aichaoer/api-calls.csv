@@ -1,0 +1,3 @@
+"method","status","resource","url","elapsed_ms"
+"GET","200","fetch","https://www.aichaoer.cn/version.json?t=1793716446129","790.258"
+"GET","200","fetch","https://www.aichaoer.cn/version.json?t=1793716446132","787.674"

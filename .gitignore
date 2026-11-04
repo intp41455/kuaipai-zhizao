@@ -6,9 +6,3 @@ coverage/
 *.log
 .env*
 !.env.example
-
-# 本地逆向/研究产物，不入库（部署与同步不需要，含第三方抓取资料）
-refs/
-evidence/
-out/
-.v2c/

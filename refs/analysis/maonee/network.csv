@@ -1,0 +1,8 @@
+"transaction","method","resource","status","url","elapsed_ms"
+"request-1","GET","document",,"https://www.maonee.cn/","25738.678"
+"request-2","GET","script",,"https://www.maonee.cn/assets/config.js","2559.531"
+"request-3","GET","image",,"https://www.maonee.cn/assets/maoni-logo-dark.png","13593.838"
+"request-4","GET","image",,"https://www.maonee.cn/assets/high-tech-badge.png","20617.353"
+"request-5","GET","image",,"https://www.maonee.cn/assets/innovation-mark.svg","3195.469"
+"request-6","GET","image",,"https://www.maonee.cn/assets/police-record.png","3195.577"
+"request-7","GET","other",,"https://www.maonee.cn/assets/favicon.svg","474.355"

@@ -1,0 +1,62 @@
+[
+  {
+    "url": "https://xingliankey.com/_next/static/chunks/240-1a1424f763dd95fc.js",
+    "file": "01-240-1a1424f763dd95fc.js.js",
+    "bytes": 123506
+  },
+  {
+    "url": "https://xingliankey.com/_next/static/chunks/402-b2b835b9e545af2e.js",
+    "file": "02-402-b2b835b9e545af2e.js.js",
+    "bytes": 10849
+  },
+  {
+    "url": "https://xingliankey.com/_next/static/chunks/651-c500a59804ad6b6b.js",
+    "file": "03-651-c500a59804ad6b6b.js.js",
+    "bytes": 61970
+  },
+  {
+    "url": "https://xingliankey.com/_next/static/chunks/717-786ce27fa9cafcc7.js",
+    "file": "04-717-786ce27fa9cafcc7.js.js",
+    "bytes": 161500
+  },
+  {
+    "url": "https://xingliankey.com/_next/static/chunks/8bc8d761-106196c73f6358c9.js",
+    "file": "05-8bc8d761-106196c73f6358c9.js.js",
+    "bytes": 172829
+  },
+  {
+    "url": "https://xingliankey.com/_next/static/chunks/904-db4a07c229848ab8.js",
+    "file": "06-904-db4a07c229848ab8.js.js",
+    "bytes": 15482
+  },
+  {
+    "url": "https://xingliankey.com/_next/static/chunks/app/about/page-6da30688ce8221a4.js",
+    "file": "07-page-6da30688ce8221a4.js.js",
+    "bytes": 298
+  },
+  {
+    "url": "https://xingliankey.com/_next/static/chunks/app/contact/page-666c20766156d6bd.js",
+    "file": "08-page-666c20766156d6bd.js.js",
+    "bytes": 3888
+  },
+  {
+    "url": "https://xingliankey.com/_next/static/chunks/app/layout-c21c3b636700c17f.js",
+    "file": "09-layout-c21c3b636700c17f.js.js",
+    "bytes": 13588
+  },
+  {
+    "url": "https://xingliankey.com/_next/static/chunks/app/page-7f575bedd9d20427.js",
+    "file": "10-page-7f575bedd9d20427.js.js",
+    "bytes": 34735
+  },
+  {
+    "url": "https://xingliankey.com/_next/static/chunks/main-app-0ef9acdc3fb3c8d7.js",
+    "file": "11-main-app-0ef9acdc3fb3c8d7.js.js",
+    "bytes": 462
+  },
+  {
+    "url": "https://xingliankey.com/_next/static/chunks/webpack-5a54d242594eda0c.js",
+    "file": "12-webpack-5a54d242594eda0c.js.js",
+    "bytes": 3727
+  }
+]

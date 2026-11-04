@@ -1,0 +1,290 @@
+- document:
+  - banner:
+    - img "火兔工具箱"
+    - text: 火兔工具箱
+    - button "登录/注册"
+  - text: AI 智能创作 · 大幅提升效率
+  - heading "AI 图文创作 批量生成" [level=1]
+  - paragraph: 只需输入关键词，AI秒级生成图文， 高效生成多份 ，让创作效率飞升！
+  - text: 原创 质量好 爆款 参考创作 高效 批处理生成 秒级 生成速度 导出 本地保存
+  - link "立即去生成":
+    - /url: /console
+    - button "立即去生成"
+  - link "进入控制台":
+    - /url: /console
+    - button "进入控制台"
+  - heading "核心板块" [level=2]
+  - paragraph: 五大能力体系，覆盖图文、电商、绘图、视频与流量增长
+  - text: 🔥 HOT 核心功能
+  - heading "图文创作中心" [level=2]
+  - paragraph: 输入主题或粘贴链接，AI 秒级批量生成社媒 / 公众号爆款图文
+  - text: 一句话图文 AI复刻同款图文 批量大字报图文 传图生成图文 更多功能
+  - img
+  - text: 立即使用
+  - img
+  - img
+  - text: 🔥 HOT 电商提效
+  - heading "电商图设计" [level=2]
+  - paragraph: 商品主图、详情页、模特穿戴图批量产出，电商运营全覆盖
+  - text: ★电商套图 Pro ★电商详情页 Pro 商品多视角图 商品换背景 商品套图 电商详情页 模特穿戴图 批量电商主图 更多功能
+  - img
+  - text: 立即使用
+  - img
+  - img
+  - text: 🔥 HOT AI 绘图
+  - heading "AI 图片设计" [level=2]
+  - paragraph: AI 绘图、改图修图、海报封面、证件照，一站式高质量出图
+  - text: AI设计好图 AI改图修图 AI设计封面 公众号首图 更多功能
+  - img
+  - text: 立即使用
+  - img
+  - img
+  - text: 一键成片
+  - heading "AI 视频创作" [level=2]
+  - paragraph: 图转视频、AI 生成视频、数字人带货口播一键产出
+  - text: AI生成视频 图转视频 带货口播 AI智能成片 更多功能
+  - img
+  - text: 立即使用
+  - img
+  - img
+  - text: 流量增长
+  - heading "GEO 系统管理" [level=2]
+  - paragraph: 素材库、文章写作、流量复刻一站式，玩转 GEO 引流
+  - text: GEO素材库 AI文章写作 AI流量复刻 GEO批量发布 更多功能
+  - img
+  - text: 立即使用
+  - img
+  - img
+  - heading "功能中心" [level=2]
+  - paragraph: 选择您需要的功能，开启高效创作之旅
+  - text: HOT
+  - img
+  - text: 一句话图文 输入内容主题，快速生成带图图文。
+  - img
+  - text: HOT AI复刻同款图文 输入优质链接，AI同款复刻，快速产出图文。
+  - img
+  - img
+  - text: AI批量超级图文 批量生成超级图文，AI智能升级版。
+  - img
+  - img
+  - text: 自由设计单图文 自由排版单图文，灵活设计风格随心定制。
+  - img
+  - text: NEW
+  - img
+  - text: 多内容仿写图文 粘贴多个链接或上传本地素材，批量仿写生成图文。
+  - img
+  - img
+  - text: 查找图文 智能搜索优质图文，灵感快速获取。
+  - img
+  - img
+  - text: 产品图生图文 上传素材生成产品图风格图文。
+  - img
+  - text: HOT 传图生成图文 上传图片，AI智能生成图文。
+  - img
+  - img
+  - text: 人设创作图文 绑定人设，生成专属风格的图文内容。
+  - img
+  - img
+  - text: 指定文案图文 指定文案大纲，生成带图图文。
+  - img
+  - button "上一页" [disabled]:
+    - img
+  - list:
+    - listitem "第 1 页": "1"
+    - listitem "第 2 页": "2"
+    - listitem "第 3 页": "3"
+    - listitem "第 4 页": "4"
+    - listitem "第 5 页": "5"
+    - listitem "第 6 页": "6"
+    - listitem "第 7 页": "7"
+  - button "下一页":
+    - img
+  - img
+  - text: AI 实用小工具 日常高频工具一键直达，免去翻找菜单
+  - img
+  - text: AI 改图修图 智能修图 / 去水印
+  - img
+  - text: 图片翻译 NEW 保留排版自动翻译
+  - img
+  - text: AI 证件照 NEW 一键证件照换背景
+  - img
+  - text: 裁剪图片 NEW 改尺寸 / 比例适配
+  - img
+  - text: 图片工具箱 NEW 拼图切图压缩改尺寸
+  - img
+  - text: 反推提示词 NEW 上传图片反推提示
+  - img
+  - text: 公众号首图 NEW 长图文首图直生成
+  - img
+  - text: AI 设计 Logo NEW 关键词智能生 Logo
+  - img
+  - text: AI 选题助手 快速锁定优质选题 CORE · 核心能力体系
+  - heading "核心功能" [level=2]
+  - paragraph: 6 大模块覆盖「选题 → 创作 → 复刻 → 批量」全链路，AI 助你从 0 到优质
+  - complementary:
+    - text: 6 大核心 · 点击切换 01 / 06 01 智能生成优质热门标题 AI 智能助手一键生成图文标题
+    - img
+    - text: 02 一句话图文 输入内容主题，快速生成带图图文
+    - img
+    - text: 03 一键生成图文 只需一个标题，快速生成一篇带图图文
+    - img
+    - text: 04 批量大字报图文 AI 智能科技，一键批量快速生成
+    - img
+    - text: 05 AI复刻同款图文 输入优质链接，AI 同款复刻生成图文
+    - img
+    - text: 06 文案模板 直接参考创作，快速生成高质量图文
+    - img
+  - text: 热门标题 01 / 06
+  - heading "智能生成优质热门标题" [level=3]
+  - img "智能生成优质热门标题"
+  - link "立即使用":
+    - /url: /xuanti
+    - text: 立即使用
+    - img
+  - text: ALL CAPABILITIES
+  - heading "完整能力体系 · 27 项 AI 能力" [level=3]
+  - paragraph: 从图文创作到多账号协作，覆盖长图文全流程
+  - text: 全部 30 内容创作 10 图片 / 视频 6 模板库 4 运营工具 6 跨平台 2 小工具包 2
+  - link "💡 一句话图文 一句话或关键词，秒生成带图图文 去使用":
+    - /url: /yijuhua
+    - text: 💡 一句话图文 一句话或关键词，秒生成带图图文 去使用
+    - img
+  - link "🧬 AI复刻同款图文 输入优质链接，AI 同款复刻 去使用":
+    - /url: /aicopy
+    - text: 🧬 AI复刻同款图文 输入优质链接，AI 同款复刻 去使用
+    - img
+  - link "🔗 多内容仿写图文 多个优质内容融合仿写，批量产出 去使用":
+    - /url: /aicopys
+    - text: 🔗 多内容仿写图文 多个优质内容融合仿写，批量产出 去使用
+    - img
+  - link "📦 产品图生图文 上传产品图，自动生成分享图文 去使用":
+    - /url: /chanpin
+    - text: 📦 产品图生图文 上传产品图，自动生成分享图文 去使用
+    - img
+  - link "✍️ 指定文案图文 指定主题风格，定制专属文案 去使用":
+    - /url: /aiwenan
+    - text: ✍️ 指定文案图文 指定主题风格，定制专属文案 去使用
+    - img
+  - link "📝 单篇大字报图文 一个标题，生成完整图文 去使用":
+    - /url: /generate
+    - text: 📝 单篇大字报图文 一个标题，生成完整图文 去使用
+    - img
+  - link "🚀 批量大字报图文 高效批量生成，多账号利器 去使用":
+    - /url: /generates
+    - text: 🚀 批量大字报图文 高效批量生成，多账号利器 去使用
+    - img
+  - link "🎨 自定义图文 完全自定义灵活图文创作 去使用":
+    - /url: /daoru/new
+    - text: 🎨 自定义图文 完全自定义灵活图文创作 去使用
+    - img
+  - link "🖼️ 传图生成图文 上传图片，AI 识别生成配文 去使用":
+    - /url: /daoru
+    - text: 🖼️ 传图生成图文 上传图片，AI 识别生成配文 去使用
+    - img
+  - link "🔥 优质文案生成 基于优质模式生成高互动文案 去使用":
+    - /url: /baokuan
+    - text: 🔥 优质文案生成 基于优质模式生成高互动文案 去使用
+    - img
+  - link "🎨 AI 设计好图 输入描述，AI 生成原创好图 去使用":
+    - /url: /aipic
+    - text: 🎨 AI 设计好图 输入描述，AI 生成原创好图 去使用
+    - img
+  - link "✨ 自由设计 表达想法，AI 设计 / 改图都支持，可上传 10 张参考图 去使用":
+    - /url: /aidantu
+    - text: ✨ 自由设计 表达想法，AI 设计 / 改图都支持，可上传 10 张参考图 去使用
+    - img
+  - link "🖌️ AI 批量封面 批量生成不同风格的封面图 去使用":
+    - /url: /aifengmian
+    - text: 🖌️ AI 批量封面 批量生成不同风格的封面图 去使用
+    - img
+  - link "🎬 AI 视频生成 文字转视频，AI 合成动画 去使用":
+    - /url: /video
+    - text: 🎬 AI 视频生成 文字转视频，AI 合成动画 去使用
+    - img
+  - link "📚 海量模板库 海量优质模板直接套用 去使用":
+    - /url: /daoru
+    - text: 📚 海量模板库 海量优质模板直接套用 去使用
+    - img
+  - link "📄 文案模板 精选文案模板，直接参考创作 去使用":
+    - /url: /templates
+    - text: 📄 文案模板 精选文案模板，直接参考创作 去使用
+    - img
+  - link "💼 我的文案库 个人文案素材统一管理 去使用":
+    - /url: /daoru/caogao
+    - text: 💼 我的文案库 个人文案素材统一管理 去使用
+    - img
+  - link "🧠 我的提示词库 常用提示词收藏与复用 去使用":
+    - /url: /tishici
+    - text: 🧠 我的提示词库 常用提示词收藏与复用 去使用
+    - img
+  - link "📡 多账号管理 多账号一键同步发布 去使用":
+    - /url: /fabu
+    - text: 📡 多账号管理 多账号一键同步发布 去使用
+    - img
+  - link "🔬 内容结构分析 优质数据+结构全维拆解 去使用":
+    - /url: /baokuan
+    - text: 🔬 内容结构分析 优质数据+结构全维拆解 去使用
+    - img
+  - link "🛡️ 内容自检 检测错别字、语病与冗余表达 去使用":
+    - /url: /weigui
+    - text: 🛡️ 内容自检 检测错别字、语病与冗余表达 去使用
+    - img
+  - link "🩺 诊断助手 账号健康度一键体检 去使用":
+    - /url: /zhenduan
+    - text: 🩺 诊断助手 账号健康度一键体检 去使用
+    - img
+  - link "🔮 即将上线 预测助手 图文优质潜力预测 去使用":
+    - /url: /yuce
+    - text: 🔮 即将上线 预测助手 图文优质潜力预测 去使用
+    - img
+  - link "💬 长图文写作 长图文图文 AI 创作 + 排版 去使用":
+    - /url: /gzh
+    - text: 💬 长图文写作 长图文图文 AI 创作 + 排版 去使用
+    - img
+  - link "🏪 旺店码 电商场景专属码制作 去使用":
+    - /url: /wangdianma
+    - text: 🏪 旺店码 电商场景专属码制作 去使用
+    - img
+  - link "🧰 小工具合集 账号定位/关键词组合等小工具 去使用":
+    - /url: /zntool
+    - text: 🧰 小工具合集 账号定位/关键词组合等小工具 去使用
+    - img
+  - link "📦 运营资料包 运营手册 + 网盘资源大礼包 去使用":
+    - /url: /yunying
+    - text: 📦 运营资料包 运营手册 + 网盘资源大礼包 去使用
+    - img
+  - heading "一键解锁 AI 图文创作，轻松打造爆款内容" [level=2]
+  - img "卡片 1"
+  - img "卡片 2"
+  - img "卡片 3"
+  - img "卡片 4"
+  - img "卡片 5"
+  - button "提需求或建议"
+  - button "联系我们"
+  - contentinfo:
+    - img "火兔工具箱"
+    - text: 火兔工具箱
+    - paragraph: 专注 AI 图文笔记批量生成，无需基础、一键爆款、自动发布，让创作效率翻 100 倍。
+    - text: 快速链接
+    - link "用户协议":
+      - /url: https://my.feishu.cn/wiki/EBy9w6XJfiJ09KkVVbccvPXAn9e
+    - link "隐私政策":
+      - /url: https://my.feishu.cn/wiki/EBy9w6XJfiJ09KkVVbccvPXAn9e
+    - link "服务条款与声明":
+      - /url: /tiaokuan
+    - link "教程中心":
+      - /url: /jiaocheng
+    - text: 联系我们 联系电话：15339117033 Copyright © 2026 西安超尔科技有限公司 ·
+    - link "陕ICP备2024026957号-4":
+      - /url: http://beian.miit.gov.cn/
+  - img
+  - img
+  - text: 分享
+  - img "客服"
+  - text: 客服
+  - img "公众号"
+  - text: 公众号 新手 教程
+  - img "分销"
+  - text: 分销
+  - img
+  - text: 提需求

@@ -1,0 +1,25 @@
+{
+  "site": "火兔工具箱",
+  "slug": "aichaoer",
+  "start_url": "https://www.aichaoer.cn/",
+  "final_url": "https://www.aichaoer.cn/",
+  "title": "火兔工具箱-AI批量爆款图文笔记一键生成发布复刻同款",
+  "requests": 15,
+  "api_calls": 2,
+  "console_errors": 0,
+  "dom_bytes": 111412,
+  "screenshot_bytes": 136868,
+  "events_retained": 62,
+  "status": "completed",
+  "completeness": "incomplete",
+  "limitations": [
+    "Event sequence records provider receipt order; simultaneous browser causality is not inferred.",
+    "Network content is retained only when selected; Playwright response-body bytes are API results and are not guaranteed to match wire bytes.",
+    "Request bytes are limited to what Playwright exposes; not_exposed does not establish body absence or multipart file coverage.",
+    "Network content reads settle within 5 seconds each and the observer does not request bodies from unfinished responses.",
+    "Captured response-body bytes are the result of Playwright's Response.body() API. Playwright may satisfy that API with a credentialed follow-up load of the request URL when CDP has no body, so transaction and event links do not verify that retained bytes came from the original network transaction.",
+    "Playwright scenario events do not expose request initiator stacks; receipt order does not prove causality.",
+    "Storage values are hashed only after declared-secret redaction.",
+    "Some selected network content was unavailable; per-transaction content states retain the reason."
+  ]
+}

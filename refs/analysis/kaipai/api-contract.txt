@@ -1,0 +1,29 @@
+开拍 kaipai — 接口契约取证结论
+取证日期：2026-11-04（本文件）；原始抓包 2026-11-03
+命中数：0（公开客户端资产中无可提取的业务接口契约）
+
+【入口与形态】
+- 入口 https://kaipai.com/ → 301 → https://www.kaipai.com/（200，HTML 361,873 字节）
+- 静态 CDN：https://static-assets.kaipai.com/kaipai/_next/static/chunks/（39 个 chunk）
+- 框架：Next.js **App Router**（证据：main-app-*.js chunk + self.__next_f flight 流，
+  kaipai-home.html 中 main-app-5a23b3b524d49c17.js、app/[locale]/(standard)/(workbench)/loading-*.js）
+
+【实测过程（2026-11-04，全部为未登录公开 GET）】
+1. 客户端 39 chunk 静态扫描（2026-11-03 mine-all.mjs 聚合）：0 个业务接口路径字面量。
+2. _next/data 探测：GET https://kaipai.com/_next/data/test/test.json
+   → 301 → www → 200 但 Content-Type: text/html，1,416 字节兜底页
+   （证据 next-data-probe-404fallback.html）。
+   结论：App Router 站点不存在 Pages Router 的 /_next/data/<buildId>/<route>.json 数据路由，
+   交接文档第 3.2/5 章设想的「改走 _next/data」路径对本站不适用（技术性关闭，非未尝试）。
+3. RSC 通道：GET https://www.kaipai.com/ 带 RSC:1 → 200（证据 rsc-payload-home.txt）。
+   交付的是 flight 渲染载荷（页面内容），不是接口契约，无路径/方法/字段可提取。
+4. 后端 API host 线索（新增发现）：<link rel="preconnect" href="https://webapi-action.meitu.com"/>
+   —— 开拍（美图系）运行时业务 API 基址。其端点需登录 workbench 后由前端调用，
+   公开资产中提取不到具体 path/字段（登录态属红线，未触碰）。
+
+【未命中原因】
+- App Router 服务端取数不在客户端 bundle 暴露；RSC 载荷是渲染结果而非契约。
+- 业务接口（webapi-action.meitu.com）在登录态之后，公开页面无端点字面量。
+
+【边界】
+全程未登录、未绕过风控；以上均为公开 HTTP GET 实测。

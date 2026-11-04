@@ -1,0 +1,350 @@
+[
+  {
+    "name": "NoteEditor2",
+    "file": "NoteEditor2.js",
+    "offset": 1613210,
+    "bytes": 239927
+  },
+  {
+    "name": "UserCenter",
+    "file": "UserCenter.js",
+    "offset": 805755,
+    "bytes": 222873
+  },
+  {
+    "name": "Works",
+    "file": "Works.js",
+    "offset": 1354324,
+    "bytes": 200000
+  },
+  {
+    "name": "NoteEditor",
+    "file": "NoteEditor.js",
+    "offset": 1545081,
+    "bytes": 200000
+  },
+  {
+    "name": "Copy",
+    "file": "Copy.js",
+    "offset": 1142584,
+    "bytes": 110667
+  },
+  {
+    "name": "aiwenan",
+    "file": "aiwenan.js",
+    "offset": 1817912,
+    "bytes": 92200
+  },
+  {
+    "name": "Yijuhua",
+    "file": "Yijuhua.js",
+    "offset": 1442142,
+    "bytes": 73316
+  },
+  {
+    "name": "Templates",
+    "file": "Templates.js",
+    "offset": 1030747,
+    "bytes": 60151
+  },
+  {
+    "name": "Generates",
+    "file": "Generates.js",
+    "offset": 632425,
+    "bytes": 36216
+  },
+  {
+    "name": "pics",
+    "file": "pics.js",
+    "offset": 1747058,
+    "bytes": 28416
+  },
+  {
+    "name": "Generate",
+    "file": "Generate.js",
+    "offset": 601550,
+    "bytes": 27511
+  },
+  {
+    "name": "Tools",
+    "file": "Tools.js",
+    "offset": 1393218,
+    "bytes": 21598
+  },
+  {
+    "name": "wappay",
+    "file": "wappay.js",
+    "offset": 1777228,
+    "bytes": 21519
+  },
+  {
+    "name": "Tiaozhuan",
+    "file": "Tiaozhuan.js",
+    "offset": 1701807,
+    "bytes": 16432
+  },
+  {
+    "name": "Product2",
+    "file": "Product2.js",
+    "offset": 1685508,
+    "bytes": 15411
+  },
+  {
+    "name": "Generating1",
+    "file": "Generating1.js",
+    "offset": 669493,
+    "bytes": 15346
+  },
+  {
+    "name": "PersonaManager",
+    "file": "PersonaManager.js",
+    "offset": 686203,
+    "bytes": 14909
+  },
+  {
+    "name": "App",
+    "file": "App.js",
+    "offset": 405227,
+    "bytes": 14669
+  },
+  {
+    "name": "Aisousuo",
+    "file": "Aisousuo.js",
+    "offset": 1732159,
+    "bytes": 12254
+  },
+  {
+    "name": "Product",
+    "file": "Product.js",
+    "offset": 1665766,
+    "bytes": 9433
+  },
+  {
+    "name": "Yulanm2",
+    "file": "Yulanm2.js",
+    "offset": 1723613,
+    "bytes": 7167
+  },
+  {
+    "name": "Yulanm",
+    "file": "Yulanm.js",
+    "offset": 1718738,
+    "bytes": 4341
+  },
+  {
+    "name": "InstallGuideModal",
+    "file": "InstallGuideModal.js",
+    "offset": 398064,
+    "bytes": 2382
+  },
+  {
+    "name": "CustomExtraForm",
+    "file": "CustomExtraForm.js",
+    "offset": 559891,
+    "bytes": 743
+  },
+  {
+    "name": "ImageUploadModal",
+    "file": "ImageUploadModal.js",
+    "offset": 1101619,
+    "bytes": 733
+  },
+  {
+    "name": "UpdateAvailableModal",
+    "file": "UpdateAvailableModal.js",
+    "offset": 403780,
+    "bytes": 695
+  },
+  {
+    "name": "LinkIcon",
+    "file": "LinkIcon.js",
+    "offset": 574355,
+    "bytes": 687
+  },
+  {
+    "name": "CustomExtraFormContent",
+    "file": "CustomExtraFormContent.js",
+    "offset": 555515,
+    "bytes": 605
+  },
+  {
+    "name": "GlobalTutorialEntry",
+    "file": "GlobalTutorialEntry.js",
+    "offset": 370717,
+    "bytes": 491
+  },
+  {
+    "name": "ImageEditModal",
+    "file": "ImageEditModal.js",
+    "offset": 1516106,
+    "bytes": 318
+  },
+  {
+    "name": "TonePicker",
+    "file": "TonePicker.js",
+    "offset": 1419704,
+    "bytes": 298
+  },
+  {
+    "name": "AppSidebar",
+    "file": "AppSidebar.js",
+    "offset": 230131,
+    "bytes": 291
+  },
+  {
+    "name": "TaskProgressDialog",
+    "file": "TaskProgressDialog.js",
+    "offset": 1091565,
+    "bytes": 254
+  },
+  {
+    "name": "Yulan",
+    "file": "Yulan.js",
+    "offset": 548663,
+    "bytes": 240
+  },
+  {
+    "name": "LiveCodeAssignDialog",
+    "file": "LiveCodeAssignDialog.js",
+    "offset": 733217,
+    "bytes": 234
+  },
+  {
+    "name": "TemplateSelectDialog",
+    "file": "TemplateSelectDialog.js",
+    "offset": 1120470,
+    "bytes": 233
+  },
+  {
+    "name": "MobileHeader",
+    "file": "MobileHeader.js",
+    "offset": 372009,
+    "bytes": 186
+  },
+  {
+    "name": "ZhidingAiCopyAssist",
+    "file": "ZhidingAiCopyAssist.js",
+    "offset": 1421765,
+    "bytes": 162
+  },
+  {
+    "name": "ImportTishiciDialog",
+    "file": "ImportTishiciDialog.js",
+    "offset": 1415234,
+    "bytes": 153
+  },
+  {
+    "name": "FloatingButtons",
+    "file": "FloatingButtons.js",
+    "offset": 347632,
+    "bytes": 147
+  },
+  {
+    "name": "MaterialUploadDialog",
+    "file": "MaterialUploadDialog.js",
+    "offset": 701451,
+    "bytes": 142
+  },
+  {
+    "name": "InsufficientBalanceDialog",
+    "file": "InsufficientBalanceDialog.js",
+    "offset": 545684,
+    "bytes": 139
+  },
+  {
+    "name": "WorkQrButton",
+    "file": "WorkQrButton.js",
+    "offset": 1530698,
+    "bytes": 138
+  },
+  {
+    "name": "ExpiryReminderDialog",
+    "file": "ExpiryReminderDialog.js",
+    "offset": 394635,
+    "bytes": 107
+  },
+  {
+    "name": "PaymentDialog",
+    "file": "PaymentDialog.js",
+    "offset": 1675988,
+    "bytes": 101
+  },
+  {
+    "name": "LiveCodeQrDialog",
+    "file": "LiveCodeQrDialog.js",
+    "offset": 730829,
+    "bytes": 79
+  },
+  {
+    "name": "PersonaSelectDrawer",
+    "file": "PersonaSelectDrawer.js",
+    "offset": 575899,
+    "bytes": 78
+  },
+  {
+    "name": "TutorialDialog",
+    "file": "TutorialDialog.js",
+    "offset": 345254,
+    "bytes": 74
+  },
+  {
+    "name": "AuthenticityNotice",
+    "file": "AuthenticityNotice.js",
+    "offset": 543457,
+    "bytes": 74
+  },
+  {
+    "name": "TutorialContentView",
+    "file": "TutorialContentView.js",
+    "offset": 342767,
+    "bytes": 70
+  },
+  {
+    "name": "BindReminderDialog",
+    "file": "BindReminderDialog.js",
+    "offset": 391518,
+    "bytes": 69
+  },
+  {
+    "name": "PhoneBackupDialog",
+    "file": "PhoneBackupDialog.js",
+    "offset": 392949,
+    "bytes": 69
+  },
+  {
+    "name": "MobileUploadModal",
+    "file": "MobileUploadModal.js",
+    "offset": 1095244,
+    "bytes": 66
+  },
+  {
+    "name": "LoginDialog",
+    "file": "LoginDialog.js",
+    "offset": 164099,
+    "bytes": 38
+  },
+  {
+    "name": "BindPhoneDialog",
+    "file": "BindPhoneDialog.js",
+    "offset": 188992,
+    "bytes": 38
+  },
+  {
+    "name": "RechargeDialog",
+    "file": "RechargeDialog.js",
+    "offset": 195664,
+    "bytes": 38
+  },
+  {
+    "name": "RegCouponDialog",
+    "file": "RegCouponDialog.js",
+    "offset": 388635,
+    "bytes": 38
+  },
+  {
+    "name": "MyLiveCodePanel",
+    "file": "MyLiveCodePanel.js",
+    "offset": 738847,
+    "bytes": 34
+  }
+]

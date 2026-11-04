@@ -1,0 +1,23 @@
+星链引擎 xingliankey — 接口契约取证结论
+取证日期：2026-11-04（本文件）；原始抓包 2026-11-03
+命中数：0（公开客户端资产中无可提取的业务接口契约）
+
+【入口与形态】
+- 入口 https://xingliankey.com/（200，HTML 178,362 字节）
+- 静态资产：/_next/static/chunks/（12 个 chunk，同源直出）
+- 框架：Next.js **App Router**（证据：main-app-0ef9acdc3fb3c8d7.js + self.__next_f）
+
+【实测过程（2026-11-04，全部为未登录公开 GET）】
+1. 客户端 12 chunk 静态扫描（2026-11-03 mine-all.mjs 聚合）：0 个业务接口路径字面量。
+2. _next/data 探测：GET https://xingliankey.com/_next/data/test/test.json → **404**。
+   结论：App Router 站点无 Pages Router 数据路由，交接文档设想的 _next/data 路径不适用。
+3. RSC 通道：GET https://xingliankey.com/ 带 RSC:1 → 200，63,277 字节 flight 载荷
+   （证据 rsc-payload-home.txt）。内容为渲染载荷，无接口契约可提取。
+4. 首页 HTML 无第三方 API host preconnect/配置线索。
+
+【未命中原因】
+- App Router 服务端取数不在客户端 bundle 暴露；RSC 载荷是渲染结果而非契约。
+- 登录后 workbench 的接口不在公开资产内（登录态属红线，未触碰）。
+
+【边界】
+全程未登录、未绕过风控；以上均为公开 HTTP GET 实测。

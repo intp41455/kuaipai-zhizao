@@ -1,0 +1,112 @@
+[
+  {
+    "url": "https://fxgate.baidu.com/angelia/fcagl.js?production=_f7L2XwGXjyszb4d1e2oxPybgD",
+    "file": "01-fcagl.js.js",
+    "bytes": 49633
+  },
+  {
+    "url": "https://hm.baidu.com/hm.js?2d8bfecd5756cbf8388c7cee4ab9b755",
+    "file": "02-hm.js.js",
+    "bytes": 0
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/chunks/1222-3fda52e0039e98df.js",
+    "file": "03-1222-3fda52e0039e98df.js.js",
+    "bytes": 22027
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/chunks/29107295-da5dcdb903a5f13e.js",
+    "file": "04-29107295-da5dcdb903a5f13e.js.js",
+    "bytes": 71976
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/chunks/3117-1f4261f77062d0ff.js",
+    "file": "05-3117-1f4261f77062d0ff.js.js",
+    "bytes": 135826
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/chunks/3819.5f90cb9159d596f3.js",
+    "file": "06-3819.5f90cb9159d596f3.js.js",
+    "bytes": 3173
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/chunks/4194.66d30edf9e9d8ba5.js",
+    "file": "07-4194.66d30edf9e9d8ba5.js.js",
+    "bytes": 1850
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/chunks/4724-5e4ae269f653cd7f.js",
+    "file": "08-4724-5e4ae269f653cd7f.js.js",
+    "bytes": 95720
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/chunks/5675-31df86fdded16d9f.js",
+    "file": "09-5675-31df86fdded16d9f.js.js",
+    "bytes": 11329
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/chunks/7105-15d26a50259ae285.js",
+    "file": "10-7105-15d26a50259ae285.js.js",
+    "bytes": 15841
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/chunks/7896-223a1ec872c4dde4.js",
+    "file": "11-7896-223a1ec872c4dde4.js.js",
+    "bytes": 257645
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/chunks/8643-41c6536d1310aa03.js",
+    "file": "12-8643-41c6536d1310aa03.js.js",
+    "bytes": 17504
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/chunks/9017-db9573e16bb8cbee.js",
+    "file": "13-9017-db9573e16bb8cbee.js.js",
+    "bytes": 108174
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/chunks/9050.47c4c4bd694b1c80.js",
+    "file": "14-9050.47c4c4bd694b1c80.js.js",
+    "bytes": 50951
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/chunks/framework-4ed89e9640adfb9e.js",
+    "file": "15-framework-4ed89e9640adfb9e.js.js",
+    "bytes": 140953
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/chunks/main-c74f143e09e4d631.js",
+    "file": "16-main-c74f143e09e4d631.js.js",
+    "bytes": 125292
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/chunks/pages/_app-0c26391a3a9a5821.js",
+    "file": "17-_app-0c26391a3a9a5821.js.js",
+    "bytes": 795419
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/chunks/pages/pc/homeV2-e4c30d764e4e71d9.js",
+    "file": "18-homeV2-e4c30d764e4e71d9.js.js",
+    "bytes": 59802
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/chunks/webpack-4974011d415d0efe.js",
+    "file": "19-webpack-4974011d415d0efe.js.js",
+    "bytes": 4711
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/j9kEqqe_yTRHYhuuGiFmp/_buildManifest.js",
+    "file": "20-_buildManifest.js.js",
+    "bytes": 4381
+  },
+  {
+    "url": "https://kuaizi.cn/_next/static/j9kEqqe_yTRHYhuuGiFmp/_ssgManifest.js",
+    "file": "21-_ssgManifest.js.js",
+    "bytes": 564
+  },
+  {
+    "url": "https://tam.cdn-go.cn/aegis-sdk/latest/aegis.min.js",
+    "file": "22-aegis.min.js.js",
+    "bytes": 132788
+  }
+]

@@ -1,0 +1,1978 @@
+[
+ {
+  "path": "/yz/advise/submit",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "提交建议失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/ainotes",
+  "method": "POST",
+  "bodyKeys": "prompt,images,references,mode",
+  "fallbackMsg": "生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/autofill",
+  "method": "POST",
+  "bodyKeys": "prompt",
+  "fallbackMsg": "AI填充失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/chat",
+  "method": "POST",
+  "bodyKeys": "step,content",
+  "fallbackMsg": "对话请求失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/copy",
+  "method": "POST",
+  "bodyKeys": "page,size",
+  "fallbackMsg": "生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/copy_ex",
+  "method": "POST",
+  "bodyKeys": "page,size",
+  "fallbackMsg": "生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/cover",
+  "method": "POST",
+  "bodyKeys": "title",
+  "fallbackMsg": "生成封面失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/desc",
+  "method": "POST",
+  "bodyKeys": "title,desc,prompt,id",
+  "fallbackMsg": "生成内容失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/editlist",
+  "method": "POST",
+  "bodyKeys": "page,limit,cat",
+  "fallbackMsg": "获取改图记录失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/generate",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/get_ref_history",
+  "method": "POST",
+  "bodyKeys": "page,size",
+  "fallbackMsg": "获取历史风格图失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/goods_detail",
+  "method": "POST",
+  "bodyKeys": "url",
+  "fallbackMsg": "商品解析失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/imageedit",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "修改图片失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/parse",
+  "method": "POST",
+  "bodyKeys": "url",
+  "fallbackMsg": "解析失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/photo",
+  "method": "POST",
+  "bodyKeys": "url",
+  "fallbackMsg": "生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/renshe_write",
+  "method": "POST",
+  "bodyKeys": "prompt",
+  "fallbackMsg": "AI帮写失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/super_ckt_write",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "AI帮写失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/super_mc_write",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "AI帮写失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/title",
+  "method": "POST",
+  "bodyKeys": "title,desc,id",
+  "fallbackMsg": "生成标题失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/zhiding_imitate",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "AI仿写失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/zhiding_write",
+  "method": "POST",
+  "bodyKeys": "prompt",
+  "fallbackMsg": "AI帮写失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ai/ziyoutuwen",
+  "method": "POST",
+  "bodyKeys": "list",
+  "fallbackMsg": "生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/aipic/aplus",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "专业详情页生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/aipic/del",
+  "method": "POST",
+  "bodyKeys": "ids",
+  "fallbackMsg": "删除图片失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/aipic/gallery_outline",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "大纲生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/aipic/get",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取记录详情失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/aipic/imageedit",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "修改图片失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/aipic/lists",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取图片列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/aipic/make",
+  "method": "POST",
+  "bodyKeys": "max",
+  "fallbackMsg": "图片生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/aipic/suite",
+  "method": "POST",
+  "bodyKeys": "list",
+  "fallbackMsg": "主图套图生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/anli/get",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取案例详情失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/anli/lists",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取案例列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/anli/types",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取案例分类失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/del_article",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除文案失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/del_article_collect",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除收藏失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/del_article_daoru",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除导入文案失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/del_group",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除分组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/del_group_collect",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除收藏分组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/del_group_daoru",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除导入分组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/get_article",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取文案列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/get_article_collect",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取收藏列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/get_article_daoru",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取导入列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/get_group",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取分组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/get_group_collect",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取收藏分组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/get_group_daoru",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取导入分组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/save_article",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "保存文案失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/save_article_collect",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "收藏失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/save_article_daoru",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "导入链接失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/save_collect",
+  "method": "POST",
+  "bodyKeys": "type,name",
+  "fallbackMsg": "导入收藏失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/save_group",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "保存分组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/save_group_collect",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "保存收藏分组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/article/save_group_daoru",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "保存导入分组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/banyun/fangxie",
+  "method": "POST",
+  "bodyKeys": "platform,url",
+  "fallbackMsg": "仿写文案生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/banyun/parse",
+  "method": "POST",
+  "bodyKeys": "url",
+  "fallbackMsg": "解析失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/banyun/share",
+  "method": "POST",
+  "bodyKeys": "platform,url",
+  "fallbackMsg": "分享回调失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/card/use",
+  "method": "POST",
+  "bodyKeys": "cdk",
+  "fallbackMsg": "卡密激活失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/chazhao/lists",
+  "method": "POST",
+  "bodyKeys": "step,content",
+  "fallbackMsg": "获取图文列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/chazhao/types",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取查找分类失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/coupon/lists",
+  "method": "POST",
+  "bodyKeys": "name",
+  "fallbackMsg": "获取优惠券列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/coupon/useCdk",
+  "method": "POST",
+  "bodyKeys": "cdk",
+  "fallbackMsg": "口令兑换失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/createtpl/del",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除模板失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/createtpl/lists",
+  "method": "POST",
+  "bodyKeys": "prompt",
+  "fallbackMsg": "获取模板列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/createtpl/save",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "保存模板失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/daili/apply_withdraw",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "申请提现失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/daili/balance_log",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取余额明细失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/daili/card_list",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取卡密列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/daili/info",
+  "method": "GET",
+  "bodyKeys": "old_password,new_password",
+  "fallbackMsg": "获取代理信息失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/daili/order_list",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取分销订单失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/daili/set_pay_password",
+  "method": "POST",
+  "bodyKeys": "old_password,new_password",
+  "fallbackMsg": "修改支付密码失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/daili/top_list",
+  "method": "GET",
+  "bodyKeys": "",
+  "fallbackMsg": "获取代理排行榜失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/daili/user_list",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取我的用户失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/daili/user_record_list",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取作品明细失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/file/temp",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "文件上传失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/file/upload",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "文件上传失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/geo/aiAssist",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "AI生成失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/geo/aiTemplate",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "AI生成模板失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/geo/article",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "GEO文章提交失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/geo/articleDel",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "删除失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/geo/articleList",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取文章列表失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/geo/articleStatus",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取文章状态失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/geo/articleUpdate",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "保存失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/geo/articleUsedCounts",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取计数失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/geo/counts",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取分组计数失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/geo/del",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "删除失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/geo/genTagImages",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "AI配图生成失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/geo/genTitles",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "AI选题生成失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/geo/list",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取列表失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/geo/liuliang",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "GEO流量复刻失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/geo/points",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取点数失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/geo/regroup",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "分组处理失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/geo/save",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "保存失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/geo/titleSetStatus",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "更新标题状态失败",
+  "alias": "Yn",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/good/lists",
+  "method": "GET",
+  "bodyKeys": "",
+  "fallbackMsg": "获取商品列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/goodtpl/add",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "添加到我的模板失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/goodtpl/lists",
+  "method": "POST",
+  "bodyKeys": "type",
+  "fallbackMsg": "获取商品模板列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/goodtpl/types",
+  "method": "GET",
+  "bodyKeys": "",
+  "fallbackMsg": "获取商品模板类型失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/google/add",
+  "method": "POST",
+  "bodyKeys": "platform,nickname",
+  "fallbackMsg": "添加账号失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/google/clear",
+  "method": "POST",
+  "bodyKeys": "ids,gid",
+  "fallbackMsg": "清空账号失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/google/del",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除账号失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/google/edit",
+  "method": "POST",
+  "bodyKeys": "id,platform,nickname",
+  "fallbackMsg": "编辑账号失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/google/lists",
+  "method": "GET",
+  "bodyKeys": "ids,gid",
+  "fallbackMsg": "获取账号列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/gzh/del",
+  "method": "POST",
+  "bodyKeys": "ids",
+  "fallbackMsg": "删除失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/gzh/get",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取长图文作品详情失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/gzh/lists",
+  "method": "POST",
+  "bodyKeys": "ids",
+  "fallbackMsg": "获取长图文历史失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/gzh/make",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "长图文内容生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/gzh/save",
+  "method": "POST",
+  "bodyKeys": "ids",
+  "fallbackMsg": "保存失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/handoff/create",
+  "method": "POST",
+  "bodyKeys": "max",
+  "fallbackMsg": "创建手机上传会话失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/handoff/delete_history",
+  "method": "POST",
+  "bodyKeys": "ids",
+  "fallbackMsg": "删除手机上传历史失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/handoff/history",
+  "method": "POST",
+  "bodyKeys": "page,size",
+  "fallbackMsg": "获取手机上传历史失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/handoff/status",
+  "method": "POST",
+  "bodyKeys": "token",
+  "fallbackMsg": "获取上传状态失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/make/add_collect",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "收藏失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/make/cancel_collect",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "取消收藏失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/make/get_collect",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取收藏列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/make/lists",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取模板列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/make/types",
+  "method": "POST",
+  "bodyKeys": "type",
+  "fallbackMsg": "获取分类列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/material/get",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取素材资料包详情失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/material/lists",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取素材资料包列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/material/types",
+  "method": "GET",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取素材资料包分类失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ops/get",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取运营资料包详情失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ops/lists",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取运营资料包列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/ops/types",
+  "method": "GET",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取运营资料包分类失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/order/getOrderStatus",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "查询订单状态失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/order/lists",
+  "method": "POST",
+  "bodyKeys": "cdk",
+  "fallbackMsg": "获取订单列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/order/makeOrder",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "创建订单失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/persona/add_pic",
+  "method": "POST",
+  "bodyKeys": "url",
+  "fallbackMsg": "添加人设图失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/persona/del",
+  "method": "POST",
+  "bodyKeys": "ids",
+  "fallbackMsg": "删除人设失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/persona/del_pic",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除人设图失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/persona/edit_pic",
+  "method": "POST",
+  "bodyKeys": "id,is_use",
+  "fallbackMsg": "更新人设图失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/persona/get_pic",
+  "method": "POST",
+  "bodyKeys": "id,is_use",
+  "fallbackMsg": "获取人设图失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/persona/lists",
+  "method": "POST",
+  "bodyKeys": "type,page,size",
+  "fallbackMsg": "获取人设列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/persona/save",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "保存人设失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/persona/use_pic",
+  "method": "POST",
+  "bodyKeys": "id,is_use",
+  "fallbackMsg": "获取启用人设图失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/pics/info",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取模板详情失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/pics/lists",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取批量做图模板失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/pointslog/lists",
+  "method": "POST",
+  "bodyKeys": "cdk",
+  "fallbackMsg": "获取点数明细失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/record/add",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "保存图文失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/record/del",
+  "method": "POST",
+  "bodyKeys": "ids",
+  "fallbackMsg": "删除作品失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/record/get",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取作品详情失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/record/lists",
+  "method": "POST",
+  "bodyKeys": "ids",
+  "fallbackMsg": "获取作品列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/record/save",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "保存失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/release/accountAssign",
+  "method": "POST",
+  "bodyKeys": "ids,gid",
+  "fallbackMsg": "分配作品失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/release/clearAssign",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "清除账号归属失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/release/confirm",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "确认发布失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/release/lists",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取发布记录失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/release/liveCodeDel",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "删除活码失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/release/liveCodeList",
+  "method": "GET",
+  "bodyKeys": "",
+  "fallbackMsg": "获取活码列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/release/liveCodeSave",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "保存活码失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/release/liveSet",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "活码操作失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/release/share",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取分享配置失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/search/get",
+  "method": "POST",
+  "bodyKeys": "keyword",
+  "fallbackMsg": "搜索优质模板失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/shangpin/add_modern",
+  "method": "POST",
+  "bodyKeys": "url",
+  "fallbackMsg": "添加我的模特失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/shangpin/aplus",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "A+详情生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/shangpin/aplus_smart",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "智能 A+ 生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/shangpin/del",
+  "method": "POST",
+  "bodyKeys": "ids",
+  "fallbackMsg": "删除商品图历史记录失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/shangpin/del_modern",
+  "method": "POST",
+  "bodyKeys": "ids",
+  "fallbackMsg": "删除我的模特失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/shangpin/fission",
+  "method": "GET",
+  "bodyKeys": "",
+  "fallbackMsg": "场景裂变生成失败",
+  "alias": "wf",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/shangpin/get",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取商品图详情失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/shangpin/get_modern",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取我的模特失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/shangpin/handheld",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "手持商品生成失败",
+  "alias": "wf",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/shangpin/imageedit",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "修改图片失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/shangpin/lists",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取商品图历史记录失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/shangpin/make",
+  "method": "POST",
+  "bodyKeys": "prompt,images,references,mode",
+  "fallbackMsg": "生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/shangpin/materialapply",
+  "method": "POST",
+  "bodyKeys": "prompt,count,images,guidance,aspects,replace_info,keep_structure,base_index,keep_base",
+  "fallbackMsg": "产品替换生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/shangpin/outfitsplit",
+  "method": "POST",
+  "bodyKeys": "count,images,items,guidance,prompt,item_labels,custom_item,display_label,output_label,repair_label,bgcolor_label,keep_labels,board_title,extra",
+  "fallbackMsg": "实拍转平铺生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/shangpin/replace",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "商品替换生成失败",
+  "alias": "wf",
+  "source": "alias-widened"
+ },
+ {
+  "path": "/yz/shangpin/replica",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "参考图创作失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/shangpin/sku",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "SKU 图生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/shangpin/suite",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "商品套图生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/shangpin/suite_smart",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "智能套图生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/shangpin/wear",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "服饰穿戴生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/source/add_source",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "保存素材失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/source/del_group",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除分组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/source/del_source",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除素材失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/source/edit_source",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "修改素材失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/source/get_group",
+  "method": "GET",
+  "bodyKeys": "",
+  "fallbackMsg": "获取分组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/source/get_source",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取素材列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/source/random",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取随机素材失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/source/save_group",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "保存分组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/task/create",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "创建任务失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/task/createCopy",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "创建任务失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/task/get",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "查询任务失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/task/lists",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取任务列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/task/save",
+  "method": "POST",
+  "bodyKeys": "id,titles",
+  "fallbackMsg": "保存任务失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/template/del",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除模板失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/template/lists",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取模板列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/template/save",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "保存模板失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/tishici/del_group",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除提示词分组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/tishici/del_tishici",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除提示词失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/tishici/get_group",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取提示词分组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/tishici/get_tishici",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取提示词列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/tishici/save_group",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "保存提示词分组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/tishici/save_tishici",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "保存提示词失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/title/addGroup",
+  "method": "POST",
+  "bodyKeys": "name",
+  "fallbackMsg": "创建标题组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/title/aiTitle",
+  "method": "POST",
+  "bodyKeys": "id,prompt,count",
+  "fallbackMsg": "AI生成标题失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/title/aiXuanti",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "AI 选题生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/title/delGroup",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除标题组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/title/editGroup",
+  "method": "POST",
+  "bodyKeys": "id,name",
+  "fallbackMsg": "修改标题组失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/title/lists",
+  "method": "POST",
+  "bodyKeys": "id,name",
+  "fallbackMsg": "获取标题组列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/title/saveTitle",
+  "method": "POST",
+  "bodyKeys": "id,titles",
+  "fallbackMsg": "保存标题失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/tool/get",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取工具详情失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/tool/lists",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取工具列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/tool/types",
+  "method": "GET",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取工具分类失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/tpl/add",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "添加到我的模板失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/tpl/lists",
+  "method": "POST",
+  "bodyKeys": "type",
+  "fallbackMsg": "获取模板列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/tpl/tops",
+  "method": "GET",
+  "bodyKeys": "",
+  "fallbackMsg": "获取热门模板失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/tpl/types",
+  "method": "GET",
+  "bodyKeys": "",
+  "fallbackMsg": "获取模板类型失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/user/captcha",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "验证码发送失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/user/checkQrcode",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "验证码发送失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/user/editInfo",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "更新用户信息失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/user/getInfo",
+  "method": "GET",
+  "bodyKeys": "old_password,new_password",
+  "fallbackMsg": "获取用户信息失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/user/getQrcode",
+  "method": "GET",
+  "bodyKeys": "",
+  "fallbackMsg": "验证码发送失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/user/loginByEmail",
+  "method": "POST",
+  "bodyKeys": "phone,captcha_key,captcha",
+  "fallbackMsg": "登录失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/user/loginByPhone",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "登录失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/user/loginByPwd",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "登录失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/user/logout",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取用户信息失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/user/sendEmail",
+  "method": "POST",
+  "bodyKeys": "email,captcha_key,captcha",
+  "fallbackMsg": "验证码发送失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/user/sendPhone",
+  "method": "POST",
+  "bodyKeys": "phone,captcha_key,captcha",
+  "fallbackMsg": "验证码发送失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/user/unbindWechat",
+  "method": "GET",
+  "bodyKeys": "",
+  "fallbackMsg": "解绑微信失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/usertpl/addType",
+  "method": "POST",
+  "bodyKeys": "type,name",
+  "fallbackMsg": "创建类目失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/usertpl/del",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除模板失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/usertpl/delType",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除类目失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/usertpl/lists",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取模板列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/usertpl/parse",
+  "method": "POST",
+  "bodyKeys": "url",
+  "fallbackMsg": "解析失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/usertpl/save",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "保存模板失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/usertpl/types",
+  "method": "GET",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取类目列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/video/conf",
+  "method": "GET",
+  "bodyKeys": "",
+  "fallbackMsg": "",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/video/get",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取视频详情失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/video/lists",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "获取视频列表失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/video/make",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "视频生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/wenan/copy",
+  "method": "POST",
+  "bodyKeys": "platform,url",
+  "fallbackMsg": "仿写文案生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/wenan/generate",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "文案生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/wenan/yijuhua",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "一句话文案生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/zntool/bjzd",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "图文诊断失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/zntool/bkbt",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "优质标题生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/zntool/bkcj",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "内容结构分析失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/zntool/bkwa",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "爆款文案生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/zntool/dydljzclj",
+  "method": "POST",
+  "bodyKeys": "content",
+  "fallbackMsg": "转换失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/zntool/httj",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "话题推荐失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/zntool/mgcjc",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "敏感词检测失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/zntool/twwgjc",
+  "method": "POST",
+  "bodyKeys": "content",
+  "fallbackMsg": "内容自检失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/zntool/xtgh",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "选题规划生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/zntool/zdzs",
+  "method": "POST",
+  "bodyKeys": "keyword",
+  "fallbackMsg": "诊断助手请求失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/zntool/zhcj",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "转化拆解失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/zntool/zhdw",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "账号定位分析失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/zntool/zhrs",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "人设简介生成失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/zntool/zhrsdel",
+  "method": "POST",
+  "bodyKeys": "id",
+  "fallbackMsg": "删除失败",
+  "count": 1,
+  "source": "v1"
+ },
+ {
+  "path": "/yz/zntool/zhrslist",
+  "method": "POST",
+  "bodyKeys": "",
+  "fallbackMsg": "获取人设历史失败",
+  "count": 1,
+  "source": "v1"
+ }
+]

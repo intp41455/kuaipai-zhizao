@@ -1,0 +1,197 @@
+[
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/12251-fa64fa6994dc9c8f.js",
+    "file": "01-12251-fa64fa6994dc9c8f.js.js",
+    "bytes": 28933
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/15823-2b0c4a5d35d102c8.js",
+    "file": "02-15823-2b0c4a5d35d102c8.js.js",
+    "bytes": 43075
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/18555-5b8ecbae54a99ccc.js",
+    "file": "03-18555-5b8ecbae54a99ccc.js.js",
+    "bytes": 48120
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/2360-ee69f6e87d16a201.js",
+    "file": "04-2360-ee69f6e87d16a201.js.js",
+    "bytes": 15215
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/26920-a6988fc2bba170e7.js",
+    "file": "05-26920-a6988fc2bba170e7.js.js",
+    "bytes": 37541
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/28045-c0e85f19315c1ea1.js",
+    "file": "06-28045-c0e85f19315c1ea1.js.js",
+    "bytes": 32481
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/33462-33278d7564926ad6.js",
+    "file": "07-33462-33278d7564926ad6.js.js",
+    "bytes": 16043
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/38172-5158df4dcd04aad1.js",
+    "file": "08-38172-5158df4dcd04aad1.js.js",
+    "bytes": 20089
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/43514-e94f5f5c38cd9dfa.js",
+    "file": "09-43514-e94f5f5c38cd9dfa.js.js",
+    "bytes": 33749
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/46679-1c20552dc355d9ac.js",
+    "file": "10-46679-1c20552dc355d9ac.js.js",
+    "bytes": 31531
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/47069-839be3d1fd4f4a17.js",
+    "file": "11-47069-839be3d1fd4f4a17.js.js",
+    "bytes": 55043
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/48725-667edb2f1a1a62d2.js",
+    "file": "12-48725-667edb2f1a1a62d2.js.js",
+    "bytes": 32697
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/49937-9467bc9aef6d9cb4.js",
+    "file": "13-49937-9467bc9aef6d9cb4.js.js",
+    "bytes": 61470
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/55713-f3af7670c5fc19eb.js",
+    "file": "14-55713-f3af7670c5fc19eb.js.js",
+    "bytes": 22957
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/62392-9c1d61b495a8ce79.js",
+    "file": "15-62392-9c1d61b495a8ce79.js.js",
+    "bytes": 21512
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/64222-a72cba5ad67e308b.js",
+    "file": "16-64222-a72cba5ad67e308b.js.js",
+    "bytes": 10823
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/64369-4673099c0097591a.js",
+    "file": "17-64369-4673099c0097591a.js.js",
+    "bytes": 26819
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/6639-54e73c74d9e5e5eb.js",
+    "file": "18-6639-54e73c74d9e5e5eb.js.js",
+    "bytes": 25405
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/69701-2d132ff8cab96fb5.js",
+    "file": "19-69701-2d132ff8cab96fb5.js.js",
+    "bytes": 19532
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/72158-aa3980d562851987.js",
+    "file": "20-72158-aa3980d562851987.js.js",
+    "bytes": 27760
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/73854-64a5bd83153ba432.js",
+    "file": "21-73854-64a5bd83153ba432.js.js",
+    "bytes": 71174
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/74523-efdc1a17ad918800.js",
+    "file": "22-74523-efdc1a17ad918800.js.js",
+    "bytes": 19576
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/77094-4fdca395320ddb28.js",
+    "file": "23-77094-4fdca395320ddb28.js.js",
+    "bytes": 42353
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/79059-e8e9c96426866a92.js",
+    "file": "24-79059-e8e9c96426866a92.js.js",
+    "bytes": 22591
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/80133-dbb279e8f024e56d.js",
+    "file": "25-80133-dbb279e8f024e56d.js.js",
+    "bytes": 35908
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/80778-49a6045852e67cd8.js",
+    "file": "26-80778-49a6045852e67cd8.js.js",
+    "bytes": 37533
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/81709-32253591f09ad92b.js",
+    "file": "27-81709-32253591f09ad92b.js.js",
+    "bytes": 45127
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/86081-48b9215c1d8dd8fd.js",
+    "file": "28-86081-48b9215c1d8dd8fd.js.js",
+    "bytes": 54029
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/86809-cd9e9c3d8ba1863a.js",
+    "file": "29-86809-cd9e9c3d8ba1863a.js.js",
+    "bytes": 53097
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/87796-ee62502bfe002a93.js",
+    "file": "30-87796-ee62502bfe002a93.js.js",
+    "bytes": 13994
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/89927-384fb6679eabfb39.js",
+    "file": "31-89927-384fb6679eabfb39.js.js",
+    "bytes": 75232
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/9016-615a97a0973b1058.js",
+    "file": "32-9016-615a97a0973b1058.js.js",
+    "bytes": 30348
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/92109-8591b938e912c1aa.js",
+    "file": "33-92109-8591b938e912c1aa.js.js",
+    "bytes": 18713
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/95059-d2ab64b44b277235.js",
+    "file": "34-95059-d2ab64b44b277235.js.js",
+    "bytes": 54142
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/97155-35e7a28b34840d50.js",
+    "file": "35-97155-35e7a28b34840d50.js.js",
+    "bytes": 57091
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/97959-2b16e2a8548bc389.js",
+    "file": "36-97959-2b16e2a8548bc389.js.js",
+    "bytes": 53638
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/app/%5Blocale%5D/(standard)/(workbench)/loading-1ea39fd1ddef2680.js",
+    "file": "37-loading-1ea39fd1ddef2680.js.js",
+    "bytes": 9361
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/app/%5Blocale%5D/error-aa2ba81a4eee7e9e.js",
+    "file": "38-error-aa2ba81a4eee7e9e.js.js",
+    "bytes": 1484
+  },
+  {
+    "url": "https://static-assets.kaipai.com/kaipai/_next/static/chunks/app/global-error-4daab51a78bcea7b.js",
+    "file": "39-global-error-4daab51a78bcea7b.js.js",
+    "bytes": 9676
+  }
+]

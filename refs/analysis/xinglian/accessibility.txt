@@ -1,0 +1,337 @@
+- document:
+  - navigation:
+    - link "星链引擎":
+      - /url: /
+      - img
+      - text: 星链引擎
+    - link "首页":
+      - /url: /
+    - link "产品功能":
+      - /url: /
+    - link "套餐价格":
+      - /url: /
+    - link "应用下载":
+      - /url: /
+    - link "操作文档":
+      - /url: https://lcnj38vplmds.feishu.cn/wiki/FpuzwoWUoiZEOXktJhKcUHVPnTf?from=from_copylink
+    - link "关于我们":
+      - /url: /about
+    - link "联系我们":
+      - /url: /contact
+    - button "切换主题":
+      - img
+      - text: 切换主题
+  - main:
+    - img
+    - text: AI驱动的全域智能营销
+    - heading "星链引擎 星链引擎 一家深耕技术十年，厚积薄发的 A I 基 础 设 施 构 建 者" [level=1]
+    - paragraph: 提供从内容创作到发布管理的全链路自动化解决方案，让您的团队从重复劳动中解放出来，专注于战略与创意
+    - link "联系我们":
+      - /url: /contact
+      - button "联系我们":
+        - text: 联系我们
+        - img
+    - button "观看演示视频":
+      - img
+      - text: 观看演示视频
+    - text: 10+年 技术积累 50+ 专业团队成员 500+ 服务客户
+    - heading "您是否正在面临这些营销痛点？" [level=2]
+    - paragraph: 传统的内容营销方式已经无法满足现代企业的发展需求
+    - img
+    - heading "内容创作效率低" [level=3]
+    - paragraph: 手工制作内容耗时费力，难以满足多平台高频发布需求
+    - img
+    - heading "账号管理混乱" [level=3]
+    - paragraph: 多平台多账号管理复杂，容易出错，缺乏统一管控
+    - img
+    - heading "分发效率低下" [level=3]
+    - paragraph: 手动发布内容效率低，错过最佳发布时机，影响传播效果
+    - img
+    - heading "线索跟踪困难" [level=3]
+    - paragraph: 私信评论分散管理，容易遗漏商机，转化率低
+    - img
+    - heading "SEO优化缺失" [level=3]
+    - paragraph: 缺乏专业SEO策略，内容曝光度不足，获客成本高
+    - img
+    - heading "人力成本高昂" [level=3]
+    - paragraph: 大量重复性工作占用人力资源，团队效率提升困难
+    - heading "核心功能一站式解决方案" [level=2]
+    - paragraph: 从内容创作到发布管理，从SEO优化到线索跟踪，全链路智能化解决方案
+    - img
+    - heading "账户管理" [level=3]
+    - paragraph: 多平台多账号一键授权 不限平台账号数量 一个后台玩转矩阵 人效神器省钱省心省人的管理系统
+    - img
+    - heading "素材管理" [level=3]
+    - paragraph: 多端直传素材，方便高效 视频素材集中存储功能 标签化分类管理 灵活检索和取用内部素材，实现统一化管理
+    - img
+    - heading "分组设置" [level=3]
+    - paragraph: 账号，素材可按业务类别单独存放 标题和素材一一对应，提高用户体验 seo计划可根据公司产品类别针对性创建
+    - img
+    - heading "视频批量上传" [level=3]
+    - paragraph: 视频可指定账号发布 视频可定时发布 视频文案批量生成 文案符合抖音seo规则
+    - img
+    - heading "AI视频制作" [level=3]
+    - paragraph: AI智能混剪，让人不用为素材发愁 根据行业自动匹配 一键拆解爆款手法跟拍 小白拼积木也能一日剪辑千百条
+    - img
+    - heading "AI文案批量生成" [level=3]
+    - paragraph: 输入行业及关键字AI文案一键生成千百条 爆款文案二次创新功能 文案素材库分类存储 生成视频直接抓取素材库AI文案
+    - img
+    - heading "定时发布" [level=3]
+    - paragraph: 定时发布：想什么时间开始就开始 间隔发布：视频任务每日一发，隔天一发
+    - img "客户私信（抖音）"
+    - heading "客户私信（抖音）" [level=3]
+    - paragraph: 抖音私信集中管理，客户咨询及时响应 关键词自动回复，咨询不漏接 客户线索一键沉淀，精准跟进转化 沟通记录可追溯，运营心中有数
+    - img "微信抖音互通（敬请期待）"
+    - heading "微信抖音互通（敬请期待）" [level=3]
+    - paragraph: 抖音私信评论推送到绑定的微信号 让客户线索不再遗漏 可绑定多个微信号，管理矩阵抖音号 大幅提高运营效率，降低运营成本
+    - heading "我们的独特优势" [level=2]
+    - img
+    - heading "全链路闭环" [level=3]
+    - paragraph: 从“创意生成”到“发布管理”，提供端到端自动化解决方案
+    - img
+    - heading "极致人效提升" [level=3]
+    - paragraph: 将团队从重复劳动中解放出来，效率提升高达300%，聚焦战略与创意。
+    - img
+    - heading "安全与协同" [level=3]
+    - paragraph: 银行级数据加密，基于角色的权限控制，保障业务安全与协同产生。
+    - img
+    - heading "真正的AI驱动" [level=3]
+    - paragraph: 并非简单工具堆叠，而是由中央AI大脑智能调度所有流程，越用越聪明。
+    - paragraph: 客户见证：某知名MCN机构使用后，单日内容产出量提升250%，客户响应速度提升90%；某消费品牌矩阵账号管理效率提升200%，大促期间通过定时分发抢占大量流量。
+    - heading "透明定价·自由选择" [level=2]
+    - paragraph: 从免费试用到私有化部署，总有一款适合你的增长节奏
+    - tablist:
+      - tab "按月付费"
+      - tab "按年付费 省 40%+" [selected]
+    - img
+    - heading "Free" [level=3]
+    - paragraph: 轻量体验，零成本起步
+    - text: 免费
+    - paragraph: 无需任何费用 · 即刻体验
+    - link "免费开始":
+      - /url: /contact
+      - button "免费开始"
+    - list:
+      - listitem: 账号管理 1 个
+      - listitem: 存储空间 10 GB
+      - listitem: AI 生成文案 5 条 / 天
+      - listitem: 赠送积分 20 分 / 月
+      - listitem:
+        - text: 协同账号
+        - img
+      - listitem:
+        - text: IP 隔离
+        - img
+    - img
+    - heading "Mini" [level=3]
+    - paragraph: 团队起步，核心能力全开
+    - text: ¥ 1,980 / 年
+    - paragraph: 折合约 ¥5.4 / 天
+    - link "立即开通":
+      - /url: /contact
+      - button "立即开通"
+    - list:
+      - listitem: 账号管理 10 个
+      - listitem: 存储空间 200 GB
+      - listitem: AI 生成文案 50 条 / 天
+      - listitem: 赠送积分 6,000 分 / 年
+      - listitem:
+        - text: 协同账号
+        - img
+      - listitem:
+        - text: 声音克隆
+        - img
+    - text: 最受欢迎
+    - img
+    - heading "Plus" [level=3]
+    - paragraph: 主力推荐，高产内容首选
+    - text: ¥ 6,980 / 年
+    - paragraph: 折合约 ¥19 / 天
+    - link "立即开通":
+      - /url: /contact
+      - button "立即开通"
+    - list:
+      - listitem: 账号管理 30 个
+      - listitem: 存储空间 1 TB
+      - listitem: AI 生成文案 无限
+      - listitem: 赠送积分 24,000 分 / 年
+      - listitem:
+        - text: 协同账号
+        - img
+      - listitem:
+        - text: 声音克隆
+        - img
+    - img
+    - heading "Pro" [level=3]
+    - paragraph: 矩阵规模化，大量投流
+    - text: ¥ 19,800 / 年
+    - paragraph: 折合约 ¥54 / 天
+    - link "立即开通":
+      - /url: /contact
+      - button "立即开通"
+    - list:
+      - listitem: 账号管理 100 个
+      - listitem: 存储空间 2 TB
+      - listitem: AI 生成文案 无限
+      - listitem: 赠送积分 80,000 分 / 年
+      - listitem:
+        - text: 协同账号
+        - img
+      - listitem:
+        - text: 声音克隆
+        - img
+    - text: 企业方案
+    - heading "规模化 · 私有化" [level=3]
+    - paragraph: 面向代理伙伴与大型客户，开放 OEM 定制与独立部署选项
+    - img
+    - heading "代理商" [level=4]
+    - paragraph: 共建渠道 · 扩展客户边界
+    - text: ¥ 39,800
+    - paragraph: / 年
+    - list:
+      - listitem:
+        - img
+        - text: 100 个账号管理 · 自由分配
+      - listitem:
+        - img
+        - text: 4 TB 大容量存储
+      - listitem:
+        - img
+        - text: 160,000 分 / 年 AI 积分
+      - listitem:
+        - img
+        - text: AI 生成文案无限制
+      - listitem:
+        - img
+        - text: IP 隔离 · 代理支持
+    - link "联系销售":
+      - /url: /contact
+      - button "联系销售"
+    - img
+    - heading "独立部署代理商" [level=4]
+    - paragraph: 私有化部署 · 数据自主可控
+    - text: ¥ 98,000
+    - paragraph: 起 · 一次性
+    - list:
+      - listitem:
+        - img
+        - text: 账号数量 · 存储空间自配置
+      - listitem:
+        - img
+        - text: 400,000 分 / 年 AI 积分
+      - listitem:
+        - img
+        - text: OEM 品牌定制
+      - listitem:
+        - img
+        - text: 专属架构师 · SLA 保障
+      - listitem:
+        - img
+        - text: 数据全部保留在您的服务器
+    - link "联系销售":
+      - /url: /contact
+      - button "联系销售"
+    - button "展开完整功能对比":
+      - text: 展开完整功能对比
+      - img
+    - paragraph:
+      - text: 支持多种支付方式 ·
+      - link "联系我们定制企业方案":
+        - /url: /contact
+    - heading "多端支持随时随地高效管理" [level=2]
+    - paragraph: 支持多平台客户端，让您在任何设备上都能轻松管理您的短视频矩阵
+    - img
+    - heading "Windows 客户端" [level=3]
+    - paragraph: v1.16.16 · 更新于 2026-11-03
+    - link "立即下载":
+      - /url: https://xlyq-juzhen.oss-cn-shanghai.aliyuncs.com/updates/%E6%98%9F%E9%93%BE%E5%BC%95%E6%93%8E%E7%9F%A9%E9%98%B5%E7%B3%BB%E7%BB%9F%20Setup%201.16.16.exe
+      - button "立即下载":
+        - img
+        - text: 立即下载
+    - img
+    - heading "Mac 客户端" [level=3]
+    - paragraph: 即将开放
+    - button "敬请期待" [disabled]
+    - text: 即将开放
+    - img
+    - heading "Android 客户端" [level=3]
+    - paragraph: 敬请期待
+    - button "敬请期待" [disabled]
+    - text: 即将开放
+    - img
+    - heading "网页版" [level=3]
+    - paragraph: 无需安装，浏览器直接使用
+    - link "立即体验":
+      - /url: https://dashboard.xingliankey.com
+      - button "立即体验":
+        - img
+        - text: 立即体验
+    - img
+    - paragraph:
+      - text: 所有客户端数据实时同步 · 支持离线操作 ·
+      - link "需要技术支持？":
+        - /url: /contact
+    - heading "全平台支持一站式管理" [level=2]
+    - paragraph: 支持主流社交媒体平台，实现真正的全域营销覆盖
+    - img "抖音 logo"
+    - heading "抖音" [level=3]
+    - img "快手 logo"
+    - heading "快手" [level=3]
+    - img "小红书 logo"
+    - heading "小红书" [level=3]
+    - img "视频号 logo"
+    - heading "视频号" [level=3]
+    - img "哔哩哔哩 logo"
+    - heading "哔哩哔哩" [level=3]
+    - text: ✨
+    - heading "更多平台 敬请期待" [level=3]
+    - heading "准备开始您的智能营销之旅？" [level=2]
+    - paragraph: 立即联系我们，获取专属解决方案和免费试用机会
+    - link "联系我们":
+      - /url: /contact
+      - button "联系我们":
+        - img
+        - text: 联系我们
+        - img
+    - button "ssssapi-1":
+      - img
+      - text: ssssapi-1
+    - text: 微信：ssssapi-1 · 工作时间：09:30-18:30
+  - contentinfo:
+    - img "星链引擎"
+    - text: 星链引擎
+    - paragraph: 一家深耕技术十年，厚积薄发的AI基础设施构建者，致力于为客户提供全链路智能营销解决方案。
+    - heading "快速导航" [level=3]
+    - list:
+      - listitem:
+        - link "产品功能":
+          - /url: /product
+      - listitem:
+        - link "关于我们":
+          - /url: /about
+      - listitem:
+        - link "联系我们":
+          - /url: /contact
+    - heading "核心功能" [level=3]
+    - list:
+      - listitem: 多平台管理
+      - listitem: 智能混剪
+      - listitem: 批量发布
+      - listitem: SEO优化
+      - listitem: 线索跟踪
+    - heading "联系方式" [level=3]
+    - img
+    - text: 微信：ssssapi-1
+    - img
+    - text: 2253603130@qq.com
+    - img
+    - text: 广州白云区黄边北路146号汇金大厦801
+    - paragraph: © 2026 广州星链引擎网络科技有限公司. 保留所有权利.
+    - paragraph:
+      - link "粤ICP备2025473093号-1":
+        - /url: https://beian.miit.gov.cn/
+  - img "微信二维码"
+  - button "微信咨询":
+    - img
+    - text: 微信咨询
+  - alert

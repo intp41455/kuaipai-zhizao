@@ -1,0 +1,18 @@
+== path literals: 7
+/api/
+/home
+/mobile
+/mobile/fde
+/pc/fde
+/tool/tool/MonitorAppStats/report
+/user/login/
+
+== call sites: 4
+   put("log"
+   put("warn"
+   put("error"
+   get("content-type"
+
+== host context: 0
+
+== baseURL: 0
