@@ -107,13 +107,17 @@ function getGenAIClient(): GoogleGenAI {
   if (!apiKey) {
     throw new Error('GEMINI_API_KEY environment variable is missing. Please check Settings > Secrets.');
   }
+  const httpOptions: Record<string, unknown> = {
+    headers: {
+      'User-Agent': 'aistudio-build',
+    },
+  };
+  if (process.env.GEMINI_BASE_URL) {
+    httpOptions.baseUrl = process.env.GEMINI_BASE_URL;
+  }
   return new GoogleGenAI({
     apiKey,
-    httpOptions: {
-      headers: {
-        'User-Agent': 'aistudio-build',
-      },
-    },
+    httpOptions,
   });
 }
 
