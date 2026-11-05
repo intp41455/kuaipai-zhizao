@@ -127,6 +127,7 @@ import { UniversalClonePipelineModal } from './components/UniversalClonePipeline
 import { LocalLifeOperatorWizard } from './components/LocalLifeOperatorWizard';
 import { ViralHotTrendsRadar, HotTrendItem } from './components/ViralHotTrendsRadar';
 import { AutonomousStoreSwarmStudio } from './components/AutonomousStoreSwarmStudio';
+import { ToolWorkbench } from './components/ToolWorkbench';
 import {
   TrendingUp,
   PanelLeftClose,
@@ -145,11 +146,13 @@ import {
   X,
   Send,
   HelpCircle,
+  Wrench,
 } from 'lucide-react';
 
 type NavTab =
   | 'operator_wizard'
   | 'workbench'
+  | 'tools'
   | 'templates'
   | 'video_remix'
   | 'graphic_suite'
@@ -2113,6 +2116,7 @@ export default function App() {
   const navTitleMap: Record<NavTab, string> = {
     operator_wizard: 'AI 超级操盘手 (全链路向导)',
     workbench: 'AI 工作台',
+    tools: '工具工作台',
     templates: '海量爆款库',
     graphic_suite: '电商套图Pro · 一句话图文',
     store_kb: '抖音来客 · 门店记忆库',
@@ -2290,6 +2294,20 @@ export default function App() {
                 >
                   <SparklesIcon className="h-4 w-4 shrink-0" />
                   {!sidebarCollapsed && <span>AI 工作台</span>}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveNav('tools')}
+                  title="工具工作台"
+                  className={`flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-xs font-medium transition-colors cursor-pointer ${
+                    activeNav === 'tools'
+                      ? 'bg-indigo-50 text-indigo-600 font-semibold'
+                      : 'text-slate-600 hover:bg-sky-50/60 hover:text-slate-900'
+                  }`}
+                >
+                  <Wrench className="h-4 w-4 shrink-0" />
+                  {!sidebarCollapsed && <span>工具工作台</span>}
                 </button>
 
                 <button
@@ -2947,6 +2965,13 @@ export default function App() {
                 showNotice('success', msg);
               }}
             />
+          </main>
+        )}
+
+        {/* VIEW: 工具工作台（真实算法工具集 · schema 驱动） */}
+        {activeNav === 'tools' && (
+          <main className="w-full max-w-none flex-1 px-3 py-4 sm:px-5">
+            <ToolWorkbench onShowNotice={showNotice} />
           </main>
         )}
 
