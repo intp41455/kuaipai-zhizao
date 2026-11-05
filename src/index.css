@@ -5,6 +5,16 @@
     --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
       "HarmonyOS Sans SC", "MiSans", "Microsoft YaHei UI", "Noto Sans SC", sans-serif;
     --font-mono: "JetBrains Mono", "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+    
+    /* 极浅微晕高光渲染色变量（浓度极淡，不细看近乎纯白，仅保留通透空气感） */
+    --ambient-tint-blue: rgba(224, 231, 255, 0.18);
+    --ambient-tint-purple: rgba(243, 232, 255, 0.14);
+    --surface-white: #ffffff;
+    --surface-card: #ffffff;
+    --surface-track: #f5f6fa;
+    --border-hairline: #f1f3f8;
+    --primary-indigo: #4f46e5;
+    --primary-indigo-hover: #4338ca;
   }
 
   html {
@@ -12,13 +22,19 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: #ffffff;
   }
 
+  /* 主色以纯白为主，顶部带极浅淡蓝淡紫微晕（浓度极低，不细看看不出来，通透不暗沉） */
   body {
     font-family: var(--font-sans);
-    background-color: #f6f7f9;
+    background-color: #ffffff;
+    background-image: 
+      radial-gradient(1200px circle at 50% -100px, rgba(224, 231, 255, 0.22) 0%, rgba(243, 232, 255, 0.14) 45%, rgba(255, 255, 255, 0) 80%);
+    background-attachment: fixed;
     color: #1e293b;
     line-height: 1.6;
+    min-height: 100vh;
   }
 
   h1,
@@ -41,12 +57,13 @@
     overflow: auto;
   }
 
+  /* 输入框聚焦：极柔和淡紫蓝微晕光环 */
   input:focus,
   textarea:focus,
   select:focus {
     outline: none;
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    border-color: #818cf8;
+    box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.14);
   }
 }
 
@@ -55,7 +72,7 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* 小字号可读性兜底：应用内大量 9-11px 文本，统一抬到可读范围 */
+/* 小字号可读性优化 */
 .text-\[9px\],
 .text-\[10px\] {
   font-size: 11.5px !important;
@@ -75,32 +92,89 @@
   color: #64748b;
 }
 
-/* 兼容旧类名：主按钮（扁平实色） */
+/* 主行动按钮：优雅紫蓝实色 */
 .iridescent-btn,
 .ice-lens-btn {
   background-color: #4f46e5;
   border: 1px solid transparent;
   color: #ffffff;
+  box-shadow: 0 1px 2px 0 rgba(79, 70, 229, 0.15);
+  transition: all 0.15s ease;
 }
 
 .iridescent-btn:hover:not(:disabled),
 .ice-lens-btn:hover:not(:disabled) {
   background-color: #4338ca;
+  box-shadow: 0 3px 8px 0 rgba(79, 70, 229, 0.22);
 }
 
-/* 兼容旧类名：浅色徽章 */
+/* 浅色精致徽章：极淡蓝紫底色 */
 .iridescent-badge {
-  background-color: #eef2ff;
-  border: 1px solid #e0e7ff;
-  color: #4338ca;
+  background-color: #f8faff;
+  border: 1px solid #eef2ff;
+  color: #4f46e5;
 }
 
-/* 兼容旧类名：面板容器（白底细边框） */
+/* 核心面板与卡片容器：纯白底色 + 发丝级微边框 */
 .glass-panel,
 .iridescent-surface,
 .iridescent-hero-box {
   background-color: #ffffff;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #f1f3f8;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02);
+}
+
+/* 截图同款极简胶囊切换槽 */
+.capsule-track {
+  background-color: #f5f6fa;
+  border-radius: 9999px;
+  padding: 3px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #edf0f5;
+}
+
+/* 淡色染色渐变色卡片与高光微晕规范 (Pastel Tint Gradients) */
+.tint-gradient-indigo {
+  background: linear-gradient(135deg, rgba(238, 242, 255, 0.75) 0%, rgba(245, 243, 255, 0.5) 50%, #ffffff 100%);
+  border: 1px solid rgba(199, 210, 254, 0.65);
+}
+
+.tint-gradient-purple {
+  background: linear-gradient(135deg, rgba(245, 243, 255, 0.8) 0%, rgba(253, 242, 248, 0.5) 50%, #ffffff 100%);
+  border: 1px solid rgba(221, 214, 254, 0.65);
+}
+
+.tint-gradient-sky {
+  background: linear-gradient(135deg, rgba(240, 249, 255, 0.8) 0%, rgba(224, 242, 254, 0.5) 50%, #ffffff 100%);
+  border: 1px solid rgba(186, 230, 253, 0.65);
+}
+
+.tint-gradient-amber {
+  background: linear-gradient(135deg, rgba(254, 252, 232, 0.8) 0%, rgba(254, 243, 199, 0.5) 50%, #ffffff 100%);
+  border: 1px solid rgba(253, 230, 138, 0.65);
+}
+
+.tint-gradient-emerald {
+  background: linear-gradient(135deg, rgba(236, 253, 245, 0.8) 0%, rgba(209, 250, 229, 0.5) 50%, #ffffff 100%);
+  border: 1px solid rgba(167, 243, 208, 0.65);
+}
+
+.capsule-pill-active {
+  background-color: #ffffff;
+  color: #0f172a;
+  border-radius: 9999px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.capsule-pill-inactive {
+  color: #64748b;
+  border-radius: 9999px;
+  transition: color 0.15s ease;
+}
+
+.capsule-pill-inactive:hover {
+  color: #0f172a;
 }
 
 .widescreen-adaptive-grid {
@@ -112,3 +186,37 @@
   resize: vertical;
   min-height: 44px;
 }
+
+/* 截图同款 Google 双子座 / Gemini 纯净炫彩渐变边框 (去除大面积彩色光晕扩散，保留极致纯净与利落发丝线条) */
+.gemini-gradient-box {
+  position: relative;
+  border-radius: 28px;
+  /* 炫彩 1.5px 渐变线条底色：左上橙红珊瑚 -> 暖金黄 -> 霓虹青蓝 -> 深天青 */
+  background: linear-gradient(
+    135deg,
+    #ff6348 0%,
+    #ff9f43 24%,
+    #fed330 45%,
+    #26de81 60%,
+    #0fbcf9 78%,
+    #4bcffa 90%,
+    #575fcf 100%
+  );
+  padding: 1.5px;
+  /* 彻底去除大面积彩色扩散污渍，仅保留极轻微卡片自然阴影，极致干净高级 */
+  box-shadow: 0 2px 6px -1px rgba(15, 23, 42, 0.05);
+  transition: all 0.2s ease;
+}
+
+.gemini-gradient-box:hover,
+.gemini-gradient-box:focus-within {
+  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+}
+
+.gemini-gradient-inner {
+  background-color: #ffffff;
+  border-radius: 26.5px;
+  width: 100%;
+  height: 100%;
+}
+

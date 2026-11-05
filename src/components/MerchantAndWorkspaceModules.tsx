@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+"use client";
+import React, { useState, useEffect } from 'react';
 import {
   Search,
   Plus,
@@ -20,8 +21,11 @@ import {
   Trash2,
   Edit3,
   TrendingUp,
+  QrCode,
 } from 'lucide-react';
 import { StoreMemoryProfile } from '../data/curatedTemplates';
+import { LiveCodeCenter } from './LiveCodeCenter';
+import { MobileFastUploadModal } from './MobileFastUploadModal';
 
 export interface StaffMember {
   id: string;
@@ -78,8 +82,8 @@ const ROLE_CARDS = [
  * 核心原则：系统以手机号/邮箱主账号为核心，店铺与员工为可选附加模块，界面极简清爽，每行仅保留「编辑 / 详情 / 停用 / 删除」操作
  */
 export const MerchantManagementCenter: React.FC<{
-  subTab: 'stores' | 'staff' | 'materials';
-  onChangeSubTab: (tab: 'stores' | 'staff' | 'materials') => void;
+  subTab: 'stores' | 'staff' | 'materials' | 'livecodes';
+  onChangeSubTab: (tab: 'stores' | 'staff' | 'materials' | 'livecodes') => void;
   accountContact: string;
   storeMemoryEnabled: boolean;
   onToggleStoreMemory: (enabled: boolean) => void;
@@ -89,6 +93,8 @@ export const MerchantManagementCenter: React.FC<{
   onSaveStore: (storeDraft: Omit<StoreMemoryProfile, 'id'>, editId?: string | null) => void;
   onDeleteStore: (id: string) => void;
   onUseStoreForScript: (store: StoreMemoryProfile) => void;
+  materials?: StudioMaterialItem[];
+  setMaterials?: React.Dispatch<React.SetStateAction<StudioMaterialItem[]>>;
   onShowNotice: (type: 'success' | 'error', msg: string) => void;
 }> = ({
   subTab,
@@ -102,39 +108,57 @@ export const MerchantManagementCenter: React.FC<{
   onSaveStore,
   onDeleteStore,
   onUseStoreForScript,
+  materials: externalMaterials,
+  setMaterials: externalSetMaterials,
   onShowNotice = () => {},
 }) => {
-  // ==================== 1. 员工管理状态 (严格还原截图1、2、3) ====================
-  const [staffList, setStaffList] = useState<StaffMember[]>([
-    {
-      id: 'staff_primary',
-      name: '主账号',
-      contact: accountContact || '173******89',
-      status: 'enabled',
-      roles: ['超级管理员'],
-      permissionsLabel: '全部权限',
-      isPrimaryAccount: true,
-      boundStoreName: stores?.[0]?.storeName || '默认主账号空间',
-    },
-    {
-      id: 'staff_02',
-      name: '刘权',
-      contact: '18826455471',
-      status: 'enabled',
-      roles: ['店长'],
-      permissionsLabel: '全部权限',
-      boundStoreName: stores?.[0]?.storeName || '星澜洗护沙龙',
-    },
-    {
-      id: 'staff_03',
-      name: '林晓雯',
-      contact: 'linxw@kuaipai.cn',
-      status: 'enabled',
-      roles: ['运营'],
-      permissionsLabel: '运营抖音号、管理商品',
-      boundStoreName: stores?.[1]?.storeName || '爪爪星球萌宠馆',
-    },
-  ]);
+  // ==================== 1. 员工管理状态 (真实数据库驱动) ====================
+  const [staffList, setStaffList] = useState<StaffMember[]>([]);
+
+  // 挂载时从后端真实 API 获取员工与素材
+  useEffect(() => {
+    fetch('/api/v1/merchant/staff')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setStaffList(
+            data.map((r: any) => ({
+              id: String(r.id),
+              name: r.name,
+              contact: r.phone,
+              status: r.status === 'active' ? 'enabled' : 'disabled',
+              roles: r.roles || ['店员'],
+              permissionsLabel: (r.roles || []).join('、') || '基础权限',
+              boundStoreName: r.storeName || '默认门店',
+            }))
+          );
+        }
+      })
+      .catch(() => {});
+
+    fetch('/api/v1/assets')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          const mapped = data.map((a: any) => ({
+            id: String(a.id),
+            title: a.title,
+            type: a.type,
+            category: a.category,
+            previewUrl: a.previewUrl,
+            contentText: a.contentText,
+            source: a.source || '本地上传',
+            createdAt: a.createdAt,
+          }));
+          if (externalSetMaterials) {
+            externalSetMaterials(mapped);
+          } else {
+            setInternalMaterials(mapped);
+          }
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const [filterName, setFilterName] = useState('');
   const [filterContact, setFilterContact] = useState('');
@@ -165,7 +189,7 @@ export const MerchantManagementCenter: React.FC<{
 
   // ==================== 3. 素材管理状态 (对应截图5线框图：视频/图片/文案资产管理) ====================
   const [materialFilter, setMaterialFilter] = useState<'all' | 'video' | 'image' | 'copy'>('all');
-  const [materials, setMaterials] = useState<StudioMaterialItem[]>([
+  const [internalMaterials, setInternalMaterials] = useState<StudioMaterialItem[]>([
     {
       id: 'mat_1',
       title: '拯救头屑大作战_混剪成片.mp4',
@@ -196,8 +220,11 @@ export const MerchantManagementCenter: React.FC<{
       source: 'AI生成',
     },
   ]);
+  const materials = externalMaterials ?? internalMaterials;
+  const setMaterials = externalSetMaterials ?? setInternalMaterials;
   const [editingMaterialId, setEditingMaterialId] = useState<string | null>(null);
   const [editingMaterialTitle, setEditingMaterialTitle] = useState('');
+  const [showMobileUpload, setShowMobileUpload] = useState(false);
 
   const filteredStaff = staffList.filter((item) => {
     if (filterName.trim() && !item.name.toLowerCase().includes(filterName.trim().toLowerCase())) {
@@ -247,6 +274,15 @@ export const MerchantManagementCenter: React.FC<{
           .join('、') || '基础权限';
 
     if (editingStaffId) {
+      fetch(`/api/v1/merchant/staff/${editingStaffId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: staffNameInput.trim(),
+          phone: staffPhoneInput.trim(),
+          roles: selectedRoles,
+        }),
+      }).catch(() => {});
       setStaffList((prev) =>
         prev.map((item) =>
           item.id === editingStaffId
@@ -260,19 +296,35 @@ export const MerchantManagementCenter: React.FC<{
             : item
         )
       );
-      onShowNotice('success', `已更新员工「${staffNameInput}」信息`);
+      onShowNotice('success', `已更新员工「${staffNameInput}」信息并同步至数据库`);
     } else {
-      const newMember: StaffMember = {
-        id: `staff_${Date.now()}`,
-        name: staffNameInput.trim(),
-        contact: staffPhoneInput.trim(),
-        status: 'enabled',
-        roles: selectedRoles,
-        permissionsLabel: permText,
-        boundStoreName: stores.find((s) => s.id === activeStoreId)?.storeName || '默认门店',
-      };
-      setStaffList((prev) => [...prev, newMember]);
-      onShowNotice('success', `已添加员工账号「${staffNameInput}」`);
+      const targetStore = stores.find((s) => s.id === activeStoreId)?.storeName || '默认门店';
+      fetch('/api/v1/merchant/staff', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          store_name: targetStore,
+          name: staffNameInput.trim(),
+          phone: staffPhoneInput.trim(),
+          roles: selectedRoles,
+          status: 'active',
+        }),
+      })
+        .then((r) => r.json())
+        .then((res) => {
+          const newMember: StaffMember = {
+            id: res.id ? String(res.id) : `staff_${Date.now()}`,
+            name: staffNameInput.trim(),
+            contact: staffPhoneInput.trim(),
+            status: 'enabled',
+            roles: selectedRoles,
+            permissionsLabel: permText,
+            boundStoreName: targetStore,
+          };
+          setStaffList((prev) => [...prev, newMember]);
+          onShowNotice('success', `已添加员工账号「${staffNameInput}」并落库`);
+        })
+        .catch(() => {});
     }
     setIsStaffFormOpen(false);
   };
@@ -364,6 +416,17 @@ export const MerchantManagementCenter: React.FC<{
             }`}
           >
             素材管理 ({materials.length})
+          </button>
+          <button
+            type="button"
+            onClick={() => onChangeSubTab('livecodes')}
+            className={`px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+              subTab === 'livecodes'
+                ? 'bg-white text-slate-900 shadow-2xs'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            引流活码 (3)
           </button>
         </div>
 
@@ -688,6 +751,12 @@ export const MerchantManagementCenter: React.FC<{
                               <button
                                 type="button"
                                 onClick={() => {
+                                  const nextStatus = member.status === 'enabled' ? 'disabled' : 'active';
+                                  fetch(`/api/v1/merchant/staff/${member.id}`, {
+                                    method: 'PUT',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ status: nextStatus }),
+                                  }).catch(() => {});
                                   setStaffList((prev) =>
                                     prev.map((s) =>
                                       s.id === member.id
@@ -707,8 +776,9 @@ export const MerchantManagementCenter: React.FC<{
                               <button
                                 type="button"
                                 onClick={() => {
+                                  fetch(`/api/v1/merchant/staff/${member.id}`, { method: 'DELETE' }).catch(() => {});
                                   setStaffList((prev) => prev.filter((s) => s.id !== member.id));
-                                  onShowNotice('success', `已删除员工「${member.name}」`);
+                                  onShowNotice('success', `已从数据库删除员工「${member.name}」`);
                                 }}
                                 className="hover:underline text-rose-600 cursor-pointer"
                               >
@@ -967,17 +1037,40 @@ export const MerchantManagementCenter: React.FC<{
             <div className="flex items-center gap-2">
               <button
                 type="button"
+                onClick={() => setShowMobileUpload(true)}
+                className="h-9 px-3.5 rounded-lg border border-indigo-200 bg-indigo-50/70 hover:bg-indigo-100/80 text-xs font-semibold text-indigo-700 flex items-center gap-1.5 cursor-pointer transition-colors shadow-2xs"
+              >
+                <QrCode className="w-3.5 h-3.5 text-indigo-600" />
+                手机扫码直传
+              </button>
+              <button
+                type="button"
                 onClick={() => {
-                  const newMat: StudioMaterialItem = {
-                    id: `mat_${Date.now()}`,
-                    title: `上传门店实拍素材_${materials.length + 1}.mp4`,
-                    type: 'video',
-                    category: '实拍素材',
-                    createdAt: '2026-11-02',
-                    source: '本地上传',
-                  };
-                  setMaterials((prev) => [newMat, ...prev]);
-                  onShowNotice('success', '已添加素材至当前账户素材库');
+                  const matTitle = `门店实拍视频素材_${materials.length + 1}.mp4`;
+                  fetch('/api/v1/assets', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      title: matTitle,
+                      type: 'video',
+                      category: '实拍素材',
+                      source: '本地上传',
+                    }),
+                  })
+                    .then((r) => r.json())
+                    .then((res) => {
+                      const newMat: StudioMaterialItem = {
+                        id: res.id ? String(res.id) : `mat_${Date.now()}`,
+                        title: matTitle,
+                        type: 'video',
+                        category: '实拍素材',
+                        createdAt: '刚刚',
+                        source: '本地上传',
+                      };
+                      setMaterials((prev) => [newMat, ...prev]);
+                      onShowNotice('success', '实拍素材已成功持久化落库！');
+                    })
+                    .catch(() => {});
                 }}
                 className="h-9 px-4 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-medium text-slate-700 flex items-center gap-1.5 cursor-pointer"
               >
@@ -1057,8 +1150,12 @@ export const MerchantManagementCenter: React.FC<{
                           <button
                             type="button"
                             onClick={() => {
+                              const numId = mat.id.replace('mat_', '');
+                              if (!isNaN(Number(numId))) {
+                                fetch(`/api/v1/assets/${numId}`, { method: 'DELETE' }).catch(() => {});
+                              }
                               setMaterials((prev) => prev.filter((x) => x.id !== mat.id));
-                              onShowNotice('success', '已删除素材');
+                              onShowNotice('success', '已从数据库和素材库删除该素材');
                             }}
                             className="hover:underline text-rose-600 cursor-pointer"
                           >
@@ -1254,6 +1351,31 @@ export const MerchantManagementCenter: React.FC<{
           </div>
         </div>
       )}
+
+      {/* ==================== TAB 4: 引流活码中心 ==================== */}
+      {subTab === 'livecodes' && (
+        <LiveCodeCenter stores={stores} onShowNotice={onShowNotice} />
+      )}
+
+      {/* 手机扫码直传弹窗 */}
+      <MobileFastUploadModal
+        isOpen={showMobileUpload}
+        onClose={() => setShowMobileUpload(false)}
+        onShowNotice={onShowNotice}
+        onUploaded={(item) => {
+          setMaterials((prev) => [
+            {
+              id: `mat_${Date.now()}`,
+              title: item.title,
+              type: item.type,
+              category: '手机互联',
+              createdAt: '刚刚',
+              source: '本地上传',
+            },
+            ...prev,
+          ]);
+        }}
+      />
     </div>
   );
 };

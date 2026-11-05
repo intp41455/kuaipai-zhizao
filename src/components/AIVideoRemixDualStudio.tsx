@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   AudioWaveform,
@@ -21,10 +22,138 @@ import {
   Upload,
   Volume2,
   VolumeX,
+  Scissors,
+  FileText,
+  CheckCircle2,
 } from 'lucide-react';
 import type { StoreMemoryProfile } from '../data/curatedTemplates';
+import type { StudioMaterialItem } from './MerchantAndWorkspaceModules';
 
 export type VideoRemixStudioMode = 'foolproof' | 'pro_nle';
+
+export interface SentenceCutSegment {
+  id: string;
+  index: number;
+  startTime: number;
+  endTime: number;
+  duration: number;
+  text: string;
+  isSilence: boolean;
+  isFiller: boolean;
+  status: 'keep' | 'removed';
+  stage: 'hook' | 'agitation' | 'solution' | 'cta' | 'silence';
+  shotAngle: string;
+  visualCue: string;
+  suggestedScript: string;
+}
+
+const DEFAULT_SENTENCE_SEGMENTS: SentenceCutSegment[] = [
+  {
+    id: 'seg_0',
+    index: 0,
+    startTime: 0.0,
+    endTime: 1.6,
+    duration: 1.6,
+    text: '【录制前无声准备动作 / 呼吸停顿】',
+    isSilence: true,
+    isFiller: false,
+    status: 'removed',
+    stage: 'silence',
+    shotAngle: '准备废片 (已自动剔除)',
+    visualCue: '人物坐定调整姿态，未开腔说话，无声画面。',
+    suggestedScript: '',
+  },
+  {
+    id: 'seg_1',
+    index: 1,
+    startTime: 1.6,
+    endTime: 4.8,
+    duration: 3.2,
+    text: '在本地经常熬夜头油头痒的朋友停一下！千万别去大店盲目跟风交学费了！',
+    isSilence: false,
+    isFiller: false,
+    status: 'keep',
+    stage: 'hook',
+    shotAngle: '01 黄金留人Hook (0-3s)',
+    visualCue: '镜头大特写高速切入，屏幕正中弹出反常识大字贴片，配合悬念音效。',
+    suggestedScript: '颠覆认知Hook：“在本地经常熬夜头油头痒的朋友停一下！千万别盲目学别人交学费了！”',
+  },
+  {
+    id: 'seg_2',
+    index: 2,
+    startTime: 4.8,
+    endTime: 9.0,
+    duration: 4.2,
+    text: '很多人第一步就搞错了，不仅费时费力还多花几百块冤枉钱。',
+    isSilence: false,
+    isFiller: false,
+    status: 'keep',
+    stage: 'agitation',
+    shotAngle: '02 痛点情绪共振 (3-15s)',
+    visualCue: '中景展示生活痛点场景，通过人物微表情与失误细节唤起强烈情绪代入。',
+    suggestedScript: '痛点放大：“很多人第一步就搞错了，不仅费时费力还多花几百块冤枉钱！”',
+  },
+  {
+    id: 'seg_3',
+    index: 3,
+    startTime: 9.0,
+    endTime: 10.2,
+    duration: 1.2,
+    text: '【卡顿喘息 / 空白停顿】',
+    isSilence: true,
+    isFiller: false,
+    status: 'removed',
+    stage: 'silence',
+    shotAngle: '停顿废片 (已自动剔除)',
+    visualCue: '说话气口间隔过长，处于无效停留。',
+    suggestedScript: '',
+  },
+  {
+    id: 'seg_4',
+    index: 4,
+    startTime: 10.2,
+    endTime: 18.0,
+    duration: 7.8,
+    text: '记住这3个避坑关键：第一步先看核心专研工艺，第二步看实测数据，最关键的第三步一定要看真实用户口碑！',
+    isSilence: false,
+    isFiller: false,
+    status: 'keep',
+    stage: 'solution',
+    shotAngle: '03 三步解法交付 (15-45s)',
+    visualCue: '产品近景与步骤标签卡点弹出，展示3个清晰实操对比与质检证据。',
+    suggestedScript: '3步解法交付：“记住这3个避坑步骤：第一步先看核心工艺，第二步看实测数据，最关键第三步看真实口碑！”',
+  },
+  {
+    id: 'seg_5',
+    index: 5,
+    startTime: 18.0,
+    endTime: 23.5,
+    duration: 5.5,
+    text: '担心记不住的赶紧点赞收藏备用！你在平时遇到过这种坑吗？评论区告诉我！',
+    isSilence: false,
+    isFiller: false,
+    status: 'keep',
+    stage: 'cta',
+    shotAngle: '04 收藏互动促单 (45-60s)',
+    visualCue: '手势指向屏幕下方与右侧收藏键，字幕大字弹出【收藏备用 + 评论区讨论】。',
+    suggestedScript: '促互动完播：“担心记不住的赶紧点赞收藏备用，你平时遇到过这种坑吗？评论区告诉我！”',
+  },
+  {
+    id: 'seg_6',
+    index: 6,
+    startTime: 23.5,
+    endTime: 25.0,
+    duration: 1.5,
+    text: '【录制结束伸手关机动作】',
+    isSilence: true,
+    isFiller: false,
+    status: 'removed',
+    stage: 'silence',
+    shotAngle: '尾部冗余 (已自动剔除)',
+    visualCue: '讲完台词后伸手触碰摄像头录像按钮。',
+    suggestedScript: '',
+  },
+];
 
 interface CaptionSegment {
   shotIndex: number;
@@ -80,6 +209,7 @@ interface AIVideoRemixDualStudioProps {
   shotMovements: string[];
   setShotMovements: (v: string[]) => void;
   activeStore: StoreMemoryProfile;
+  personalMaterials?: StudioMaterialItem[];
   onShowNotice: (type: 'success' | 'error', text: string) => void;
   onNavigateToEditor: () => void;
 }
@@ -180,10 +310,56 @@ const ARCHETYPE_TEMPLATES = [
 ];
 
 const HUMAN_VOICE_PRESETS = [
-  { id: 'voice_xian_male', label: '关中老饕男声', geminiVoice: 'Puck', rate: 1.08, pitch: 0.96 },
-  { id: 'voice_sweet_female', label: '元气探店女声', geminiVoice: 'Kore', rate: 1.1, pitch: 1.05 },
-  { id: 'voice_pro_female', label: '知性测评女声', geminiVoice: 'Aoede', rate: 1.06, pitch: 1.0 },
-  { id: 'voice_calm_male', label: '温润叙事男声', geminiVoice: 'Charon', rate: 1.02, pitch: 0.94 },
+  {
+    id: 'voice_yunxi',
+    label: '云希 · 热门探店解说',
+    tag: '花生爆款',
+    badgeClass: 'bg-amber-50 text-amber-700 border-amber-200/60',
+    naturalKeyword: 'Yunxi',
+    geminiVoice: 'Puck',
+    rate: 1.08,
+    pitch: 1.02,
+  },
+  {
+    id: 'voice_xiaoxiao',
+    label: '晓晓 · 闺蜜好物安利',
+    tag: '小红书万赞',
+    badgeClass: 'bg-indigo-50 text-indigo-700 border-indigo-200/60',
+    naturalKeyword: 'Xiaoxiao',
+    geminiVoice: 'Kore',
+    rate: 1.05,
+    pitch: 1.05,
+  },
+  {
+    id: 'voice_yunjian',
+    label: '云健 · 沉稳老饕叙事',
+    tag: '影视解说',
+    badgeClass: 'bg-purple-50 text-purple-700 border-purple-200/60',
+    naturalKeyword: 'Yunjian',
+    geminiVoice: 'Charon',
+    rate: 1.02,
+    pitch: 0.94,
+  },
+  {
+    id: 'voice_yunyang',
+    label: '云扬 · 硬核老铁实测',
+    tag: '快手爆单',
+    badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
+    naturalKeyword: 'Yunyang',
+    geminiVoice: 'Fenrir',
+    rate: 1.15,
+    pitch: 1.0,
+  },
+  {
+    id: 'voice_xian_laotao',
+    label: '关中老街坊 · 市井探店',
+    tag: '本地老店',
+    badgeClass: 'bg-rose-50 text-rose-700 border-rose-200/60',
+    naturalKeyword: 'Shaanxi',
+    geminiVoice: 'Puck',
+    rate: 1.06,
+    pitch: 0.96,
+  },
 ];
 
 const CURATED_SHOT_PHOTOS = [
@@ -251,6 +427,7 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
   shotMovements,
   setShotMovements,
   activeStore,
+  personalMaterials = [],
   onShowNotice,
 }) => {
   const [studioMode, setStudioMode] = useState<VideoRemixStudioMode>(initialMode);
@@ -282,14 +459,149 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
   const [captionSegments, setCaptionSegments] = useState<CaptionSegment[]>([]);
 
   // Multi-Clip Batch Series state
-  const [batchClips, setBatchClips] = useState<BatchSeriesClip[]>([
-    { id: 'c1', name: '门头招牌实拍_01.mp4', previewUrl: CURATED_SHOT_PHOTOS[0], selected: true, durationSec: 15 },
-    { id: 'c2', name: '特写微距实拍_02.mp4', previewUrl: CURATED_SHOT_PHOTOS[1], selected: true, durationSec: 14 },
-    { id: 'c3', name: '真实使用反馈_03.mp4', previewUrl: CURATED_SHOT_PHOTOS[2], selected: true, durationSec: 16 },
-    { id: 'c4', name: '同城活动引导_04.mp4', previewUrl: CURATED_SHOT_PHOTOS[3], selected: false, durationSec: 15 },
-  ]);
+  const [batchClips, setBatchClips] = useState<BatchSeriesClip[]>(() => {
+    if (personalMaterials && personalMaterials.length > 0) {
+      return personalMaterials.map((m, i) => ({
+        id: m.id,
+        name: m.title,
+        previewUrl: m.previewUrl || CURATED_SHOT_PHOTOS[i % CURATED_SHOT_PHOTOS.length],
+        selected: i < 3,
+        durationSec: 15,
+      }));
+    }
+    return [
+      { id: 'c1', name: '门头招牌实拍_01.mp4', previewUrl: CURATED_SHOT_PHOTOS[0], selected: true, durationSec: 15 },
+      { id: 'c2', name: '特写微距实拍_02.mp4', previewUrl: CURATED_SHOT_PHOTOS[1], selected: true, durationSec: 14 },
+      { id: 'c3', name: '真实使用反馈_03.mp4', previewUrl: CURATED_SHOT_PHOTOS[2], selected: true, durationSec: 16 },
+      { id: 'c4', name: '同城活动引导_04.mp4', previewUrl: CURATED_SHOT_PHOTOS[3], selected: false, durationSec: 15 },
+    ];
+  });
   const [isBatchGenerating, setIsBatchGenerating] = useState<boolean>(false);
   const [batchOutputs, setBatchOutputs] = useState<BatchSeriesOutput[]>([]);
+
+  // Text-Driven Video Cutting & Storyboard State (AutoCut & auto-editor Inspired)
+  const [sentenceSegments, setSentenceSegments] = useState<SentenceCutSegment[]>(DEFAULT_SENTENCE_SEGMENTS);
+  const [showStoryboardModal, setShowStoryboardModal] = useState<boolean>(false);
+  const [isAutoCutting, setIsAutoCutting] = useState<boolean>(false);
+  const [autoRemoveSilence, setAutoRemoveSilence] = useState<boolean>(true);
+
+  const keptSegments = useMemo(
+    () => sentenceSegments.filter((s) => s.status === 'keep'),
+    [sentenceSegments]
+  );
+  const totalCleanedSec = useMemo(
+    () => Number(keptSegments.reduce((acc, s) => acc + s.duration, 0).toFixed(1)),
+    [keptSegments]
+  );
+  const trimmedWasteSec = useMemo(
+    () => Number(sentenceSegments.filter((s) => s.status === 'removed').reduce((acc, s) => acc + s.duration, 0).toFixed(1)),
+    [sentenceSegments]
+  );
+
+  const handleToggleSentenceStatus = (id: string) => {
+    setSentenceSegments((prev) =>
+      prev.map((s) => {
+        if (s.id === id) {
+          const nextStatus = s.status === 'keep' ? 'removed' : 'keep';
+          return { ...s, status: nextStatus };
+        }
+        return s;
+      })
+    );
+  };
+
+  const handleEditSentenceText = (id: string, newText: string) => {
+    setSentenceSegments((prev) =>
+      prev.map((s) => (s.id === id ? { ...s, text: newText, suggestedScript: newText } : s))
+    );
+  };
+
+  const handleInsertSentenceAfter = (idx: number) => {
+    const after = sentenceSegments[idx];
+    const newStart = after ? after.endTime : 0;
+    const newSeg: SentenceCutSegment = {
+      id: `seg_${Date.now()}`,
+      index: sentenceSegments.length + 1,
+      startTime: newStart,
+      endTime: Number((newStart + 3.5).toFixed(2)),
+      duration: 3.5,
+      text: '新增分镜：展示产品使用特写画面',
+      isSilence: false,
+      isFiller: false,
+      status: 'keep',
+      stage: 'solution',
+      shotAngle: '新增补充镜头',
+      visualCue: '近景展示产品核心做工与材质细节。',
+      suggestedScript: '细节扎实，体验感拉满！',
+    };
+    const nextList = [...sentenceSegments];
+    nextList.splice(idx + 1, 0, newSeg);
+    setSentenceSegments(nextList);
+    onShowNotice('success', '已插入新分镜片段！');
+  };
+
+  const handleRunAiAutoCut = async () => {
+    setIsAutoCutting(true);
+    try {
+      const resp = await fetch('/api/v1/ai/video-transcribe-cut', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          transcript_or_text: sceneLines.join('。'),
+          category: activeStore?.industry || '通用带货',
+          auto_remove_silence: autoRemoveSilence,
+        }),
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        if (Array.isArray(data.segments) && data.segments.length > 0) {
+          setSentenceSegments(data.segments);
+          const kept = (data.segments as SentenceCutSegment[]).filter((s) => s.status === 'keep');
+          if (kept.length > 0) {
+            setCameraAngles(kept.map((s) => s.shotAngle));
+            setVisualCues(kept.map((s) => s.visualCue));
+            setSceneLines(kept.map((s) => s.text));
+            setShotDurations(kept.map((s) => s.duration));
+          }
+          onShowNotice('success', `AI智能识别并完成分镜粗剪！已自动剔除 ${data.removedCount} 段废片（共 ${data.trimmedSec}s）`);
+          return;
+        }
+      }
+    } catch {
+      // fallback
+    } finally {
+      setIsAutoCutting(false);
+    }
+  };
+
+  const handleExportEdl = () => {
+    const edl = [
+      'TITLE: KUAIPAI_AI_AUTOCUT_TIMELINE',
+      'FCM: NON-DROP FRAME',
+      ...keptSegments.map((s, idx) => {
+        const start = s.startTime;
+        const end = s.endTime;
+        return `${String(idx + 1).padStart(3, '0')}  AX       V     C        00:00:${String(Math.floor(start)).padStart(2, '0')}:00 00:00:${String(Math.floor(end)).padStart(2, '0')}:00 00:00:${String(Math.floor(start)).padStart(2, '0')}:00 00:00:${String(Math.floor(end)).padStart(2, '0')}:00\n* FROM CLIP NAME: ${s.shotAngle}\n* COMMENT: ${s.text}`;
+      }),
+    ].join('\n');
+    const blob = new Blob([edl], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${projectTitle || '快拍智造'}_AI智能剪辑工程.edl`;
+    a.click();
+    onShowNotice('success', '已导出行业标准 EDL 剪辑工程文件！');
+  };
+
+  const handleCopyFfmpegCommand = () => {
+    const filters = keptSegments.map(
+      (s, i) => `[0:v]trim=start=${s.startTime}:end=${s.endTime},setpts=PTS-STARTPTS[v${i}]; [0:a]atrim=start=${s.startTime}:end=${s.endTime},asetpts=PTS-STARTPTS[a${i}]`
+    );
+    const concatMap = keptSegments.map((_, i) => `[v${i}][a${i}]`).join('');
+    const cmd = `ffmpeg -i input.mp4 -filter_complex "${filters.join('; ')}; ${concatMap}concat=n=${keptSegments.length}:v=1:a=1[outv][outa]" -map "[outv]" -map "[outa]" -c:v libx264 -crf 18 -preset fast final_cut.mp4`;
+    navigator.clipboard.writeText(cmd);
+    onShowNotice('success', '已复制 FFmpeg 无损裁切拼接命令！');
+  };
 
   useEffect(() => {
     setStudioMode(initialMode);
@@ -329,11 +641,42 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
     if (isMuted || typeof window === 'undefined' || !('speechSynthesis' in window) || !text.trim()) return;
     try {
       window.speechSynthesis.cancel();
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = 'zh-CN';
-      utter.rate = voiceSpeed;
-      utter.pitch = currentVoice.pitch;
-      window.speechSynthesis.speak(utter);
+      const allVoices = window.speechSynthesis.getVoices();
+      const keyword = (currentVoice.naturalKeyword || '').toLowerCase();
+      // 深度匹配微软 Online Natural 神经网络音色 (对标花生 AI 自然人声)
+      const matchedVoice =
+        allVoices.find((v) => v.name.toLowerCase().includes(keyword)) ||
+        allVoices.find((v) => v.name.includes('Natural') && v.lang.startsWith('zh')) ||
+        allVoices.find((v) => v.name.includes('Online') && v.lang.startsWith('zh')) ||
+        allVoices.find((v) => v.lang.startsWith('zh')) ||
+        null;
+
+      // 花生同款呼吸感气口分句算法：在标点与逻辑断句处注入 140ms 拟人停顿与微顿挫
+      const chunks = text.split(/([，。！？!?~…\n]+)/).filter(Boolean);
+      let i = 0;
+
+      const speakNextChunk = () => {
+        if (i >= chunks.length) return;
+        const sentence = (chunks[i] + (chunks[i + 1] || '')).trim();
+        i += 2;
+        if (!sentence) {
+          speakNextChunk();
+          return;
+        }
+
+        const utter = new SpeechSynthesisUtterance(sentence);
+        if (matchedVoice) utter.voice = matchedVoice;
+        utter.lang = 'zh-CN';
+        utter.rate = voiceSpeed * currentVoice.rate;
+        utter.pitch = currentVoice.pitch;
+        utter.onend = () => {
+          // 拟人呼吸气口：停顿 140ms 后发声，彻底消除机械连续电子味
+          setTimeout(speakNextChunk, 140);
+        };
+        window.speechSynthesis.speak(utter);
+      };
+
+      speakNextChunk();
     } catch {
       // ignore
     }
@@ -616,22 +959,22 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
               onClick={() => setStudioMode('foolproof')}
               className={`rounded-md px-3 py-1 font-medium transition-all ${
                 studioMode === 'foolproof'
-                  ? 'bg-white text-slate-900 shadow-2xs'
+                  ? 'bg-white text-slate-900 shadow-2xs font-semibold'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              套模板快剪
+              🌟 智能分镜模式
             </button>
             <button
               type="button"
               onClick={() => setStudioMode('pro_nle')}
               className={`rounded-md px-3 py-1 font-medium transition-all ${
                 studioMode === 'pro_nle'
-                  ? 'bg-white text-slate-900 shadow-2xs'
+                  ? 'bg-white text-slate-900 shadow-2xs font-semibold'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              分镜多轨精剪
+              ✂️ 逐句精修模式
             </button>
           </div>
         </div>
@@ -648,7 +991,7 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
                 onClick={() => handleSelectArchetype(arch.id)}
                 className={`rounded-lg px-2.5 py-1 text-xs font-medium transition-colors ${
                   active
-                    ? 'bg-[#476282] text-white'
+                    ? 'bg-indigo-600 text-white'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70 hover:text-slate-900'
                 }`}
               >
@@ -658,8 +1001,17 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
           })}
         </div>
 
-        {/* Right: Upload + Batch + Export */}
+        {/* Right: Upload + Storyboard Modal + Batch + Export */}
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setShowStoryboardModal(true)}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-indigo-200 bg-indigo-50/70 px-3 py-1.5 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 cursor-pointer shadow-2xs transition-colors"
+          >
+            <FileText className="h-3.5 w-3.5 text-indigo-600" />
+            <span>分镜结构表与工程</span>
+          </button>
+
           <label className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 cursor-pointer">
             <Upload className="h-3.5 w-3.5 text-slate-500" />
             <span>导入实拍素材</span>
@@ -683,6 +1035,43 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
 
           <button
             type="button"
+            onClick={async () => {
+              try {
+                const res = await fetch('/api/v1/projects', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    title: projectTitle,
+                    product_name: productName,
+                    category: '餐饮美食',
+                    aspect_ratio: aspectRatio,
+                    bgm_style: bgmStyle,
+                    voice_tone: voiceTone,
+                    scenes: sceneLines.map((line, idx) => ({
+                      scene_index: idx + 1,
+                      title: cameraAngles[idx] || `镜头${idx + 1}`,
+                      line,
+                      visual: visualCues[idx] || '',
+                      duration: shotDurations[idx] || '00:04',
+                    })),
+                    status: 'ready',
+                  }),
+                });
+                if (res.ok) {
+                  onShowNotice('success', '成片工程已成功保存落库至数据库！可随时在「我的作品」中查看与复用！');
+                }
+              } catch {
+                onShowNotice('error', '保存失败，请检查网络');
+              }
+            }}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-indigo-700 hover:border-indigo-400 cursor-pointer shadow-2xs"
+          >
+            <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600" />
+            <span>保存工程</span>
+          </button>
+
+          <button
+            type="button"
             onClick={handleExportManifest}
             className="inline-flex items-center gap-1.5 rounded-lg iridescent-btn px-3.5 py-1.5 text-xs font-medium text-white"
           >
@@ -694,109 +1083,200 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
 
       {/* 2. 主体三栏工作台：左侧分镜卡槽 (3列) + 中央加长版9:16真机预览 (5列) + 右侧极简属性面板 (4列) */}
       <div className="grid grid-cols-1 gap-3.5 lg:grid-cols-12 items-stretch">
-        {/* 左侧栏：筷子科技同款「分镜卡槽池」 */}
+        {/* 左侧栏：智能分镜卡槽 (foolproof) 或 文本驱动逐句剪辑 (pro_nle) */}
         <div className="lg:col-span-3 flex flex-col justify-between rounded-xl border border-slate-200/90 bg-white p-3.5 shadow-2xs">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-slate-800">分镜卡槽 ({cameraAngles.length}镜)</span>
-                <span className="font-mono text-[11px] text-slate-400">{totalDurationSec}s</span>
+          {studioMode === 'foolproof' ? (
+            /* 模式 1：AI 智能分镜模式 (自动剔除废片 + 4幕分镜) */
+            <div className="space-y-3">
+              {/* Silence & Dead-air Trim Badge */}
+              <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 p-2.5 space-y-1">
+                <div className="flex items-center justify-between text-xs font-bold text-emerald-800">
+                  <span className="flex items-center gap-1">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                    <span>AI 废片剔除与智能粗剪</span>
+                  </span>
+                  <span className="text-[10px] text-emerald-600 font-mono">节省 {trimmedWasteSec}s 废片</span>
+                </div>
+                <div className="text-[11px] text-slate-600 leading-tight">
+                  已自动识别并切除开拍前空白准备动作与无效静音停顿。
+                </div>
               </div>
+
               <button
                 type="button"
-                onClick={() => {
-                  if (cameraAngles.length >= 8) return;
-                  const n = cameraAngles.length + 1;
-                  setCameraAngles([...cameraAngles, `0${n} 新增镜头`]);
-                  setVisualCues([...visualCues, `展示「${productName}」实拍画面`]);
-                  setSceneLines([...sceneLines, `细节扎实，体验感拉满！`]);
-                  setShotDurations([...normalizedDurations, 3.5]);
-                  setShotMovements([...shotMovements, '缓慢推近']);
-                }}
-                className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-1 text-[11px] font-medium text-slate-700 hover:bg-slate-200/70"
+                onClick={handleRunAiAutoCut}
+                disabled={isAutoCutting}
+                className="w-full flex items-center justify-center gap-1.5 rounded-lg bg-indigo-50 border border-indigo-200/80 py-2 text-xs font-semibold text-indigo-700 hover:bg-indigo-100/70 transition-colors cursor-pointer"
               >
-                <Plus className="h-3 w-3" />
-                <span>加分镜</span>
+                <Sparkles className={`h-3.5 w-3.5 text-indigo-600 ${isAutoCutting ? 'animate-spin' : ''}`} />
+                <span>{isAutoCutting ? '正在进行音频转写与智能切片...' : '⚡ 重新触发原声识别与废片切除'}</span>
               </button>
-            </div>
 
-            {/* Shot Slot List */}
-            <div className="space-y-2 max-h-[500px] overflow-y-auto pr-0.5">
-              {cameraAngles.map((angle, idx) => {
-                const isSelected = selectedShotIdx === idx;
-                const media = shotMediaMap[idx];
-                const thumbUrl = media?.url || CURATED_SHOT_PHOTOS[idx % CURATED_SHOT_PHOTOS.length];
-                return (
-                  <div
-                    key={idx}
-                    onClick={() => {
-                      setSelectedShotIdx(idx);
-                      setCurrentTimeSec(shotTimeRanges[idx]?.start || 0);
-                    }}
-                    className={`group flex items-start gap-2.5 rounded-xl border p-2.5 transition-all cursor-pointer ${
-                      isSelected
-                        ? 'border-[#476282] bg-slate-50/90'
-                        : 'border-slate-200/80 bg-white hover:border-slate-300'
-                    }`}
-                  >
-                    {/* Thumbnail with hover upload */}
-                    <div className="relative h-14 w-11 shrink-0 overflow-hidden rounded-lg bg-slate-100 border border-slate-200/60">
-                      {media?.isVideo ? (
-                        <video src={media.url} className="h-full w-full object-cover" muted playsInline />
-                      ) : (
-                        <img src={thumbUrl} alt={angle} className="h-full w-full object-cover" />
-                      )}
-                      <label
-                        title="点击更换本镜实拍图/视频"
-                        onClick={(e) => e.stopPropagation()}
-                        className="absolute inset-0 flex items-center justify-center bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-                      >
-                        <Upload className="h-3.5 w-3.5 text-white" />
-                        <input
-                          type="file"
-                          accept="image/*,video/*"
-                          onChange={(e) => handleUploadMedia(e, idx)}
-                          className="hidden"
-                        />
-                      </label>
-                    </div>
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-bold text-slate-800">智能分镜 ({cameraAngles.length} 幕)</span>
+                  <span className="font-mono text-[11px] text-indigo-600 font-bold">{totalCleanedSec}s</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setStudioMode('pro_nle')}
+                  className="text-xs text-indigo-600 hover:underline cursor-pointer font-medium"
+                >
+                  去逐句微调 →
+                </button>
+              </div>
 
-                    {/* Info */}
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="truncate text-xs font-semibold text-slate-800">{angle}</span>
-                        <span className="shrink-0 font-mono text-[11px] text-slate-400">
-                          {normalizedDurations[idx]}s
-                        </span>
+              {/* Shot Slot List */}
+              <div className="space-y-2 max-h-[420px] overflow-y-auto pr-0.5">
+                {cameraAngles.map((angle, idx) => {
+                  const isSelected = selectedShotIdx === idx;
+                  const media = shotMediaMap[idx];
+                  const thumbUrl = media?.url || CURATED_SHOT_PHOTOS[idx % CURATED_SHOT_PHOTOS.length];
+                  return (
+                    <div
+                      key={idx}
+                      onClick={() => {
+                        setSelectedShotIdx(idx);
+                        setCurrentTimeSec(shotTimeRanges[idx]?.start || 0);
+                      }}
+                      className={`group flex items-start gap-2.5 rounded-xl border p-2.5 transition-all cursor-pointer ${
+                        isSelected
+                          ? 'border-indigo-500 bg-slate-50/90 shadow-2xs'
+                          : 'border-slate-200/80 bg-white hover:border-slate-300'
+                      }`}
+                    >
+                      <div className="relative h-14 w-11 shrink-0 overflow-hidden rounded-lg bg-slate-100 border border-slate-200/60">
+                        {media?.isVideo ? (
+                          <video src={media.url} className="h-full w-full object-cover" muted playsInline />
+                        ) : (
+                          <img src={thumbUrl} alt={angle} className="h-full w-full object-cover" />
+                        )}
+                        <label
+                          title="点击更换本镜实拍图/视频"
+                          onClick={(e) => e.stopPropagation()}
+                          className="absolute inset-0 flex items-center justify-center bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                        >
+                          <Upload className="h-3.5 w-3.5 text-white" />
+                          <input
+                            type="file"
+                            accept="image/*,video/*"
+                            onChange={(e) => handleUploadMedia(e, idx)}
+                            className="hidden"
+                          />
+                        </label>
                       </div>
-                      <p className="mt-1 line-clamp-1 text-[11px] text-slate-500">
-                        {sceneLines[idx] || '暂无台词'}
-                      </p>
-                      <div className="mt-1.5 flex items-center justify-between text-[10px] text-slate-400">
-                        <span>{shotMovements[idx] || '缓慢推近'}</span>
-                        {cameraAngles.length > 1 && (
+
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold text-slate-900 truncate">{angle}</span>
+                          <span className="font-mono text-[10px] text-slate-400">{normalizedDurations[idx]}s</span>
+                        </div>
+                        <p className="line-clamp-2 text-[11px] text-slate-500 mt-1 leading-snug">
+                          {sceneLines[idx] || visualCues[idx]}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            /* 模式 2：精细微调模式 (文字驱动剪辑时间轴) */
+            <div className="space-y-3">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <div>
+                  <h3 className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                    <Scissors className="h-3.5 w-3.5 text-indigo-600" />
+                    <span>逐句文本剪辑轴</span>
+                  </h3>
+                  <span className="text-[10px] text-slate-400">对标 AutoCut：修改/删除台词同步裁切视频</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleInsertSentenceAfter(sentenceSegments.length - 1)}
+                  className="rounded-lg bg-indigo-50 border border-indigo-200 px-2 py-1 text-[11px] font-semibold text-indigo-700 hover:bg-indigo-100 cursor-pointer"
+                >
+                  + 加一句
+                </button>
+              </div>
+
+              {/* Sentence Slices List */}
+              <div className="space-y-2 max-h-[460px] overflow-y-auto pr-0.5">
+                {sentenceSegments.map((seg, sIdx) => {
+                  const isRemoved = seg.status === 'removed';
+                  return (
+                    <div
+                      key={seg.id}
+                      className={`rounded-xl border p-2.5 transition-all space-y-1.5 ${
+                        isRemoved
+                          ? 'border-dashed border-slate-200 bg-slate-50/60 opacity-60'
+                          : 'border-slate-200 bg-white shadow-2xs hover:border-indigo-300'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between text-[10px]">
+                        <span className="font-mono font-bold text-indigo-600">
+                          [{seg.startTime.toFixed(1)}s - {seg.endTime.toFixed(1)}s] ({seg.duration}s)
+                        </span>
+                        <div className="flex items-center gap-1.5">
+                          {seg.isSilence ? (
+                            <span className="rounded bg-amber-50 text-amber-700 px-1 py-0.5 text-[9px] font-medium border border-amber-200/60">
+                              无声废片
+                            </span>
+                          ) : (
+                            <span className="rounded bg-indigo-50 text-indigo-700 px-1 py-0.5 text-[9px] font-medium">
+                              {seg.stage}
+                            </span>
+                          )}
                           <button
                             type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setCameraAngles(cameraAngles.filter((_, i) => i !== idx));
-                              setVisualCues(visualCues.filter((_, i) => i !== idx));
-                              setSceneLines(sceneLines.filter((_, i) => i !== idx));
-                              setShotDurations(normalizedDurations.filter((_, i) => i !== idx));
-                              setSelectedShotIdx(0);
-                            }}
-                            className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-rose-600"
+                            onClick={() => handleToggleSentenceStatus(seg.id)}
+                            className={`font-semibold cursor-pointer ${
+                              isRemoved ? 'text-indigo-600 hover:underline' : 'text-rose-500 hover:underline'
+                            }`}
                           >
-                            删除
+                            {isRemoved ? '恢复保留' : '删除该句'}
                           </button>
-                        )}
+                        </div>
+                      </div>
+
+                      <textarea
+                        rows={2}
+                        value={seg.text}
+                        disabled={isRemoved}
+                        onChange={(e) => handleEditSentenceText(seg.id, e.target.value)}
+                        className={`w-full resize-none rounded-lg p-1.5 text-xs leading-relaxed focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-400 ${
+                          isRemoved ? 'line-through text-slate-400 bg-transparent' : 'bg-[#fafbfe] text-slate-800'
+                        }`}
+                      />
+
+                      <div className="flex items-center justify-between pt-1 text-[11px] text-slate-400">
+                        <span className="truncate max-w-[140px]">{seg.shotAngle}</span>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setCurrentTimeSec(seg.startTime);
+                              setIsPlaying(true);
+                            }}
+                            className="text-indigo-600 hover:underline cursor-pointer"
+                          >
+                            ▶ 试看
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleInsertSentenceAfter(sIdx)}
+                            className="text-slate-500 hover:text-slate-800 cursor-pointer"
+                          >
+                            + 插入
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Bottom Quick Subject Sync */}
           <div className="mt-3 border-t border-slate-100 pt-3 space-y-2">
@@ -838,7 +1318,7 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
                   type="button"
                   onClick={() => setAspectRatio(r)}
                   className={`rounded-md px-2 py-0.5 font-mono text-[11px] font-medium ${
-                    aspectRatio === r ? 'bg-[#476282] text-white' : 'text-slate-500 hover:text-slate-800'
+                    aspectRatio === r ? 'bg-indigo-600 text-white' : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
                   {r}
@@ -938,7 +1418,7 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
                   setIsPlaying(false);
                   setCurrentTimeSec(Number(e.target.value));
                 }}
-                className="h-1 flex-1 accent-[#476282] cursor-pointer"
+                className="h-1 flex-1 accent-indigo-600 cursor-pointer"
               />
               <span className="font-mono text-[11px] text-slate-400 w-10 text-right">{totalDurationSec}s</span>
             </div>
@@ -979,7 +1459,7 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
                     }
                     setIsPlaying(!isPlaying);
                   }}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#476282] text-white hover:bg-[#38506b]"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
                   title={isPlaying ? '暂停' : '播放预览'}
                 >
                   {isPlaying ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5 fill-white ml-0.5" />}
@@ -1014,7 +1494,7 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
                   onClick={() => handleSynthesizeHumanVoice()}
                   className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-100"
                 >
-                  <Mic className="h-3.5 w-3.5 text-[#476282]" />
+                  <Mic className="h-3.5 w-3.5 text-indigo-600" />
                   <span>{isSynthesizingTts ? '合成中...' : '试听配音'}</span>
                 </button>
 
@@ -1024,7 +1504,7 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
                   onClick={handleRunAudioToCaptions}
                   className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-100"
                 >
-                  <Subtitles className="h-3.5 w-3.5 text-[#476282]" />
+                  <Subtitles className="h-3.5 w-3.5 text-indigo-600" />
                   <span>{isGeneratingCaptions ? '对齐中...' : 'AI 字幕对齐'}</span>
                 </button>
               </div>
@@ -1106,13 +1586,18 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
                             setVoiceTone(vp.label);
                             setVoiceSpeed(vp.rate);
                           }}
-                          className={`rounded-lg border px-3 py-2 text-left text-xs font-medium transition-colors ${
+                          className={`flex flex-col justify-between rounded-xl border p-2.5 text-left text-xs font-medium transition-all cursor-pointer ${
                             active
-                              ? 'border-[#476282] bg-slate-100 text-slate-900'
-                              : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+                              ? 'border-indigo-500 bg-indigo-50/70 text-indigo-900 font-bold shadow-2xs'
+                              : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
                           }`}
                         >
-                          {vp.label}
+                          <div className="flex items-center justify-between gap-1 w-full">
+                            <span className="truncate">{vp.label}</span>
+                            <span className={`text-[9px] px-1.5 py-0.2 rounded border font-semibold shrink-0 ${vp.badgeClass}`}>
+                              {vp.tag}
+                            </span>
+                          </div>
                         </button>
                       );
                     })}
@@ -1126,7 +1611,7 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
                       step={0.05}
                       value={voiceSpeed}
                       onChange={(e) => setVoiceSpeed(Number(e.target.value))}
-                      className="h-1 flex-1 accent-[#476282] cursor-pointer"
+                      className="h-1 flex-1 accent-indigo-600 cursor-pointer"
                     />
                   </div>
                 </div>
@@ -1149,7 +1634,7 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
                         onClick={() => setCaptionStyle(st.id as typeof captionStyle)}
                         className={`rounded-lg border py-1.5 text-xs font-medium ${
                           captionStyle === st.id
-                            ? 'border-[#476282] bg-[#476282] text-white'
+                            ? 'border-indigo-500 bg-indigo-600 text-white'
                             : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
                         }`}
                       >
@@ -1166,7 +1651,7 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
                       step={1}
                       value={captionFontSize}
                       onChange={(e) => setCaptionFontSize(Number(e.target.value))}
-                      className="h-1 flex-1 accent-[#476282] cursor-pointer"
+                      className="h-1 flex-1 accent-indigo-600 cursor-pointer"
                     />
                   </div>
                 </div>
@@ -1215,7 +1700,7 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
                         onClick={() => setLutPreset(lut.id as typeof lutPreset)}
                         className={`rounded-lg border py-2 text-xs font-medium ${
                           lutPreset === lut.id
-                            ? 'border-[#476282] bg-[#476282] text-white'
+                            ? 'border-indigo-500 bg-indigo-600 text-white'
                             : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
                         }`}
                       >
@@ -1261,7 +1746,7 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
                         next[selectedShotIdx] = Number(e.target.value);
                         setShotDurations(next);
                       }}
-                      className="mt-2 h-1 w-full accent-[#476282] cursor-pointer"
+                      className="mt-2 h-1 w-full accent-indigo-600 cursor-pointer"
                     />
                   </div>
                 </div>
@@ -1275,7 +1760,7 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
                   <span className="text-xs font-semibold text-slate-700">
                     勾选多段素材套用当前模板 ({batchClips.filter((c) => c.selected).length}/{batchClips.length})
                   </span>
-                  <label className="text-xs font-medium text-[#476282] hover:underline cursor-pointer">
+                  <label className="text-xs font-medium text-indigo-600 hover:underline cursor-pointer">
                     + 添加素材
                     <input
                       type="file"
@@ -1309,7 +1794,7 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
                       }
                       className={`flex items-center justify-between rounded-lg border px-2.5 py-2 text-xs cursor-pointer ${
                         clip.selected
-                          ? 'border-[#476282] bg-slate-50 text-slate-900'
+                          ? 'border-indigo-500 bg-slate-50 text-slate-900'
                           : 'border-slate-200 bg-white text-slate-500'
                       }`}
                     >
@@ -1318,7 +1803,7 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
                           type="checkbox"
                           checked={clip.selected}
                           onChange={() => {}}
-                          className="h-3.5 w-3.5 accent-[#476282]"
+                          className="h-3.5 w-3.5 accent-indigo-600"
                         />
                         <span className="truncate">{clip.name}</span>
                       </div>
@@ -1349,7 +1834,7 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
                               setSceneLines([out.hookLine, out.middleLine, out.middleLine, out.ctaLine]);
                               onShowNotice('success', `已载入系列成片 #0${i + 1}`);
                             }}
-                            className="text-[#476282] hover:underline shrink-0 ml-2"
+                            className="text-indigo-600 hover:underline shrink-0 ml-2"
                           >
                             载入预览
                           </button>
@@ -1414,7 +1899,7 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
                     style={{ flex: normalizedDurations[idx] || 3.5 }}
                     className={`rounded-lg border px-2.5 py-1.5 text-left transition-colors ${
                       active
-                        ? 'border-[#476282] bg-[#476282]/10 text-slate-900'
+                        ? 'border-indigo-500 bg-indigo-50/70 text-slate-900'
                         : 'border-slate-200 bg-slate-50/80 text-slate-600 hover:bg-slate-100'
                     }`}
                   >
@@ -1461,6 +1946,107 @@ export const AIVideoRemixDualStudio: React.FC<AIVideoRemixDualStudioProps> = ({
           </div>
         </div>
       </div>
+
+      {/* 4. 完整短视频分镜结构表与专业剪辑工程导出弹窗 */}
+      {showStoryboardModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 animate-in fade-in duration-150">
+          <div className="w-full max-w-4xl rounded-3xl border border-slate-100 bg-white p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col justify-between">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2">
+                <FileText className="h-4 w-4 text-indigo-600" />
+                <h3 className="text-sm font-bold text-slate-900">
+                  完整短视频分镜结构表与导出工程
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowStoryboardModal(false)}
+                className="text-slate-400 hover:text-slate-700 text-xs cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Table */}
+            <div className="overflow-x-auto flex-1 max-h-[460px] rounded-xl border border-slate-100">
+              <table className="w-full text-left text-xs text-slate-700 border-collapse">
+                <thead className="bg-[#f8faff] text-[11px] font-semibold text-slate-500 border-b border-slate-100 sticky top-0">
+                  <tr>
+                    <th className="px-3 py-2.5">镜号</th>
+                    <th className="px-3 py-2.5">时间戳区间</th>
+                    <th className="px-3 py-2.5">时长</th>
+                    <th className="px-3 py-2.5">原文识别台词</th>
+                    <th className="px-3 py-2.5">优化剪辑脚本</th>
+                    <th className="px-3 py-2.5">运镜景别</th>
+                    <th className="px-3 py-2.5">视觉拍摄指导</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {keptSegments.map((s, idx) => (
+                    <tr key={s.id} className="hover:bg-slate-50/70">
+                      <td className="px-3 py-2.5 font-bold font-mono text-indigo-600">
+                        #{idx + 1}
+                      </td>
+                      <td className="px-3 py-2.5 font-mono text-slate-500">
+                        {s.startTime.toFixed(2)}s ~ {s.endTime.toFixed(2)}s
+                      </td>
+                      <td className="px-3 py-2.5 font-mono">{s.duration}s</td>
+                      <td className="px-3 py-2.5 max-w-[180px] font-medium text-slate-900">
+                        {s.text}
+                      </td>
+                      <td className="px-3 py-2.5 max-w-[200px] text-slate-600">
+                        {s.suggestedScript || s.text}
+                      </td>
+                      <td className="px-3 py-2.5 text-slate-700 font-medium">
+                        {s.shotAngle}
+                      </td>
+                      <td className="px-3 py-2.5 max-w-[200px] text-slate-500">
+                        {s.visualCue}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Actions */}
+            <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+              <div className="text-xs text-slate-500">
+                <span>保留有效镜头：<strong>{keptSegments.length}</strong> 镜</span>
+                <span className="mx-2">|</span>
+                <span>成片总时长：<strong>{totalCleanedSec}</strong> 秒</span>
+              </div>
+
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={handleExportEdl}
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer shadow-2xs"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  <span>导出 EDL 工程 (PR/达芬奇/剪映)</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCopyFfmpegCommand}
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-indigo-200 bg-indigo-50/80 px-3.5 py-2 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 cursor-pointer shadow-2xs"
+                >
+                  <Copy className="h-3.5 w-3.5 text-indigo-600" />
+                  <span>复制 FFmpeg 剪辑命令行</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleExportManifest}
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white hover:bg-indigo-700 cursor-pointer shadow-xs"
+                >
+                  <FileText className="h-3.5 w-3.5" />
+                  <span>导出分镜脚本 TXT</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

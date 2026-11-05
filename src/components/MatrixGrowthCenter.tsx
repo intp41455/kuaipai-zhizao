@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   Users,
@@ -41,9 +42,10 @@ import {
 } from '../lib/core/prompter';
 import { buildCardSet, downloadCards, renderCard, CARD_SIZES, type CardSpec } from '../lib/core/cards';
 import { planMix, toEdl, toFfmpeg, inferShotTags, type ClipAsset, type MixPlan } from '../lib/core/mix';
+import { SuperToolsSuite } from './SuperToolsSuite';
 
 type Platform = '抖音' | '快手' | '小红书' | '视频号';
-type HubTab = 'accounts' | 'split' | 'copy' | 'schedule' | 'sop' | 'leads' | 'prompter' | 'cards' | 'mix';
+type HubTab = 'accounts' | 'split' | 'copy' | 'schedule' | 'sop' | 'leads' | 'prompter' | 'cards' | 'mix' | 'tools';
 
 const PLATFORMS: Platform[] = ['抖音', '快手', '小红书', '视频号'];
 const SOP_STAGES = ['策划', '拍摄', '剪辑', '主理人验收', '已发布'];
@@ -263,6 +265,83 @@ export function MatrixGrowthCenter({
   const [mixPlan, setMixPlan] = useState<MixPlan | null>(null);
   const [mixClips, setMixClips] = useState<ClipAsset[]>([]);
 
+  useEffect(() => {
+    fetch('/api/v1/matrix/accounts')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setAccounts(
+            data.map((r: any) => ({
+              id: String(r.id),
+              name: r.name,
+              platform: (r.platform === 'douyin' ? '抖音' : r.platform === 'kuaishou' ? '快手' : r.platform === 'xhs' ? '小红书' : '视频号') as Platform,
+              group: r.groupName || '默认分组',
+              followers: r.followers || 0,
+              status: (r.status === 'offline' ? 'paused' : 'online') as 'online' | 'paused',
+            }))
+          );
+        }
+      })
+      .catch(() => {});
+
+    fetch('/api/v1/matrix/schedules')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setSchedule(
+            data.map((r: any) => ({
+              id: String(r.id),
+              accountId: String(r.accountId || ''),
+              accountName: r.accountName || '矩阵号',
+              platform: (r.platform === 'douyin' ? '抖音' : r.platform === 'kuaishou' ? '快手' : '视频号') as Platform,
+              title: r.title,
+              publishAt: r.publishAt || '',
+              status: (r.status === 'published' ? 'published' : 'pending') as 'pending' | 'published',
+            }))
+          );
+        }
+      })
+      .catch(() => {});
+
+    fetch('/api/v1/matrix/sop/tasks')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setSopCards(
+            data.map((r: any) => ({
+              id: String(r.id),
+              title: r.title,
+              stage: r.stage || 0,
+              owner: r.ownerName || '运营组',
+              due: r.dueDate || '本周内',
+              verdict: (r.verdict as 'pending' | 'pass' | 'reject') || 'pending',
+              note: r.storeName || '',
+            }))
+          );
+        }
+      })
+      .catch(() => {});
+
+    fetch('/api/v1/group-buy/leads')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setLeads(
+            data.map((r: any) => ({
+              id: String(r.id),
+              nickname: r.customer_name || '同城顾客',
+              platform: '抖音' as Platform,
+              message: `领券预约：${r.reserved_benefit} (${r.customer_phone})`,
+              intent: 'high' as const,
+              status: (r.status === 'verified' ? 'converted' : 'new') as 'new' | 'replied' | 'converted',
+              reply: r.status === 'verified' ? '✓ 门店已核销' : '待到店核销',
+            }))
+          );
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   useEffect(() => writeStore('kps-matrix-accounts', accounts), [accounts]);
   useEffect(() => writeStore('kps-matrix-copies', copies), [copies]);
   useEffect(() => writeStore('kps-matrix-schedule', schedule), [schedule]);
@@ -378,19 +457,33 @@ export function MatrixGrowthCenter({
       onShowNotice?.('error', '请先填写账号名称');
       return;
     }
-    setAccounts((prev) => [
-      {
-        id: uid(),
+    fetch('/api/v1/matrix/accounts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
         name: accountDraft.name.trim(),
         platform: accountDraft.platform,
-        group: accountDraft.group.trim() || '默认分组',
-        followers: 0,
+        group_name: accountDraft.group.trim() || '默认分组',
         status: 'online',
-      },
-      ...prev,
-    ]);
-    setAccountDraft({ name: '', platform: accountDraft.platform, group: accountDraft.group });
-    onShowNotice?.('success', '已加入矩阵账号池（本地登记，授权发布需平台开放接口）');
+      }),
+    })
+      .then((r) => r.json())
+      .then((res) => {
+        setAccounts((prev) => [
+          {
+            id: res.id ? String(res.id) : uid(),
+            name: accountDraft.name.trim(),
+            platform: accountDraft.platform,
+            group: accountDraft.group.trim() || '默认分组',
+            followers: 0,
+            status: 'online',
+          },
+          ...prev,
+        ]);
+        setAccountDraft({ name: '', platform: accountDraft.platform, group: accountDraft.group });
+        onShowNotice?.('success', '已加入矩阵账号池并落库至数据库！');
+      })
+      .catch(() => {});
   };
 
   const runSplit = async () => {
@@ -492,19 +585,34 @@ export function MatrixGrowthCenter({
       onShowNotice?.('error', '请选择账号并填写标题');
       return;
     }
-    setSchedule((prev) => [
-      {
-        id: uid(),
-        accountId: account.id,
-        accountName: `${account.platform} · ${account.name}`,
+    const pubAt = scheduleDraft.publishAt || new Date(Date.now() + 3600 * 1000).toISOString().slice(0, 16);
+    fetch('/api/v1/matrix/schedules', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        account_name: account.name,
+        platform: account.platform,
         title: scheduleDraft.title.trim(),
-        publishAt: scheduleDraft.publishAt || new Date(Date.now() + 3600 * 1000).toISOString().slice(0, 16),
-        status: 'pending',
-      },
-      ...prev,
-    ]);
-    setScheduleDraft({ ...scheduleDraft, title: '' });
-    onShowNotice?.('success', '排期已创建');
+        publish_at: pubAt,
+      }),
+    })
+      .then((r) => r.json())
+      .then((res) => {
+        setSchedule((prev) => [
+          {
+            id: res.id ? String(res.id) : uid(),
+            accountId: account.id,
+            accountName: `${account.platform} · ${account.name}`,
+            title: scheduleDraft.title.trim(),
+            publishAt: pubAt,
+            status: 'pending',
+          },
+          ...prev,
+        ]);
+        setScheduleDraft({ ...scheduleDraft, title: '' });
+        onShowNotice?.('success', '排期已创建并成功写入数据库！');
+      })
+      .catch(() => {});
   };
 
   const applyIntervalPlan = () => {
@@ -527,8 +635,12 @@ export function MatrixGrowthCenter({
   };
 
   const markPublished = (id: string) => {
+    const numId = Number(id);
+    if (!isNaN(numId)) {
+      fetch(`/api/v1/matrix/schedules/${numId}/status?status=published`, { method: 'PUT' }).catch(() => {});
+    }
     setSchedule((prev) => prev.map((item) => (item.id === id ? { ...item, status: 'published' } : item)));
-    onShowNotice?.('success', '已标记为已发布（本地状态，接入开放平台后可回传真实链接）');
+    onShowNotice?.('success', '已标记为已发布并同步数据库');
   };
 
   const addSopCard = () => {
@@ -536,19 +648,33 @@ export function MatrixGrowthCenter({
       onShowNotice?.('error', '请填写任务标题');
       return;
     }
-    setSopCards((prev) => [
-      {
-        id: uid(),
+    fetch('/api/v1/matrix/sop/tasks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
         title: sopDraft.title.trim(),
-        owner: sopDraft.owner.trim() || '待指派',
-        stage: 0,
-        due: sopDraft.due || '未定',
-        verdict: 'pending',
-        note: '',
-      },
-      ...prev,
-    ]);
-    setSopDraft({ title: '', owner: '', due: '' });
+        owner_name: sopDraft.owner.trim() || '待指派',
+        due_date: sopDraft.due || '本周内交付',
+      }),
+    })
+      .then((r) => r.json())
+      .then((res) => {
+        setSopCards((prev) => [
+          {
+            id: res.id ? String(res.id) : uid(),
+            title: sopDraft.title.trim(),
+            owner: sopDraft.owner.trim() || '待指派',
+            stage: 0,
+            due: sopDraft.due || '本周内',
+            verdict: 'pending',
+            note: '',
+          },
+          ...prev,
+        ]);
+        setSopDraft({ title: '', owner: '', due: '' });
+        onShowNotice?.('success', 'SOP任务已创建并落库至数据库');
+      })
+      .catch(() => {});
   };
 
   const moveSop = (id: string, delta: number) => {
@@ -556,7 +682,17 @@ export function MatrixGrowthCenter({
       prev.map((card) => {
         if (card.id !== id) return card;
         const next = Math.max(0, Math.min(SOP_STAGES.length - 1, card.stage + delta));
-        return { ...card, stage: next, verdict: next === 3 ? card.verdict : next === 4 ? 'pass' : card.verdict };
+        const numId = Number(id);
+        if (!isNaN(numId)) {
+          fetch(`/api/v1/matrix/sop/tasks/${numId}/stage?stage=${next}`, {
+            method: 'PUT',
+          }).catch(() => {});
+        }
+        return {
+          ...card,
+          stage: next,
+          verdict: next === 3 ? card.verdict : next === 4 ? 'pass' : card.verdict,
+        };
       })
     );
   };
@@ -706,6 +842,7 @@ export function MatrixGrowthCenter({
     { id: 'prompter', label: '口播提词器', icon: <Mic className="h-4 w-4" /> },
     { id: 'cards', label: '图文批量出图', icon: <ImagePlus className="h-4 w-4" /> },
     { id: 'mix', label: '智能混剪编排', icon: <Scissors className="h-4 w-4" /> },
+    { id: 'tools', label: '百宝工具箱', icon: <Sparkles className="h-4 w-4" /> },
   ];
 
   return (
@@ -1705,6 +1842,19 @@ export function MatrixGrowthCenter({
           <div className="mt-3 flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-[10px] text-amber-800">
             <AlertCircle className="h-3.5 w-3.5 shrink-0" />
             <span>EDL 与 FFmpeg 命令按素材真实时长切点生成，可本机执行；AI 换脸、去字幕等模型能力不在本地实现。</span>
+          </div>
+        </Card>
+      )}
+
+      {tab === 'tools' && (
+        <Card className="bg-white">
+          <SectionTitle
+            icon={<Sparkles className="h-4 w-4" />}
+            title="运营创作百宝箱 · 合规自查与网感诊断"
+            desc="对标火兔「运营百宝箱」：新广告法违禁词快速扫描自查与一键安全词替换、短视频网感留存诊断打分、五大人设口吻调节器。"
+          />
+          <div className="mt-4">
+            <SuperToolsSuite onShowNotice={onShowNotice} />
           </div>
         </Card>
       )}

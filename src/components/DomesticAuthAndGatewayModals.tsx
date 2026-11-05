@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import {
   Phone,
@@ -888,7 +889,7 @@ export const EcommerceSuiteAndGraphicWorkspace: React.FC<{
                   : 'text-slate-500 hover:text-slate-800'
               }`}
             >
-              <FileText className="w-3.5 h-3.5 text-[#476282]" />
+              <FileText className="w-3.5 h-3.5 text-indigo-600" />
               <span>爆款种草图文</span>
             </button>
             <button
@@ -900,7 +901,7 @@ export const EcommerceSuiteAndGraphicWorkspace: React.FC<{
                   : 'text-slate-500 hover:text-slate-800'
               }`}
             >
-              <Layers className="w-3.5 h-3.5 text-[#476282]" />
+              <Layers className="w-3.5 h-3.5 text-indigo-600" />
               <span>电商四宫格</span>
             </button>
           </div>
@@ -920,7 +921,7 @@ export const EcommerceSuiteAndGraphicWorkspace: React.FC<{
                   onClick={() => handleApplyGraphicArchetype(tpl.id)}
                   className={`rounded-lg px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
                     active
-                      ? 'bg-[#476282]/10 text-[#476282] font-semibold'
+                      ? 'bg-indigo-50/70 text-indigo-600 font-semibold'
                       : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'
                   }`}
                 >
@@ -933,7 +934,7 @@ export const EcommerceSuiteAndGraphicWorkspace: React.FC<{
 
         <div className="flex flex-wrap items-center gap-2">
           <label className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200/90 bg-[#F8FAFC] px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100 cursor-pointer">
-            <Upload className="w-3.5 h-3.5 text-[#476282]" />
+            <Upload className="w-3.5 h-3.5 text-indigo-600" />
             <span>传实拍图</span>
             <input
               type="file"
@@ -949,7 +950,7 @@ export const EcommerceSuiteAndGraphicWorkspace: React.FC<{
             onClick={() => setShowCopywritingBar(!showCopywritingBar)}
             className={`px-3 py-1.5 rounded-xl border text-xs font-medium flex items-center gap-1 cursor-pointer ${
               showCopywritingBar
-                ? 'border-[#476282] bg-[#476282]/10 text-[#476282]'
+                ? 'border-indigo-500 bg-indigo-50/70 text-indigo-600'
                 : 'border-slate-200/90 bg-white text-slate-600 hover:bg-slate-50'
             }`}
           >
@@ -960,7 +961,7 @@ export const EcommerceSuiteAndGraphicWorkspace: React.FC<{
           <button
             type="button"
             onClick={handleBatchDownloadAllPosters}
-            className="px-3.5 py-1.5 rounded-xl bg-[#476282] hover:bg-[#38506b] text-xs font-semibold text-white flex items-center gap-1.5 cursor-pointer"
+            className="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-xs font-semibold text-white flex items-center gap-1.5 cursor-pointer"
           >
             <Download className="w-3.5 h-3.5" />
             <span>导出全套 (4张)</span>
@@ -998,7 +999,7 @@ export const EcommerceSuiteAndGraphicWorkspace: React.FC<{
             rows={3}
             value={captionCopyText}
             onChange={(e) => setCaptionCopyText(e.target.value)}
-            className="w-full resize-y rounded-xl border border-slate-200 bg-[#F8FAFC] p-2.5 text-xs leading-relaxed text-slate-800 focus:border-[#476282] focus:bg-white focus:outline-none"
+            className="w-full resize-y rounded-xl border border-slate-200 bg-[#F8FAFC] p-2.5 text-xs leading-relaxed text-slate-800 focus:border-indigo-500 focus:bg-white focus:outline-none"
           />
         </div>
       )}
@@ -1017,7 +1018,7 @@ export const EcommerceSuiteAndGraphicWorkspace: React.FC<{
                 value={productName}
                 onChange={(e) => setProductName(e.target.value)}
                 placeholder="输入店名或商品名称..."
-                className="w-full rounded-xl border border-slate-200/90 bg-[#F8FAFC] px-3 py-2 text-xs text-slate-800 focus:border-[#476282] focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-slate-200/90 bg-[#F8FAFC] px-3 py-2 text-xs text-slate-800 focus:border-indigo-500 focus:bg-white focus:outline-none"
               />
             </div>
 
@@ -1030,7 +1031,7 @@ export const EcommerceSuiteAndGraphicWorkspace: React.FC<{
                 value={sellingPoints}
                 onChange={(e) => setSellingPoints(e.target.value)}
                 placeholder="输入核心卖点..."
-                className="w-full rounded-xl border border-slate-200/90 bg-[#F8FAFC] p-2.5 text-xs leading-relaxed text-slate-800 focus:border-[#476282] focus:bg-white focus:outline-none resize-y"
+                className="w-full rounded-xl border border-slate-200/90 bg-[#F8FAFC] p-2.5 text-xs leading-relaxed text-slate-800 focus:border-indigo-500 focus:bg-white focus:outline-none resize-y"
               />
               <div className="mt-1.5 flex flex-wrap gap-1">
                 {QUICK_SELLING_TAGS.slice(0, 3).map((tag) => (
@@ -1090,7 +1091,7 @@ export const EcommerceSuiteAndGraphicWorkspace: React.FC<{
                   当前卡片：{currentPoster.step}
                 </span>
                 <div className="flex items-center gap-2">
-                  <label className="text-[11px] font-medium text-[#476282] hover:underline cursor-pointer">
+                  <label className="text-[11px] font-medium text-indigo-600 hover:underline cursor-pointer">
                     换图
                     <input
                       type="file"
@@ -1161,7 +1162,7 @@ export const EcommerceSuiteAndGraphicWorkspace: React.FC<{
             type="button"
             onClick={handleGenerate}
             disabled={isGenerating}
-            className="w-full py-2.5 rounded-xl bg-[#476282] hover:bg-[#38506b] text-xs font-semibold text-white flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+            className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-xs font-semibold text-white flex items-center justify-center gap-1.5 transition-all cursor-pointer"
           >
             <Wand2 className={`w-3.5 h-3.5 ${isGenerating ? 'animate-spin' : ''}`} />
             <span>{isGenerating ? '生成中...' : 'AI 重新生成 4 张套图'}</span>
@@ -1178,7 +1179,7 @@ export const EcommerceSuiteAndGraphicWorkspace: React.FC<{
                 onClick={() => setActiveCardIdx(idx)}
                 className={`group relative rounded-2xl overflow-hidden border transition-all cursor-pointer flex flex-col justify-between min-h-[310px] ${
                   isSelected
-                    ? 'border-[#476282] ring-2 ring-[#476282]/25 shadow-sm'
+                    ? 'border-indigo-500 ring-2 ring-indigo-400/25 shadow-sm'
                     : 'border-slate-200/80 hover:border-slate-300'
                 }`}
               >
@@ -1259,7 +1260,7 @@ export const EcommerceSuiteAndGraphicWorkspace: React.FC<{
         <div className="lg:col-span-3 flex flex-col items-center justify-between rounded-2xl border border-slate-200/80 bg-[#F3F6F9] p-4">
           <div className="flex items-center justify-between w-full">
             <span className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
-              <Smartphone className="w-3.5 h-3.5 text-[#476282]" />
+              <Smartphone className="w-3.5 h-3.5 text-indigo-600" />
               <span>笔记预览</span>
             </span>
             <span className="font-mono text-xs text-slate-500">
@@ -1294,7 +1295,7 @@ export const EcommerceSuiteAndGraphicWorkspace: React.FC<{
                     type="button"
                     onClick={() => setActiveCardIdx(i)}
                     className={`h-1.5 rounded-full transition-all cursor-pointer ${
-                      activeCardIdx === i ? 'w-4 bg-[#476282]' : 'w-1.5 bg-slate-300'
+                      activeCardIdx === i ? 'w-4 bg-indigo-600' : 'w-1.5 bg-slate-300'
                     }`}
                   />
                 ))}
@@ -1322,7 +1323,7 @@ export const EcommerceSuiteAndGraphicWorkspace: React.FC<{
             <button
               type="button"
               onClick={() => setActiveCardIdx((prev) => (prev + 1) % posters.length)}
-              className="font-medium text-[#476282] hover:underline cursor-pointer"
+              className="font-medium text-indigo-600 hover:underline cursor-pointer"
             >
               下一张 →
             </button>

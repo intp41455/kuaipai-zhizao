@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import {
   Bot,
@@ -82,8 +83,6 @@ export const PersonalAgentRagStudioModal: React.FC<{
   onSaveAgentAndProfile: (newAgent: CustomAIAgent, profile: StoreMemoryProfile) => void;
   onShowNotice: (type: 'success' | 'error', text: string) => void;
 }> = ({ isOpen, onClose, activeProfile, onSaveAgentAndProfile, onShowNotice }) => {
-  if (!isOpen) return null;
-
   // Step state: 1: Agent & Persona -> 2: RAG Knowledge Injection -> 3: Test Playground
   const [activeStep, setActiveStep] = useState<1 | 2 | 3>(1);
 
@@ -213,6 +212,8 @@ export const PersonalAgentRagStudioModal: React.FC<{
     onShowNotice('success', `个性化智能体「${agentName}」与 RAG 知识库已建立并全局挂载生效！`);
     onClose();
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 animate-in fade-in duration-200">

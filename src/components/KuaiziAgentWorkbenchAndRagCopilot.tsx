@@ -1,6 +1,8 @@
+"use client";
 import React, { useState, useEffect } from 'react';
 import {
   Sparkles,
+  Lightbulb,
   Send,
   Bot,
   X,
@@ -528,6 +530,7 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
   const [isExpandedInput, setIsExpandedInput] = useState(false);
   const [showAllCapabilities, setShowAllCapabilities] = useState(false);
   const [activeMatrixFilter, setActiveMatrixFilter] = useState<string>('ALL');
+  const [isOptimizingPrompt, setIsOptimizingPrompt] = useState(false);
 
   // Personal Custom AI Agent & Simplified RAG Builder State (Progressive Disclosure Popover/Panel)
   const [showPersonalRagBar, setShowPersonalRagBar] = useState(false);
@@ -716,37 +719,93 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
     },
   };
 
-  // Clean recommended starter pills
-  const recommendedStarters = [
-    {
-      tag: 'AI 语音字幕成片',
-      tagColor: 'text-blue-600',
-      text: `为「${defaultProdName.slice(0, 14)}」生成4镜带货成片并自动叠印AI语音花字字幕`,
-      fullPrompt: scenarioMetadataMap.one_click_video.defaultPrompt,
-      mode: 'one_click_video' as const,
-    },
-    {
-      tag: '黄金3秒脚本',
-      tagColor: 'text-indigo-600',
-      text: `为「${defaultProdName.slice(0, 14)}」生成前3秒痛点暴击4镜带货脚本`,
-      fullPrompt: scenarioMetadataMap.script.defaultPrompt,
-      mode: 'script' as const,
-    },
-    {
-      tag: '爆款拉片复刻',
-      tagColor: 'text-sky-600',
-      text: '粘贴抖音/小红书同行爆款链接，30秒拆解结构并裂变3条新开头',
-      fullPrompt: scenarioMetadataMap.dissect.defaultPrompt,
-      mode: 'dissect' as const,
-    },
-    {
-      tag: '同城团购种草',
-      tagColor: 'text-emerald-600',
-      text: `结合「${activeStore.storeName.slice(0, 10)}」知识库生成小红书种草图文与团购话术`,
-      fullPrompt: scenarioMetadataMap.xhs_graphic.defaultPrompt,
-      mode: 'xhs_graphic' as const,
-    },
+  // Smart viral topic pool (1-click fool-proof selection)
+  const [topicBatchIndex, setTopicBatchIndex] = useState(0);
+
+  const topicPool = [
+    // Batch 1
+    [
+      {
+        tag: '同城探店',
+        tagColor: 'bg-amber-50 text-amber-700 border-amber-200/60',
+        heat: '🔥 18.6w在拍',
+        title: '老街深巷避坑指南：告别排队网红大店',
+        desc: '在本地经常熬夜头油/聚餐的朋友，千万别只知道网红大店排队，这间藏在深巷的店...',
+        mode: 'script' as const,
+        topic: '【同城探店爆款】针对本地熬夜加班人群，打造避坑网红大店、转寻深巷口碑老店的探店口播脚本，突出人均性价比与真实体验反差。',
+      },
+      {
+        tag: '好物测评',
+        tagColor: 'bg-indigo-50 text-indigo-700 border-indigo-200/60',
+        heat: '🔥 12.4w在拍',
+        title: '洗发水先看成分表第2位：油头去屑真相',
+        desc: '洗完头不到半天就扁塌泛油？别盲目换大牌，先看成分表第2位到底是不是...',
+        mode: 'one_click_video' as const,
+        topic: '【好物测评反差】科普洗发水控油去屑的成分表真相，对比普通大牌与温和氨基酸微泡的清洁力差异，展示48小时清爽蓬松实测效果。',
+      },
+      {
+        tag: '生活治愈',
+        tagColor: 'bg-purple-50 text-purple-700 border-purple-200/60',
+        heat: '⭐ 9.8w收藏',
+        title: '把工位变成治愈小咖啡馆：早八打工人仪式感',
+        desc: '不用几千块昂贵咖啡机，只要90度热水，一分钟闻到纯正坚果可可香...',
+        mode: 'xhs_graphic' as const,
+        topic: '【小红书治愈开箱】以白噪音慢节奏记录早八打工人在工位自制挂耳咖啡，突出充氮保鲜香气与低卡消水肿卖点，引导种草评论区互动。',
+      },
+      {
+        tag: '工厂避坑',
+        tagColor: 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
+        heat: '🔥 28.1w在拍',
+        title: '商场百元 vs 源头直发：暴力实测谁在交智商税',
+        desc: '直接往水泥地上摔、整个人踩上去，外壳连一道划痕都没有，两万毫安真实电芯...',
+        mode: 'one_click_video' as const,
+        topic: '【工厂直发避坑】实景仓库大拆箱，暴力踩踏摔打实测数码充电宝的军工防摔品质，承诺拍一发三不赚差价，高声量强促单。',
+      },
+    ],
+    // Batch 2
+    [
+      {
+        tag: '反常识科普',
+        tagColor: 'bg-blue-50 text-blue-700 border-blue-200/60',
+        heat: '🔥 15.3w在拍',
+        title: '90%的人洗头方法都错了！难怪狂掉发还头痒',
+        desc: '千万别直接把洗发水抹头顶！先在掌心搓出绵密微泡，这3个沙龙级护理技巧...',
+        mode: 'script' as const,
+        topic: '【反常识干货口播】拆解日常护发最易踩的3个错误习惯，科普沙龙级发根净澈手法，结尾自然带出温和不伤头皮的招牌产品。',
+      },
+      {
+        tag: '爆款拉片',
+        tagColor: 'bg-rose-50 text-rose-700 border-rose-200/60',
+        heat: '🔥 21.0w在拍',
+        title: '拆解全网日销800单的短视频前3秒黄金结构',
+        desc: '为什么别人一条视频能出几百单？拆解头部达人的前3秒高留存悬念公式...',
+        mode: 'dissect' as const,
+        topic: '【爆款拉片复刻】拆解短视频平台近30天日销破万的爆款原片，提取其前3秒视觉恐吓、中段实测证据与尾段限时福利的转化闭环。',
+      },
+      {
+        tag: '电商爆品',
+        tagColor: 'bg-sky-50 text-sky-700 border-sky-200/60',
+        heat: '⭐ 8.2w收藏',
+        title: '新一代随身消水肿神器：极速唤醒办公活力',
+        desc: '高海拔阿拉比卡单一产区，浅中度慢火烘焙，每天一杯告别晨起浮肿脸...',
+        mode: 'ecommerce_poster' as const,
+        topic: '【电商套图视觉】设计一套专为办公室白领打造的高质感便携咖啡主图与详情套图，包含高颜值极简封面、成分表微距与好评见证。',
+      },
+      {
+        tag: '同城到店',
+        tagColor: 'bg-teal-50 text-teal-700 border-teal-200/60',
+        heat: '🔥 16.7w在拍',
+        title: '周末不知道去哪？本地老街坊私藏清单大公开',
+        desc: '不搞套路不充卡，纯手工45分钟深层护理，做完发根根根立起...',
+        mode: 'script' as const,
+        topic: '【同城团购引流】以老街坊口碑探店视角，真实测评门店招牌护理体验，重点强调团购价仅需68元、未用随时退的放心承诺。',
+      },
+    ],
   ];
+
+  const handleShuffleTopics = () => {
+    setTopicBatchIndex((prev) => (prev + 1) % topicPool.length);
+  };
 
   // Mount / Unmount Skill with 1 click
   const handleToggleSkill = (id: string) => {
@@ -957,89 +1016,112 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
 
     setAgentSteps(initialSteps);
 
-    let aiResult: {
-      title?: string;
-      directionName?: string;
-      suitableMaterials?: string[];
-      coverSuggestion?: string;
-      shots?: { idx: string; title: string; script: string; visual: string; duration: string }[];
-    } | null = null;
+    let aiResult: any = null;
 
     try {
-      const resp = await fetch('/api/ai/agent-execute', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          prompt: cleanInput,
-          scenarioMode: activeScenario,
-          powerMode: agentPowerMode === 'fast' ? 'fast' : 'super_agent',
-          activeSkills: activeSkills.map((s) => ({
-            id: s.id,
-            name: s.name,
-            category: s.category,
-          })),
-          storeMemory: storeMemoryEnabled ? activeStore : null,
-        }),
-      });
-      if (resp.ok) {
-        aiResult = await resp.json();
+      const hasUrl = /https?:\/\/[a-zA-Z0-9./_?&=%#-]+/.test(cleanInput);
+      if (hasUrl) {
+        // 如果输入包含短视频链接，直接调用后端全链路通用仿刻管线
+        const pipeResp = await fetch('/api/v1/ai/pipeline/clone-and-produce', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            store_info: {
+              name: activeStore.storeName,
+              industry: activeStore.industry,
+              location: activeStore.cityLocation,
+              signature_products: activeStore.signatureProducts,
+            },
+            viral_target_input: cleanInput,
+            dual_track: true,
+          }),
+        });
+        if (pipeResp.ok) {
+          const pipeData = await pipeResp.json();
+          const targetTitle = pipeData.targetMeta?.title || pipeData.storyboard?.title || '爆款原片深度拆解';
+          const scenesArr = pipeData.storyboard?.scenes || pipeData.trackA_ip?.scenes || [];
+          aiResult = {
+            title: `【原片拆解复刻】${targetTitle}`,
+            coverSuggestion: targetTitle.slice(0, 12),
+            directionName: pipeData.deconstruction?.extractedFormula || '同城爆款复刻',
+            cameraAngles: scenesArr.map((s: any, idx: number) => `0${idx + 1} ${s.phase || s.shot_type || '关键镜头'}`),
+            visualCues: scenesArr.map((s: any) => s.visual_detail || s.visual || ''),
+            sceneLines: scenesArr.map((s: any) => s.lines || s.script || ''),
+          };
+        }
+      }
+
+      if (!aiResult) {
+        const resp = await fetch('/api/v1/ai/agent-execute', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            objective: cleanInput,
+            prompt: cleanInput,
+            mode: activeScenario,
+            scenarioMode: activeScenario,
+            category: activeStore.industry || '通用',
+            storeMemory: storeMemoryEnabled ? activeStore : null,
+          }),
+        });
+        if (resp.ok) {
+          aiResult = await resp.json();
+        }
       }
     } catch {
-      // Fallback to deterministic high-quality deliverable if offline
+      // 网络离线优雅降级
     }
 
-    const terminalLog = `$ skillhub-agent --mode="${agentPowerMode}" --scenario="${activeScenario}" --skills=${activeSkills.length}
+    const d = aiResult?.deliverable || aiResult;
+    const resolvedTitle =
+      d?.title ||
+      d?.sourceTitle ||
+      (cleanInput.length > 25 ? cleanInput.slice(0, 24) + '...' : cleanInput);
+
+    const deliverablePayload = {
+      title: resolvedTitle,
+      coverHeadline: d?.coverSuggestion || (resolvedTitle.length > 12 ? resolvedTitle.slice(0, 12) : resolvedTitle),
+      coverSubhead: '前3秒痛点暴击 · AI视听一体化实测',
+      suitableDirection: d?.directionName || `${activeStore.industry || '同城'}带货种草 / 探店到店核销`,
+      suitableMaterial:
+        Array.isArray(d?.suitableMaterials) && d.suitableMaterials.length > 0
+          ? d.suitableMaterials.join(' + ')
+          : '1段痛点特写(3s) + 1段细节实录(4s) + 1段使用对比(4s) + 促单尾帧(3s)',
+      cameraAngles:
+        d?.cameraAngles && Array.isArray(d.cameraAngles) && d.cameraAngles.length >= 4
+          ? d.cameraAngles.slice(0, 4)
+          : [
+              '01 黄金前3秒痛点反差',
+              '02 招牌产品高颜微距',
+              '03 核心细节实测对比',
+              '04 限时福利强力促单',
+            ],
+      visualCues:
+        d?.visualCues && Array.isArray(d.visualCues) && d.visualCues.length >= 4
+          ? d.visualCues.slice(0, 4)
+          : [
+              `高位大俯拍特写，快速展示「${resolvedTitle.slice(0, 16)}」核心视觉焦点。`,
+              `正视微俯运镜，侧逆光展示真实材质与做工细节。`,
+              `前厅人群纵深轴线，展现真实市井烟火气与顾客满足神态。`,
+              `平视全景手势指向屏幕左下角团购卡，展示限时特权券。`,
+            ],
+      sceneLines:
+        d?.sceneLines && Array.isArray(d.sceneLines) && d.sceneLines.length >= 4
+          ? d.sceneLines.slice(0, 4)
+          : [
+              `先别划走！关于「${resolvedTitle.slice(0, 16)}」，90%的人都踩了坑！`,
+              `今天带大家深入实测，看看真正纯手工制作的招牌细节！`,
+              `对比普通市面货，真正做到了真材实料，吃过一次就成回头客！`,
+              `点击左下角同城专属优惠，不用可退、过期自动退，赶紧抢一份！`,
+            ],
+    };
+
+    const terminalLog = `$ skillhub-agent --mode="${agentPowerMode}" --scenario="${activeScenario}"
 [00:00.12] [RAG] Mounted store index: ${activeStore.storeName} (${activeStore.industry})
 [00:00.35] [SKILLHUB] Executed ${activeSkills.map((s) => s.toolName).join(', ')}
 [00:00.78] [AUDIO-CAPTION] Auto-generated timed subtitle overlay track for 4 shots
 [00:01.10] [VERIFY] Golden 3s retention score: 87.2% (PASS > 80% threshold)
 [00:01.24] [DONE] Cloud AI Agent deliverable ready.`;
-
-    const finalShots =
-      aiResult && Array.isArray(aiResult.shots) && aiResult.shots.length >= 4
-        ? aiResult.shots.slice(0, 4)
-        : null;
-
-    const deliverablePayload = {
-      title:
-        aiResult?.title ||
-        `【${activeStore.storeName}】${defaultProdName.slice(0, 18)} · ${scenarioMetadataMap[activeScenario].label}方案`,
-      coverHeadline: aiResult?.coverSuggestion
-        ? aiResult.coverSuggestion.slice(0, 12)
-        : `${defaultProdName.slice(0, 10)}实测封神`,
-      coverSubhead: '前3秒痛点暴击 · AI字幕叠印高光实测',
-      suitableDirection:
-        aiResult?.directionName ||
-        `${activeStore.industry}带货种草 / 抖音同城团购核销 / 小红书高收藏测评`,
-      suitableMaterial:
-        Array.isArray(aiResult?.suitableMaterials) && aiResult!.suitableMaterials.length > 0
-          ? aiResult!.suitableMaterials.join(' + ')
-          : `1段痛点特写(3s) + 1段${defaultProdName.slice(0, 10)}微距镜头(4s) + 1段使用前后对比(4s) + 门店/福利尾帧(3s)`,
-      cameraAngles: finalShots
-        ? finalShots.map((s, idx) => `${s.idx || `0${idx + 1}`} ${s.title}`)
-        : [
-            '01 黄金前3秒痛点钩子',
-            '02 产品高颜微距登场',
-            '03 核心卖点实测对比',
-            '04 限时福利强力促单',
-          ],
-      visualCues: finalShots
-        ? finalShots.map((s) => s.visual)
-        : [
-            `【${activeStore.cityLocation}实景/痛点切入】特写展示目标受众「${activeStore.targetAudience.slice(0, 18)}」的高频困扰，镜头快速推近抓人。`,
-            `4K微距推镜展示「${defaultProdName}」核心外观与质地，光线通透高级。`,
-            `分屏直观对比使用前后的惊艳反差，突出「${sellingPoints.slice(0, 26)}」。`,
-            `主理人手持产品微笑出镜，屏幕叠加「${activeStore.memoryAnchors.slice(0, 22)}」福利字卡引导左下角转化。`,
-          ],
-      sceneLines: finalShots
-        ? finalShots.map((s) => s.script)
-        : [
-            `先别划走！为什么90%的人选${defaultProdName.slice(0, 10)}都踩了坑？今天3秒钟看懂真相！`,
-            `看看我们【${activeStore.storeName}】口碑爆棚的这款${defaultProdName}，细节质感直接拉满！`,
-            `它最核心的优势就是${sellingPoints.slice(0, 28)}，亲测用过一次就彻底离不开！`,
-            `现在点击左下角专属链接，立享${activeStore.memoryAnchors.slice(0, 24)}，赶紧抢购体验吧！`,
-          ],
-    };
 
     setAgentSteps([
       initialSteps[0],
@@ -1066,10 +1148,11 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
   // RAG Single-Item Smart Replacement inside Agent Deliverable
   const handleReplaceDeliverableTitle = () => {
     if (!agentDeliverable) return;
+    const currentSubject = agentDeliverable.title.replace(/^【.*?】/, '').slice(0, 14) || '爆款招牌';
     const candidates = [
-      `后悔没早买！${defaultProdName.slice(0, 12)}真实测评，第3秒直接被惊艳！`,
-      `在${activeStore.cityLocation}火出圈！这款${defaultProdName.slice(0, 12)}凭什么全是回头客？`,
-      `别再交智商税了！沉浸式实测${defaultProdName.slice(0, 12)}的核心细节`,
+      `后悔没早买！${currentSubject}真实测评，第3秒直接被惊艳！`,
+      `在${activeStore.cityLocation}火出圈！这款${currentSubject}凭什么全是回头客？`,
+      `别再交智商税了！沉浸式实测${currentSubject}的核心细节`,
       `【${activeStore.storeName}店长亲测】3秒解决${activeStore.targetAudience.slice(0, 10)}最大痛点！`,
     ];
     const nextIdx = (titleVariantIdx + 1) % candidates.length;
@@ -1082,9 +1165,10 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
 
   const handleReplaceDeliverableCover = () => {
     if (!agentDeliverable) return;
+    const currentSubject = agentDeliverable.title.replace(/^【.*?】/, '').slice(0, 14) || '爆款招牌';
     const coverPairs = [
       { h: '千万别乱买！实测对比', s: `${activeStore.storeName} · 闭眼入指南` },
-      { h: '放大10倍看真实细节', s: `${sellingPoints.slice(0, 16)}` },
+      { h: '放大10倍看真实细节', s: `${currentSubject}深度实拍` },
       { h: '同城回头客断货王', s: `${activeStore.cityLocation}口碑爆品实测` },
       { h: '3秒看懂核心反差', s: '高完播黄金钩子封神榜' },
     ];
@@ -1099,25 +1183,26 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
 
   const handleReplaceDeliverableScript = () => {
     if (!agentDeliverable) return;
+    const currentSubject = agentDeliverable.title.replace(/^【.*?】/, '').slice(0, 14) || '爆款招牌';
     const nextIdx = (scriptVariantIdx + 1) % 3;
     setScriptVariantIdx(nextIdx);
     const scriptPools = [
       [
-        `${activeStore.cityLocation}的朋友注意！买${defaultProdName.slice(0, 10)}千万别只看表面包装！`,
-        `今天把我们【${activeStore.storeName}】镇店的这款${defaultProdName}放大10倍给大家看细节！`,
-        `核心搭载了${sellingPoints.slice(0, 26)}，实测前后反差肉眼可见！`,
+        `${activeStore.cityLocation}的朋友注意！买${currentSubject}千万别只看表面包装！`,
+        `今天把我们【${activeStore.storeName}】镇店的这款${currentSubject}放大10倍给大家看细节！`,
+        `核心搭载了真材实料与高标准工艺，实测前后反差肉眼可见！`,
         `现在左下角限时开放专属福利：${activeStore.memoryAnchors.slice(0, 22)}，刷到赶紧囤！`,
       ],
       [
-        `花3秒钟把镜头拉到最近！看看真正高品质的${defaultProdName.slice(0, 10)}长什么样！`,
+        `花3秒钟把镜头拉到最近！看看真正高品质的${currentSubject}长什么样！`,
         `很多老顾客都是因为这一个细节，成了我们【${activeStore.storeName}】的忠实粉丝！`,
-        `主打的就是${sellingPoints.slice(0, 26)}，不管是自用还是送人都超有面子！`,
+        `主打的就是正宗道地风味，不管是自用还是送人都超有面子！`,
         `趁现在补贴活动还在，点击下方链接直接锁单，不满意随时退！`,
       ],
       [
         `如果你也是${activeStore.targetAudience.slice(0, 14)}，这条视频能帮你省下不少冤枉钱！`,
-        `我们团队实测了十几个批次，最终打磨出这款${defaultProdName}！`,
-        `真正做到了${sellingPoints.slice(0, 26)}，口碑好评率高达98%以上！`,
+        `我们团队实测了十几个批次，最终打磨出这款${currentSubject}！`,
+        `真正做到了高性价比与好口碑，好评率高达98%以上！`,
         `点击左下角团购/商品卡，立享${activeStore.memoryAnchors.slice(0, 22)}，手慢无！`,
       ],
     ];
@@ -1125,6 +1210,42 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
       ...agentDeliverable,
       sceneLines: scriptPools[nextIdx],
     });
+  };
+
+  const handleOptimizePrompt = async () => {
+    const raw = promptInput.trim() || scenarioMetadataMap[selectedAgentMode].defaultPrompt;
+    setIsOptimizingPrompt(true);
+    try {
+      const res = await fetch('/api/v1/ai/smart-assist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          actionType: 'hook_boost',
+          productName: raw.slice(0, 30),
+          sellingPoints: [raw, activeStore?.memoryAnchors].filter(Boolean),
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const boosted = data?.hook || data?.enhancedPrompt;
+        if (boosted) {
+          setPromptInput(`【黄金前3秒爆款Hook】${boosted}，突出核心对比痛点，无缝承接招牌转化！`);
+          setPersonalAgentSavedBanner('✓ 提示词已通过 AI 黄金爆款公式优化！');
+          setTimeout(() => setPersonalAgentSavedBanner(''), 3000);
+          return;
+        }
+      }
+    } catch {
+      // 优雅降级启发式规则
+    } finally {
+      setIsOptimizingPrompt(false);
+    }
+
+    const cleanBody = raw.replace(/^【.*?】/, '');
+    const enhanced = `【前3秒高留存爆款公式】针对${cleanBody}：前3秒抛出违背常识的痛点反差镜头，中段展开3条硬核实测证据，结尾引导左下角限时促单。`;
+    setPromptInput(enhanced);
+    setPersonalAgentSavedBanner('✓ 提示词已完成爆款逻辑增强！');
+    setTimeout(() => setPersonalAgentSavedBanner(''), 3000);
   };
 
   const handlePrimarySubmit = (e: React.FormEvent) => {
@@ -1174,7 +1295,7 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
         {/* 1. Minimalist Header + Compact Mode Switch */}
         <div className="flex flex-col items-center text-center">
           <div className="inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-slate-200/80 bg-slate-50/90 px-3 py-1 text-[11px] font-medium text-slate-600 mb-2">
-            <Sparkles className="h-3 w-3 text-[#476282]" />
+            <Sparkles className="h-3 w-3 text-indigo-600" />
             <span>已挂载 short-video-script 与 {selectedSkillIds.length} 项专家 Skill</span>
             <span className="text-slate-300">|</span>
             <button
@@ -1187,7 +1308,7 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
                 setPromptInput(targetPrompt);
                 runAutonomousAgentLoop(targetPrompt, selectedAgentMode);
               }}
-              className="font-semibold text-[#476282] hover:underline cursor-pointer"
+              className="font-semibold text-indigo-600 hover:underline cursor-pointer"
             >
               {agentPowerMode === 'super' ? '深度 Agent 模式 ▾' : '快速直出模式 ▾'}
             </button>
@@ -1198,10 +1319,10 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
           </h1>
         </div>
 
-        {/* 2. Elevated Minimal Omnibox Card with Resizable Textarea */}
+        {/* 2. Elevated Minimal Omnibox Card with Resizable Textarea (截图同款 Google 双子座 渐变炫彩发光框) */}
         <form onSubmit={handlePrimarySubmit} className="mt-4">
-          <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-[#FAFBFD] shadow-[0_4px_20px_-6px_rgba(15,23,42,0.05)] transition-all focus-within:border-[#476282]/50 focus-within:bg-white">
-            <div className="p-3.5 sm:p-4 flex flex-col gap-2.5">
+          <div className="gemini-gradient-box">
+            <div className="gemini-gradient-inner p-3.5 sm:p-4 flex flex-col gap-2.5">
               <textarea
                 rows={isExpandedInput ? 6 : 3}
                 value={promptInput}
@@ -1230,7 +1351,7 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
                     title="浏览或管理已挂载的专家 Skills"
                     className="inline-flex items-center gap-1 rounded-lg border border-slate-200/90 bg-white px-2.5 py-1 text-xs font-medium text-slate-600 hover:border-slate-300 hover:text-slate-900 transition-colors cursor-pointer"
                   >
-                    <Cpu className="h-3.5 w-3.5 text-[#476282]" />
+                    <Cpu className="h-3.5 w-3.5 text-indigo-600" />
                     <span>专家Skills ({selectedSkillIds.length})</span>
                   </button>
 
@@ -1243,11 +1364,11 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
                     title="展开或收起个人专属 Agent 与门店 RAG 知识库配置"
                     className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
                       showPersonalRagBar
-                        ? 'border-[#476282] bg-[#476282]/10 text-[#38506b]'
+                        ? 'border-indigo-500 bg-indigo-50/70 text-indigo-700'
                         : 'border-slate-200/90 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900'
                     }`}
                   >
-                    <Store className="h-3.5 w-3.5 text-[#476282]" />
+                    <Store className="h-3.5 w-3.5 text-indigo-600" />
                     <span>专属Agent / RAG</span>
                     <ChevronDown className="h-3 w-3 opacity-60" />
                   </button>
@@ -1258,15 +1379,15 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
                       setShowStarterBar(!showStarterBar);
                       setShowPersonalRagBar(false);
                     }}
-                    title="查看热门指令灵感示例"
+                    title="查看热门爆款选题推荐"
                     className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
                       showStarterBar
-                        ? 'border-[#476282] bg-[#476282]/10 text-[#38506b]'
+                        ? 'border-indigo-500 bg-indigo-50/70 text-indigo-700'
                         : 'border-slate-200/90 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900'
                     }`}
                   >
-                    <Sparkles className="h-3.5 w-3.5 text-[#476282]" />
-                    <span>灵感示例</span>
+                    <Lightbulb className="h-3.5 w-3.5 text-amber-500" />
+                    <span>选题推荐</span>
                     <ChevronDown className="h-3 w-3 opacity-60" />
                   </button>
 
@@ -1312,9 +1433,20 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
                   )}
 
                   <button
+                    type="button"
+                    onClick={handleOptimizePrompt}
+                    disabled={isOptimizingPrompt || isRunningAgentLoop}
+                    title="AI 智能提示词优化"
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-indigo-200/80 bg-indigo-50/70 px-3 py-1.5 text-xs font-semibold text-indigo-700 hover:bg-indigo-100/70 hover:border-indigo-300 transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    <Wand2 className={`h-3 w-3 ${isOptimizingPrompt ? 'animate-spin' : 'text-indigo-600'}`} />
+                    <span>{isOptimizingPrompt ? '优化中...' : '提示词优化'}</span>
+                  </button>
+
+                  <button
                     type="submit"
                     disabled={isGenerating || isRunningAgentLoop}
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-[#476282] px-4 py-1.5 text-xs font-semibold text-white hover:bg-[#38506b] disabled:opacity-50 transition-all cursor-pointer"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 disabled:opacity-50 transition-all cursor-pointer"
                   >
                     <span>{isRunningAgentLoop ? '生成中...' : '立即生成'}</span>
                     <Send className="h-3 w-3" />
@@ -1348,8 +1480,8 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
                 }}
                 className={`inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer ${
                   active
-                    ? 'border border-[#476282] bg-[#476282] text-white shadow-2xs'
-                    : 'border border-slate-200/80 bg-[#F8FAFC] text-slate-600 hover:border-slate-300 hover:bg-white hover:text-slate-900'
+                    ? 'border border-indigo-200/80 bg-indigo-50/70 text-indigo-700 font-semibold shadow-2xs'
+                    : 'border border-slate-100 bg-white text-slate-500 hover:border-slate-200 hover:bg-slate-50/50 hover:text-slate-800'
                 }`}
               >
                 <Icon className="h-3.5 w-3.5" />
@@ -2012,7 +2144,7 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
           <div className="mt-3 rounded-2xl border border-slate-200/90 bg-[#F8FAFC] p-4 space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Bot className="h-4 w-4 text-[#476282]" />
+                <Bot className="h-4 w-4 text-indigo-600" />
                 <span className="text-xs font-semibold text-slate-800">
                   定制专属 AI 智能体与门店 RAG 知识库
                 </span>
@@ -2033,21 +2165,21 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
                   value={customAgentName}
                   onChange={(e) => setCustomAgentName(e.target.value)}
                   placeholder="智能体名称"
-                  className="w-full rounded-lg border border-slate-200 bg-slate-50/50 px-2.5 py-1.5 text-xs text-slate-800 focus:border-[#476282] focus:bg-white focus:outline-none"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50/50 px-2.5 py-1.5 text-xs text-slate-800 focus:border-indigo-500 focus:bg-white focus:outline-none"
                 />
                 <textarea
                   rows={2}
                   value={customAgentPersona}
                   onChange={(e) => setCustomAgentPersona(e.target.value)}
                   placeholder="人设语气风格..."
-                  className="w-full resize-y rounded-lg border border-slate-200 bg-slate-50/50 p-2 text-xs text-slate-700 focus:border-[#476282] focus:bg-white focus:outline-none"
+                  className="w-full resize-y rounded-lg border border-slate-200 bg-slate-50/50 p-2 text-xs text-slate-700 focus:border-indigo-500 focus:bg-white focus:outline-none"
                 />
               </div>
 
               <div className="rounded-xl border border-slate-200/80 bg-white p-3 space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-slate-700">② 投喂 RAG 知识库</span>
-                  <label className="text-[11px] font-medium text-[#476282] hover:underline cursor-pointer">
+                  <label className="text-[11px] font-medium text-indigo-600 hover:underline cursor-pointer">
                     + 导入文档
                     <input
                       type="file"
@@ -2072,7 +2204,7 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
                   value={customRagKnowledgeText}
                   onChange={(e) => setCustomRagKnowledgeText(e.target.value)}
                   placeholder="输入店铺招牌爆品、核心卖点或团购福利..."
-                  className="w-full resize-y rounded-lg border border-slate-200 bg-slate-50/50 p-2 text-xs text-slate-700 focus:border-[#476282] focus:bg-white focus:outline-none"
+                  className="w-full resize-y rounded-lg border border-slate-200 bg-slate-50/50 p-2 text-xs text-slate-700 focus:border-indigo-500 focus:bg-white focus:outline-none"
                 />
               </div>
 
@@ -2098,7 +2230,7 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
                       setPersonalAgentSavedBanner('✓ 已保存并全局生效');
                       setTimeout(() => setPersonalAgentSavedBanner(''), 3000);
                     }}
-                    className="flex-1 rounded-lg bg-[#476282] py-1.5 text-xs font-semibold text-white hover:bg-[#38506b] cursor-pointer"
+                    className="flex-1 rounded-lg bg-indigo-600 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 cursor-pointer"
                   >
                     保存激活
                   </button>
@@ -2119,39 +2251,62 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
         )}
 
         {showStarterBar && (
-          <div className="mt-3 rounded-2xl border border-slate-200/90 bg-[#F8FAFC] p-3.5">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold text-slate-700">点击任意示例直接填入并生成：</span>
-              <button
-                type="button"
-                onClick={() => setShowStarterBar(false)}
-                className="text-xs text-slate-400 hover:text-slate-700 cursor-pointer"
-              >
-                收起 ✕
-              </button>
+          <div className="mt-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm animate-in fade-in duration-150">
+            <div className="flex items-center justify-between mb-3 border-b border-slate-100 pb-2.5">
+              <div className="flex items-center gap-2">
+                <Lightbulb className="h-4 w-4 text-amber-500" />
+                <span className="text-xs font-bold text-slate-800">热门爆款选题推荐（一键点击自动填入）</span>
+                <span className="hidden sm:inline-block rounded-full bg-slate-50 px-2 py-0.5 text-[10px] text-slate-400">
+                  全网万赞网感算法库
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleShuffleTopics}
+                  className="inline-flex items-center gap-1 rounded-lg border border-slate-200/80 bg-white px-2.5 py-1 text-xs font-medium text-slate-600 hover:border-indigo-400 hover:text-indigo-600 cursor-pointer transition-colors"
+                >
+                  <RefreshCw className="h-3 w-3 text-indigo-500" />
+                  <span>换一批</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowStarterBar(false)}
+                  className="rounded-lg p-1 text-xs text-slate-400 hover:bg-slate-50 hover:text-slate-600 cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-              {recommendedStarters.map((item, idx) => (
+
+            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+              {topicPool[topicBatchIndex].map((item, idx) => (
                 <button
                   key={idx}
                   type="button"
                   onClick={() => {
                     setSelectedAgentMode(item.mode);
-                    setPromptInput(item.fullPrompt);
+                    setPromptInput(item.topic);
                     setShowStarterBar(false);
-                    runAutonomousAgentLoop(item.fullPrompt, item.mode);
+                    setPersonalAgentSavedBanner(`✓ 已选用「${item.title}」，点击下方【立即生成】即可开拍！`);
+                    setTimeout(() => setPersonalAgentSavedBanner(''), 4000);
                   }}
-                  className="group flex items-center justify-between gap-2 rounded-xl border border-slate-200/80 bg-white px-3 py-2 text-left text-xs transition-all hover:border-[#476282] cursor-pointer"
+                  className="group flex flex-col justify-between gap-1.5 rounded-xl border border-slate-100 bg-[#fafbfe] p-3 text-left transition-all hover:border-indigo-300 hover:bg-white hover:shadow-xs cursor-pointer"
                 >
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-[#476282] shrink-0">
+                  <div className="flex items-center justify-between gap-2">
+                    <span
+                      className={`inline-flex items-center rounded-md border px-2 py-0.5 text-[10px] font-semibold ${item.tagColor}`}
+                    >
                       {item.tag}
                     </span>
-                    <span className="truncate text-slate-700 group-hover:text-slate-900">
-                      {item.text}
-                    </span>
+                    <span className="text-[10px] font-medium text-slate-400">{item.heat}</span>
                   </div>
-                  <ChevronRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-[#476282] shrink-0" />
+                  <h4 className="text-xs font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">
+                    {item.title}
+                  </h4>
+                  <p className="line-clamp-2 text-[11px] leading-relaxed text-slate-500">
+                    {item.desc}
+                  </p>
                 </button>
               ))}
             </div>
@@ -2163,7 +2318,7 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
           <div className="mt-5 rounded-2xl border border-slate-200/90 bg-[#F8FAFC] p-4 sm:p-5 space-y-3.5 shadow-xs">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1 rounded-md bg-[#476282]/10 px-2 py-0.5 text-[11px] font-semibold text-[#476282]">
+                <span className="inline-flex items-center gap-1 rounded-md bg-indigo-50/70 px-2 py-0.5 text-[11px] font-semibold text-indigo-600">
                   <CheckCircle2 className="h-3 w-3" />
                   <span>生成完毕</span>
                 </span>
@@ -2236,7 +2391,7 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
                   key={idx}
                   className="rounded-xl border border-slate-200/80 bg-white p-3 text-xs space-y-1"
                 >
-                  <div className="font-semibold text-[#476282]">{ang}</div>
+                  <div className="font-semibold text-indigo-600">{ang}</div>
                   <div className="text-[11px] text-slate-500 line-clamp-1">
                     画面：{agentDeliverable.visualCues[idx]}
                   </div>
@@ -2296,7 +2451,7 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
                     }}
                     className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 cursor-pointer"
                   >
-                    <BookmarkPlus className="h-3.5 w-3.5 text-[#476282]" />
+                    <BookmarkPlus className="h-3.5 w-3.5 text-indigo-600" />
                     <span>{encapsulatedDone ? '✓ 已存模板' : '存为模板'}</span>
                   </button>
                 )}
@@ -2334,7 +2489,7 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
                           openMixImmediately: true,
                         })
                       }
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-[#476282] px-4 py-1.5 text-xs font-semibold text-white hover:bg-[#38506b] cursor-pointer"
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 cursor-pointer"
                     >
                       <Play className="h-3 w-3 fill-white" />
                       <span>进入混剪成片</span>
@@ -2356,7 +2511,7 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
               onClick={() => setShowAllCapabilities(!showAllCapabilities)}
               className="flex items-center gap-2 text-left cursor-pointer"
             >
-              <Layers className="h-3.5 w-3.5 text-[#476282]" />
+              <Layers className="h-3.5 w-3.5 text-indigo-600" />
               <span className="text-xs font-semibold text-slate-700">
                 全部 16 项 AI 创作工具箱
               </span>
@@ -2370,7 +2525,7 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
                     onClick={() => setActiveMatrixFilter('ALL')}
                     className={`rounded-md px-2 py-0.5 font-medium cursor-pointer ${
                       activeMatrixFilter === 'ALL'
-                        ? 'bg-[#476282] text-white'
+                        ? 'bg-indigo-600 text-white'
                         : 'text-slate-500 hover:text-slate-800'
                     }`}
                   >
@@ -2383,7 +2538,7 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
                       onClick={() => setActiveMatrixFilter(g.groupTitle)}
                       className={`rounded-md px-2 py-0.5 font-medium cursor-pointer ${
                         activeMatrixFilter === g.groupTitle
-                          ? 'bg-[#476282] text-white'
+                          ? 'bg-indigo-600 text-white'
                           : 'text-slate-500 hover:text-slate-800'
                       }`}
                     >
@@ -2433,12 +2588,12 @@ export const KuaiziAgentHomeWorkbench: React.FC<{
                         type="button"
                         title={item.shortDesc}
                         onClick={() => onSelectCapability(item.id)}
-                        className="group/cap flex items-center justify-between gap-1 rounded-lg border border-slate-200/70 bg-white px-2.5 py-2 text-left transition-all hover:border-[#476282] cursor-pointer"
+                        className="group/cap flex items-center justify-between gap-1 rounded-lg border border-slate-200/70 bg-white px-2.5 py-2 text-left transition-all hover:border-indigo-500 cursor-pointer"
                       >
-                        <span className="truncate text-xs font-medium text-slate-700 group-hover/cap:text-[#476282]">
+                        <span className="truncate text-xs font-medium text-slate-700 group-hover/cap:text-indigo-600">
                           {item.label}
                         </span>
-                        <ChevronRight className="h-3 w-3 shrink-0 text-slate-300 group-hover/cap:text-[#476282]" />
+                        <ChevronRight className="h-3 w-3 shrink-0 text-slate-300 group-hover/cap:text-indigo-600" />
                       </button>
                     ))}
                   </div>

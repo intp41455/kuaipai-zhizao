@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect, useMemo } from 'react';
 import {
   X,
@@ -21,7 +22,18 @@ import {
   FileText,
   Type as TypeIcon,
   PackagePlus,
+  TrendingUp,
+  Target,
+  Clock,
+  ShieldCheck,
+  CheckCircle2,
+  Share2,
+  Video,
+  MessageSquare,
+  Award,
+  ArrowUpRight,
 } from 'lucide-react';
+import type { StudioMaterialItem } from './MerchantAndWorkspaceModules';
 import {
   CuratedTemplate,
   StoreMemoryProfile,
@@ -791,6 +803,60 @@ export const ViralTemplateStudioModal: React.FC<ViralTemplateStudioModalProps> =
 // ============================================================================
 // 2. Foolproof Omni-Input Viral Dissection & Template Encapsulation Workspace
 // ============================================================================
+export interface ComprehensiveDissectResult {
+  sourceTitle: string;
+  sourceContent: string;
+  hookAnalysis: string;
+  retentionSecret: string;
+  conversionTrigger: string;
+  extractedFormula: string;
+  skillWorkflowOutput?: string;
+  sceneBreakdown: string[];
+  cameraAngles: string[];
+  visualCues: string[];
+  sceneLines: string[];
+  copywritingAnalysis?: {
+    sentenceBySentence?: { sentence: string; intent: string; rhetoric: string; emotion: string }[];
+    emotionalCurve?: string;
+    coreKeywords?: string[];
+  };
+  structuralFramework?: {
+    narrativeArc?: string;
+    pacingBpm?: string;
+    transitionTechniques?: string;
+  };
+  trafficAttribution?: {
+    contentInnovation?: string;
+    userPsychology?: string;
+    algorithmMechanism?: string;
+    coreViralFactors?: string[];
+  };
+  contentElements?: {
+    titleFormula?: string;
+    classicQuoteParadigm?: string;
+    inflectionPoints?: { timecode: string; event: string; impact: string }[];
+    copyPairingRules?: string;
+  };
+  actionableGuidance?: {
+    suitableDirections?: string[];
+    materialRequirements?: string;
+    matchedPersonalAssets?: {
+      shotIndex: number;
+      targetStage: string;
+      matchedAssetId?: string | null;
+      matchedTitle: string;
+      matchScore: number;
+      suggestion: string;
+    }[];
+  };
+  meta?: {
+    platform?: string;
+    author?: string;
+    coverUrl?: string;
+    resolvedUrl?: string;
+  };
+}
+
 interface ViralDissectionWorkspaceProps {
   skills: DissectSkillPackage[];
   selectedSkillIds: string[];
@@ -803,20 +869,9 @@ interface ViralDissectionWorkspaceProps {
   dissectContent: string;
   setDissectContent: (v: string) => void;
   isDissecting: boolean;
-  onRunDissection: () => void;
-  dissectResult: {
-    sourceTitle: string;
-    sourceContent: string;
-    hookAnalysis: string;
-    retentionSecret: string;
-    conversionTrigger: string;
-    extractedFormula: string;
-    skillWorkflowOutput?: string;
-    sceneBreakdown: string[];
-    cameraAngles: string[];
-    visualCues: string[];
-    sceneLines: string[];
-  };
+  onRunDissection: (pipeline?: string) => void;
+  dissectResult: ComprehensiveDissectResult;
+  personalMaterials?: StudioMaterialItem[];
   storeMemoryEnabled: boolean;
   activeStore: StoreMemoryProfile;
   productName: string;
@@ -828,6 +883,7 @@ interface ViralDissectionWorkspaceProps {
   onEncapsulateAsTemplate?: (tpl: CuratedTemplate) => void;
   onApplyDissectedStructureToEditor: () => void;
   onGenerateNewScriptFromDissection: () => void;
+  onOpenClonePipeline?: () => void;
   onNotice: (type: 'success' | 'error', msg: string) => void;
 }
 
@@ -845,6 +901,7 @@ export const ViralDissectionWorkspace: React.FC<ViralDissectionWorkspaceProps> =
   isDissecting,
   onRunDissection,
   dissectResult,
+  personalMaterials = [],
   storeMemoryEnabled,
   activeStore,
   productName,
@@ -856,9 +913,16 @@ export const ViralDissectionWorkspace: React.FC<ViralDissectionWorkspaceProps> =
   onEncapsulateAsTemplate,
   onApplyDissectedStructureToEditor,
   onGenerateNewScriptFromDissection,
+  onOpenClonePipeline,
   onNotice,
 }) => {
   const [omniRawInput, setOmniRawInput] = useState<string>(dissectContent);
+  const [activeAnalysisModule, setActiveAnalysisModule] = useState<
+    'all' | 'copy' | 'structure' | 'traffic' | 'elements' | 'assets'
+  >('all');
+  const [selectedPipeline, setSelectedPipeline] = useState<
+    'short_video_script' | 'visual_storyboard' | 'ecommerce_convert'
+  >('short_video_script');
   const [dissectColWidths, setDissectColWidths] = useState<[number, number, number]>([
     160, 360, 380,
   ]);
@@ -1043,36 +1107,82 @@ export const ViralDissectionWorkspace: React.FC<ViralDissectionWorkspaceProps> =
           </div>
         </div>
 
+        {/* Workflow Pipeline Selection (short-video-script 4-stage pipeline) */}
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2">
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <span className="font-bold text-slate-700">分析工作流链路：</span>
+            <div className="capsule-track">
+              <button
+                type="button"
+                onClick={() => setSelectedPipeline('short_video_script')}
+                className={`px-3 py-1 text-xs font-semibold cursor-pointer transition-all ${
+                  selectedPipeline === 'short_video_script'
+                    ? 'capsule-pill-active text-indigo-700 font-bold'
+                    : 'capsule-pill-inactive'
+                }`}
+              >
+                🌟 4段式高留存口播脚本 (short-video-script)
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedPipeline('visual_storyboard')}
+                className={`px-3 py-1 text-xs font-semibold cursor-pointer transition-all ${
+                  selectedPipeline === 'visual_storyboard'
+                    ? 'capsule-pill-active text-indigo-700 font-bold'
+                    : 'capsule-pill-inactive'
+                }`}
+              >
+                🎬 镜头视听抽帧拆解
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedPipeline('ecommerce_convert')}
+                className={`px-3 py-1 text-xs font-semibold cursor-pointer transition-all ${
+                  selectedPipeline === 'ecommerce_convert'
+                    ? 'capsule-pill-active text-indigo-700 font-bold'
+                    : 'capsule-pill-inactive'
+                }`}
+              >
+                🛒 电商到店转化复刻
+              </button>
+            </div>
+          </div>
+          <span className="text-[11px] text-slate-400">内置「0-3s钩子 / 3-15s共鸣 / 15-45s干货 / 45-60s促单」</span>
+        </div>
+
         {/* Clean Omni-Input Box */}
         <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-3 focus-within:border-indigo-500 focus-within:bg-white transition-all">
+          {detectedMeta.typeLabel.includes('链接') && (
+            <div className="mb-2 flex items-center gap-1.5 rounded-lg bg-indigo-50/80 px-2.5 py-1 text-[11px] font-medium text-indigo-700 border border-indigo-200/60 animate-in fade-in duration-150">
+              <Sparkles className="h-3 w-3 text-indigo-600 shrink-0" />
+              <span>检测到平台分享链接！AI Agent 将自动解析原片元数据与文案，深度拆解黄金前3秒与4幕分镜。</span>
+            </div>
+          )}
           <textarea
             rows={3}
             value={omniRawInput}
             onChange={(e) => handleOmniInputChange(e.target.value)}
-            placeholder="在此粘贴：视频/图文链接、一段文案或一个标题，AI 自动识别并调用对应 Skill 拆解..."
+            placeholder="在此粘贴：抖音/小红书/快手链接或分享文案（如：3.12 复制打开抖音... https://v.douyin.com/...），AI 将全自动智能拉片拆解..."
             className="w-full resize-y bg-transparent text-xs leading-relaxed text-slate-900 focus:outline-none min-h-[72px]"
           />
 
           <div className="mt-2 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200/70 pt-2.5">
             <div className="flex flex-wrap items-center gap-1.5">
-              <span className="text-xs text-slate-400">示例：</span>
-              {samples.map((item) => (
+              <span className="text-xs text-slate-400">热点链接：</span>
+              {[
+                { label: '抖音探店短链', text: 'https://v.douyin.com/7391823901/ ¥68头皮去屑SPA日销800单团购视频' },
+                { label: '小红书种草短链', text: 'https://xhslink.com/66b1a209/ 便携挂耳咖啡高质感种草笔记' },
+                { label: '快手实测短链', text: 'https://v.kuaishou.com/3x79jk/ 军工级超级快充宝暴力测试爆单' },
+              ].map((lnk, idx) => (
                 <button
-                  key={item.id}
+                  key={idx}
                   type="button"
                   onClick={() => {
-                    setDissectTitle(item.title);
-                    setDissectCategory(item.category);
-                    setDissectContent(item.content);
-                    setOmniRawInput(item.content);
+                    handleOmniInputChange(lnk.text);
                   }}
-                  className={`rounded-lg border px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer whitespace-nowrap ${
-                    dissectTitle === item.title
-                      ? 'border-indigo-600 bg-indigo-50 text-indigo-700 font-semibold'
-                      : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-100'
-                  }`}
+                  className="rounded-lg border border-indigo-200/80 bg-indigo-50/60 px-2 py-0.5 text-[11px] font-medium text-indigo-700 hover:bg-indigo-100/70 transition-colors cursor-pointer whitespace-nowrap"
                 >
-                  {item.category}样片
+                  {lnk.label}
                 </button>
               ))}
             </div>
@@ -1093,7 +1203,7 @@ export const ViralDissectionWorkspace: React.FC<ViralDissectionWorkspaceProps> =
               <button
                 type="button"
                 disabled={isDissecting}
-                onClick={onRunDissection}
+                onClick={() => onRunDissection(selectedPipeline)}
                 className="flex items-center gap-1.5 rounded-xl bg-[#4F46E5] px-4 py-2 text-xs font-bold text-white hover:bg-[#4338CA] disabled:opacity-50 cursor-pointer whitespace-nowrap shadow-xs"
               >
                 {isDissecting ? (
@@ -1146,26 +1256,242 @@ export const ViralDissectionWorkspace: React.FC<ViralDissectionWorkspaceProps> =
           </div>
         </div>
 
-        {/* Concise 3-Pill Suitability Strip (No Long Paragraphs) */}
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 px-3.5 py-2.5 text-xs">
-            <span className="font-bold text-slate-900">🎯 黄金3秒钩子：</span>
-            <p className="mt-0.5 text-slate-600 line-clamp-1" title={dissectResult.hookAnalysis}>
-              {dissectResult.hookAnalysis}
-            </p>
+        {/* Full-Spectrum Multi-Dimensional Analysis Dimension Selector (Pastel Tint Capsule) */}
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+          <div className="flex flex-wrap items-center gap-1.5 text-xs">
+            <span className="font-bold text-slate-800 flex items-center gap-1">
+              <Sparkles className="h-3.5 w-3.5 text-indigo-600" />
+              <span>全方位深度分析大盘：</span>
+            </span>
+            <div className="capsule-track">
+              {[
+                { id: 'all', label: '全部维度' },
+                { id: 'copy', label: '📝 文案深度拆解' },
+                { id: 'structure', label: '🎬 视频结构框架' },
+                { id: 'traffic', label: '📈 爆款流量归因' },
+                { id: 'elements', label: '⚡ 要素与时间拐点' },
+                { id: 'assets', label: '🧭 个人素材匹配' },
+              ].map((m) => (
+                <button
+                  key={m.id}
+                  type="button"
+                  onClick={() =>
+                    setActiveAnalysisModule(
+                      m.id as 'all' | 'copy' | 'structure' | 'traffic' | 'elements' | 'assets'
+                    )
+                  }
+                  className={`px-3 py-1 text-xs font-semibold cursor-pointer transition-all ${
+                    activeAnalysisModule === m.id
+                      ? 'capsule-pill-active text-indigo-700 font-bold'
+                      : 'capsule-pill-inactive'
+                  }`}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="rounded-xl border border-indigo-100 bg-indigo-50/40 px-3.5 py-2.5 text-xs">
-            <span className="font-bold text-indigo-950">🧭 AI 适用方向：</span>
-            <p className="mt-0.5 text-slate-700 line-clamp-1" title={detectedMeta.suitableDirection}>
-              {detectedMeta.suitableDirection}
-            </p>
-          </div>
-          <div className="rounded-xl border border-indigo-100 bg-indigo-50/40 px-3.5 py-2.5 text-xs">
-            <span className="font-bold text-indigo-950">🎥 AI 适用素材：</span>
-            <p className="mt-0.5 text-slate-700 line-clamp-1" title={detectedMeta.suitableMaterial}>
-              {detectedMeta.suitableMaterial}
-            </p>
-          </div>
+          <span className="text-[11px] text-slate-400">已深度解构 5 大维度</span>
+        </div>
+
+        {/* 5 Analytical Modules with Pastel Tint Gradients */}
+        <div className="space-y-3.5">
+          {/* Module 1: Copywriting Deep-Dive */}
+          {(activeAnalysisModule === 'all' || activeAnalysisModule === 'copy') && (
+            <div className="rounded-2xl tint-gradient-indigo p-4 space-y-2.5 shadow-2xs">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-indigo-950 flex items-center gap-1.5">
+                  <FileText className="h-3.5 w-3.5 text-indigo-600" />
+                  <span>1. 文案深度拆解 (逐句表达逻辑、词汇技巧与情绪曲线)</span>
+                </span>
+                <span className="text-[10px] text-indigo-600 bg-white/80 px-2 py-0.5 rounded-full border border-indigo-200/50">
+                  {dissectResult.copywritingAnalysis?.emotionalCurve || '前3秒高位唤醒好奇心 → 10秒代入痛点 → 25秒转化达成'}
+                </span>
+              </div>
+
+              {dissectResult.copywritingAnalysis?.sentenceBySentence && (
+                <div className="overflow-x-auto rounded-xl border border-indigo-100 bg-white/90">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead className="bg-indigo-50/50 text-[11px] font-semibold text-indigo-900 border-b border-indigo-100">
+                      <tr>
+                        <th className="px-3 py-2">台词原文</th>
+                        <th className="px-3 py-2">编导意图</th>
+                        <th className="px-3 py-2">用词技巧</th>
+                        <th className="px-3 py-2">情绪阶段</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-indigo-50 text-slate-700">
+                      {dissectResult.copywritingAnalysis.sentenceBySentence.map((row, idx) => (
+                        <tr key={idx} className="hover:bg-indigo-50/30">
+                          <td className="px-3 py-2 font-medium text-slate-900">{row.sentence}</td>
+                          <td className="px-3 py-2 text-indigo-700">{row.intent}</td>
+                          <td className="px-3 py-2">{row.rhetoric}</td>
+                          <td className="px-3 py-2 text-indigo-600 font-medium">{row.emotion}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Module 2: Structural Framework */}
+          {(activeAnalysisModule === 'all' || activeAnalysisModule === 'structure') && (
+            <div className="rounded-2xl tint-gradient-sky p-4 space-y-2.5 shadow-2xs">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-sky-950 flex items-center gap-1.5">
+                  <Video className="h-3.5 w-3.5 text-sky-600" />
+                  <span>2. 视频结构框架 (叙事脉络、镜头节奏、转场视听规律)</span>
+                </span>
+                <span className="text-[10px] text-sky-700 bg-white/80 px-2 py-0.5 rounded-full border border-sky-200/50">
+                  {dissectResult.structuralFramework?.pacingBpm || '单镜头3.0s-4.2s中快节拍'}
+                </span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <div className="rounded-xl border border-sky-100 bg-white/90 p-3 space-y-1">
+                  <span className="font-bold text-sky-900 block">叙事主线脉络：</span>
+                  <p className="text-slate-600 leading-relaxed">
+                    {dissectResult.structuralFramework?.narrativeArc || '反常识打破认知 → 真实场景痛点展开 → 硬核差异证据呈现 → 闭环促单指令'}
+                  </p>
+                </div>
+                <div className="rounded-xl border border-sky-100 bg-white/90 p-3 space-y-1">
+                  <span className="font-bold text-sky-900 block">镜头节奏与转场设计：</span>
+                  <p className="text-slate-600 leading-relaxed">
+                    {dissectResult.structuralFramework?.transitionTechniques || '第一视角推镜切入 + 动作重音卡点转场'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Module 3: Traffic & Viral Attribution */}
+          {(activeAnalysisModule === 'all' || activeAnalysisModule === 'traffic') && (
+            <div className="rounded-2xl tint-gradient-purple p-4 space-y-2.5 shadow-2xs">
+              <span className="text-xs font-bold text-purple-950 flex items-center gap-1.5">
+                <TrendingUp className="h-3.5 w-3.5 text-purple-600" />
+                <span>3. 爆款流量归因分析 (内容创新、用户心理认同、平台算法推流机制)</span>
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                <div className="rounded-xl border border-purple-100 bg-white/90 p-3 space-y-1">
+                  <span className="font-bold text-purple-900 flex items-center gap-1">
+                    <span>💡 内容创新点</span>
+                  </span>
+                  <p className="text-slate-600 leading-relaxed">
+                    {dissectResult.trafficAttribution?.contentInnovation || '打破同质化套路，从真实体验与微距反差切入。'}
+                  </p>
+                </div>
+                <div className="rounded-xl border border-purple-100 bg-white/90 p-3 space-y-1">
+                  <span className="font-bold text-purple-900 flex items-center gap-1">
+                    <span>🧠 用户心理认同</span>
+                  </span>
+                  <p className="text-slate-600 leading-relaxed">
+                    {dissectResult.trafficAttribution?.userPsychology || '直击受众对于虚假宣传与高溢价的戒备心理，真诚接地气快速建信。'}
+                  </p>
+                </div>
+                <div className="rounded-xl border border-purple-100 bg-white/90 p-3 space-y-1">
+                  <span className="font-bold text-purple-900 flex items-center gap-1">
+                    <span>⚡ 平台算法推流机制</span>
+                  </span>
+                  <p className="text-slate-600 leading-relaxed">
+                    {dissectResult.trafficAttribution?.algorithmMechanism || '前3秒跳出率低于18%，5秒完播率达42%以上，触发核心流量池扩散推流。'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Module 4: Content Elements & Inflection Points */}
+          {(activeAnalysisModule === 'all' || activeAnalysisModule === 'elements') && (
+            <div className="rounded-2xl tint-gradient-amber p-4 space-y-2.5 shadow-2xs">
+              <span className="text-xs font-bold text-amber-950 flex items-center gap-1.5">
+                <Clock className="h-3.5 w-3.5 text-amber-600" />
+                <span>4. 内容要素与爆点时间拐点 (标题套路、金句范式、拐点分布)</span>
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <div className="rounded-xl border border-amber-200/60 bg-white/90 p-3 space-y-1">
+                  <span className="font-bold text-amber-900">🔥 标题设计套路范式：</span>
+                  <p className="text-slate-700">
+                    {dissectResult.contentElements?.titleFormula || '人群定向 + 极致反差冲突 + 闭眼入解决方案'}
+                  </p>
+                </div>
+                <div className="rounded-xl border border-amber-200/60 bg-white/90 p-3 space-y-1">
+                  <span className="font-bold text-amber-900">💬 经典台词金句范式：</span>
+                  <p className="text-slate-700 font-medium">
+                    {dissectResult.contentElements?.classicQuoteParadigm || '“千万别盲目学别人……听我一句劝……”'}
+                  </p>
+                </div>
+              </div>
+
+              {dissectResult.contentElements?.inflectionPoints && (
+                <div className="flex flex-wrap items-center gap-2 pt-1">
+                  <span className="text-xs font-bold text-amber-900">爆点时间拐点：</span>
+                  {dissectResult.contentElements.inflectionPoints.map((pt, pIdx) => (
+                    <div
+                      key={pIdx}
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-amber-200/80 bg-white px-2.5 py-1 text-xs text-amber-900"
+                    >
+                      <span className="font-mono font-bold text-amber-700">{pt.timecode}</span>
+                      <span className="font-semibold">{pt.event}</span>
+                      <span className="text-[10px] text-slate-400">({pt.impact})</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Module 5: Actionable Guidance & Personal Asset Matching */}
+          {(activeAnalysisModule === 'all' || activeAnalysisModule === 'assets') && (
+            <div className="rounded-2xl tint-gradient-emerald p-4 space-y-2.5 shadow-2xs">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-emerald-950 flex items-center gap-1.5">
+                  <Target className="h-3.5 w-3.5 text-emerald-600" />
+                  <span>5. 落地适配指导与个人素材库匹配建议</span>
+                </span>
+                <span className="text-[10px] text-emerald-700 bg-white/80 px-2 py-0.5 rounded-full border border-emerald-200/50">
+                  自动加权匹配个人素材库
+                </span>
+              </div>
+
+              {dissectResult.actionableGuidance?.matchedPersonalAssets && (
+                <div className="space-y-1.5">
+                  <span className="text-xs font-semibold text-emerald-900">分镜镜头与个人素材库自动匹配结果：</span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                    {dissectResult.actionableGuidance.matchedPersonalAssets.map((asset, aIdx) => (
+                      <div
+                        key={aIdx}
+                        className="rounded-xl border border-emerald-100 bg-white/90 p-2.5 space-y-1"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-slate-900">
+                            镜头 0{asset.shotIndex + 1}
+                          </span>
+                          <span
+                            className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${
+                              asset.matchedAssetId
+                                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/60'
+                                : 'bg-slate-100 text-slate-500'
+                            }`}
+                          >
+                            {asset.matchedAssetId ? `匹配度 ${asset.matchScore}%` : '待补拍'}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-600">{asset.suggestion}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Resizable Dissected Storyboard Table Header */}
+        <div className="pt-2">
+          <span className="text-xs font-bold text-slate-800 block mb-2">
+            🎬 4 幕标准分镜拆解表（可拖拽列宽/行高）
+          </span>
         </div>
 
         {/* Resizable Dissected Storyboard Table */}

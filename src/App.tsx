@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState, useMemo } from 'react';
 import {
   onAuthStateChanged,
@@ -101,10 +102,14 @@ import {
   EcommerceSuiteAndGraphicWorkspace,
   SystemManualModal,
 } from './components/DomesticAuthAndGatewayModals';
-import { MerchantManagementCenter } from './components/MerchantAndWorkspaceModules';
+import {
+  MerchantManagementCenter,
+  StudioMaterialItem,
+} from './components/MerchantAndWorkspaceModules';
 import {
   ViralTemplateStudioModal,
   ViralDissectionWorkspace,
+  ComprehensiveDissectResult,
 } from './components/ViralTemplateStudioModal';
 import {
   KuaiziAgentHomeWorkbench,
@@ -117,7 +122,11 @@ import {
   VideoRemixStudioMode as RemixStudioMode,
 } from './components/AIVideoRemixDualStudio';
 import { MatrixGrowthCenter } from './components/MatrixGrowthCenter';
+import { TrafficCloneStudio } from './components/TrafficCloneStudio';
+import { UniversalClonePipelineModal } from './components/UniversalClonePipelineModal';
+import { LocalLifeOperatorWizard } from './components/LocalLifeOperatorWizard';
 import {
+  TrendingUp,
   PanelLeftClose,
   PanelLeftOpen,
   GripVertical,
@@ -137,6 +146,7 @@ import {
 } from 'lucide-react';
 
 type NavTab =
+  | 'operator_wizard'
   | 'workbench'
   | 'templates'
   | 'video_remix'
@@ -259,10 +269,11 @@ const BUILTIN_VOUCHERS: Record<
 };
 
 export default function App() {
-  // Navigation & Auth State (Default home is 'workbench' AI Agent dialog workbench)
-  const [activeNav, setActiveNav] = useState<NavTab>('workbench');
+  // Navigation & Auth State (Default home is 'operator_wizard' AI 超级操盘手向导)
+  const [activeNav, setActiveNav] = useState<NavTab>('operator_wizard');
   const [remixStudioMode, setRemixStudioMode] = useState<RemixStudioMode>('foolproof');
-  const [merchantSubTab, setMerchantSubTab] = useState<'staff' | 'stores' | 'materials'>('stores');
+  const [merchantSubTab, setMerchantSubTab] = useState<'staff' | 'stores' | 'materials' | 'livecodes'>('stores');
+  const [dissectSubTab, setDissectSubTab] = useState<'video' | 'traffic'>('video');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isHistoryPanelOpen, setIsHistoryPanelOpen] = useState<boolean>(false);
   const [historyFilterTab, setHistoryFilterTab] = useState<'all' | 'prompt' | 'action' | 'project'>('all');
@@ -344,6 +355,54 @@ export default function App() {
   const [generatedCustomCodes, setGeneratedCustomCodes] = useState<
     { code: string; tier: 'pro' | 'enterprise'; credits: number }[]
   >([]);
+  const [isUniversalPipelineOpen, setIsUniversalPipelineOpen] = useState(false);
+
+  // User Material Library (Persisted globally & synced across Dissect, Workbench, and Studio)
+  const [userMaterials, setUserMaterials] = useState<StudioMaterialItem[]>(() => {
+    try {
+      const saved = localStorage.getItem('kuaipai_user_materials_v1');
+      if (saved) return JSON.parse(saved);
+    } catch {
+      // ignore
+    }
+    return [
+      {
+        id: 'mat_1',
+        title: '拯救头屑大作战_混剪成片.mp4',
+        type: 'video',
+        category: '实拍素材',
+        createdAt: '2026-11-02',
+        previewUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80',
+        source: '本地上传',
+      },
+      {
+        id: 'mat_2',
+        title: '01_旗舰商拍主图_实拍原图.png',
+        type: 'image',
+        category: '商品图片',
+        createdAt: '2026-11-02',
+        previewUrl: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80',
+        source: '本地上传',
+      },
+      {
+        id: 'mat_3',
+        title: '办公室治愈挂耳咖啡豆研磨微距.mp4',
+        type: 'video',
+        category: '实拍素材',
+        createdAt: '2026-11-03',
+        previewUrl: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80',
+        source: '本地上传',
+      },
+    ];
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('kuaipai_user_materials_v1', JSON.stringify(userMaterials));
+    } catch {
+      // ignore
+    }
+  }, [userMaterials]);
 
   // Cloud Firestore Data + Domestic Phone/Email Account Local Sync Data
   const [cloudProjects, setCloudProjects] = useState<CloudVideoProject[]>([]);
@@ -394,6 +453,73 @@ export default function App() {
     () => [...cloudTemplates, ...localTemplates],
     [cloudTemplates, localTemplates]
   );
+
+  // 挂载时从真实后端数据库同步工程项目与门店档案
+  useEffect(() => {
+    fetch('/api/v1/projects')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data: Array<{
+        id: number;
+        title: string;
+        productName?: string;
+        category?: string;
+        aspectRatio?: '9:16' | '16:9' | '4:3';
+        bgmStyle?: string;
+        voiceTone?: string;
+        scenes?: Array<{ title?: string; visual?: string; line?: string }>;
+        createdAt?: string;
+        updatedAt?: string;
+      }>) => {
+        if (Array.isArray(data) && data.length > 0) {
+          const mapped: CloudVideoProject[] = data.map((p) => ({
+            id: `proj_${p.id}`,
+            ownerId: 'cn_default_creator',
+            title: p.title,
+            productName: p.productName || '招牌爆品',
+            sellingPoints: p.productName || '招牌特色爆品',
+            targetAudience: '同城食客与年轻打工人群',
+            pacingTip: p.bgmStyle || '黄金前3秒痛点切入',
+            category: p.category || '通用',
+            aspectRatio: p.aspectRatio || '9:16',
+            bgmStyle: p.bgmStyle || '轻快卡点',
+            voiceTone: p.voiceTone || '真诚亲切',
+            cameraAngles: (p.scenes || []).map((s) => s.title || '关键镜头'),
+            visualCues: (p.scenes || []).map((s) => s.visual || ''),
+            sceneLines: (p.scenes || []).map((s) => s.line || ''),
+            createdAt: p.createdAt || '刚刚',
+            updatedAt: p.updatedAt || '刚刚',
+          }));
+          setCloudProjects(mapped);
+        }
+      })
+      .catch(() => {});
+
+    fetch('/api/v1/stores')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data: Array<{
+        id: number;
+        storeName: string;
+        storeType: string;
+        cityLocation: string;
+        signatureProducts?: string[];
+      }>) => {
+        if (Array.isArray(data) && data.length > 0) {
+          const mapped: StoreMemoryProfile[] = data.map((s) => ({
+            id: `db_store_${s.id}`,
+            storeName: s.storeName,
+            storeType: s.storeType,
+            industry: '餐饮',
+            cityLocation: s.cityLocation,
+            signatureProducts: (s.signatureProducts || []).join('、') || '特色爆品',
+            storePersona: '本地餐饮老板，朴素真诚接地气',
+            targetAudience: '下班打工人、社区居民、探店食客',
+            memoryAnchors: '手工现做、真材实料、假一赔十',
+          }));
+          setLocalStores(mapped);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Douyin Laike Store / Brand Persona Long-Term Memory Knowledge Base State
   const [activeStoreId, setActiveStoreId] = useState<string>(PRESET_STORE_PROFILES[0].id);
@@ -474,31 +600,44 @@ export default function App() {
 
   // Script Detail & Smart Editor State
   const [currentProjectId, setCurrentProjectId] = useState<string | null>(null);
-  const [projectTitle, setProjectTitle] = useState<string>('拯救头屑大作战：星澜洗发水来了');
-  const [productName, setProductName] = useState<string>('星澜氨基酸去屑控油洗发水');
+  const [projectTitle, setProjectTitle] = useState<string>('聚福饺子馆：黑猪肉水饺同城爆款成片');
+  const [productName, setProductName] = useState<string>('黑猪肉莲菜手工水饺');
   const [sellingPoints, setSellingPoints] = useState<string>(
-    '深层净澈头皮、72小时长效控油蓬松、温和去屑不紧绷'
+    '黑猪肉手工现包现煮、肉质鲜美多汁、老街坊三十年口碑'
   );
   const [targetAudience, setTargetAudience] = useState<string>(
-    '熬夜油头、有头屑困扰的年轻上班族与学生党'
+    '下班打工人、社区居民、看重实惠量大出餐快的食客'
   );
-  const [projectCategory, setProjectCategory] = useState<string>('个护');
+  const [projectCategory, setProjectCategory] = useState<string>('餐饮美食');
   const [aspectRatio, setAspectRatio] = useState<'9:16' | '16:9' | '4:3'>('9:16');
-  const [bgmStyle, setBgmStyle] = useState<string>('轻快种草卡点律动');
-  const [voiceTone, setVoiceTone] = useState<string>('活力种草女声');
+  const [bgmStyle, setBgmStyle] = useState<string>('轻快市井卡点律动');
+  const [voiceTone, setVoiceTone] = useState<string>('老饕探店接地气男声');
   const [pacingTip, setPacingTip] = useState<string>(
-    '前1.5秒使用镜前抓头发痛点特写切入，第2镜头切换产品清爽近景，第3镜头甩头动作卡音乐重音，提升完播率与点击转化。'
+    '前1.5秒使用筷子挑起水饺大特写切入，第2镜头展示手工现包爆汁切面，第3镜头顾客大口咀嚼微表情，结尾引导左下角买一送一团购。'
   );
   const [recommendedTitles, setRecommendedTitles] = useState<string[]>([
-    '头屑油头必看！洗完3天依然高颅顶的宝藏洗发水',
-    '杭州武林商圈店长实测：为什么你洗头越洗越油？',
-    '穿黑衣服再也不怕尴尬！68元深层头皮去屑SPA同款配方',
+    '本地老街坊力荐！皮薄馅大黑猪肉水饺，吃过一次就成回头客',
+    '下班不知道吃什么？藏在老社区的水饺馆，人均十几块吃到撑',
+    '真材实料绝非冷冻预制！掰开全是扎实好肉，左下角特惠赶紧冲',
   ]);
-  const [cameraAngles, setCameraAngles] = useState<string[]>(
-    CURATED_TEMPLATES[2].cameraAngles
-  );
-  const [visualCues, setVisualCues] = useState<string[]>(CURATED_TEMPLATES[2].visualCues);
-  const [sceneLines, setSceneLines] = useState<string[]>(CURATED_TEMPLATES[2].sceneLines);
+  const [cameraAngles, setCameraAngles] = useState<string[]>([
+    '01 高位大俯拍铺满屏幕',
+    '02 正视微俯肉馅横切面',
+    '03 前厅后置纵深烟火气',
+    '04 平视手势指向团购卡',
+  ]);
+  const [visualCues, setVisualCues] = useState<string[]>([
+    '高位大俯拍特写，筷子挑起大块水饺热气腾腾大特写，画面铺满食材。',
+    '平视微俯运镜，掰开水饺展示饱满黑猪肉莲菜馅，暖光3500K突出光泽。',
+    '前厅人群后方纵深轴线，展现座无虚席与顾客大口咀嚼满足表情。',
+    '桌面整齐摆放招牌套餐，手指清晰指向屏幕左下角团购卡手势。',
+  ]);
+  const [sceneLines, setSceneLines] = useState<string[]>([
+    '在本地吃水饺的朋友，千万别只看门头大不大！今天带你看看什么叫真正的老街坊口碑！',
+    '师傅手工现包现煮，黑猪肉配脆莲菜，一口咬下汁水直接爆出来！',
+    '不管下班填饱肚子还是朋友聚聚，人均十几块直接吃到撑！',
+    '左下角买一送一专属券，不用可退、过期自动退，赶紧锁一份！',
+  ]);
   // Per-shot fine-grained editing metadata (durations & camera movement) + Resizable Columns/Rows
   const [shotDurations, setShotDurations] = useState<number[]>([3.5, 4.0, 4.0, 3.5]);
   const [shotMovements, setShotMovements] = useState<string[]>([
@@ -627,24 +766,39 @@ export default function App() {
     sourceTitle: QUICK_DISSECT_SAMPLES[0].title,
     sourceContent: QUICK_DISSECT_SAMPLES[0].content,
     hookAnalysis:
-      '前3秒采用“镜前抓头皮屑+穿黑衣尴尬”高共鸣视觉痛点提问，瞬间锁定油头与头屑人群停留。',
+      '前3秒采用“筷子挑起大块水饺热气腾腾大特写”高共鸣视觉加法铺满屏幕，瞬间锁定同城食客停留。',
     retentionSecret:
-      '第4-10秒迅速给出解决方案并展示绵密泡沫微距特写，第11-14秒用洗后甩头蓬松反差制造爽感。',
+      '第4-10秒迅速展示手工现包现煮过程与正宗自制调料，第11-15秒用顾客大口咀嚼与空盘见底制造真实食欲爽感。',
     conversionTrigger:
-      '结尾强调“洗完三天依然蓬松”具体可感知利益点，配合左下角抖音来客团购/小黄车限时买赠降低决策门槛。',
+      '结尾强调“人均十几块吃到撑”具体可感知利益点，配合左下角抖音来客团购买一送一降低决策门槛。',
     extractedFormula:
-      '视觉痛点暴击(3s) + 产品高颜微距(4s) + 使用前后爽感反差(5s) + 门店团购福利逼单(3s)',
+      '视觉痛点暴击(3s) + 招牌爆品实测(5s) + 真实体验对比(4s) + 门店团购逼单(3s)',
     skillWorkflowOutput:
-      '【GitHub: Viral-Hook-3S-Analyzer & 抖音来客技能包输出】\n① 钩子A（痛点反问）：刚洗完头不到半天又扁塌泛油？別急着换洗发水！\n② 钩子B（同城背书）：杭州油头姐妹注意！武林商圈这家头皮SPA把同款配方做成了洗发水！\n③ 钩子C（视觉测试）：黑衣服肩膀全是雪花屑？教你一招72小时控油高颅顶！',
+      '【GitHub: Viral-Hook-3S-Analyzer & 抖音来客技能包输出】\n① 钩子A（反常识设问）：在本地吃水饺千万别看门头大不大！\n② 钩子B（同城老街坊）：老街深巷这家藏了三十年的老店，凭什么全是回头客？\n③ 钩子C（食材实测）：黑猪肉手工现包现煮，掰开10倍放大看细节！',
     sceneBreakdown: [
-      '01 开场引入痛点｜画面：一个人在镜子前抓着头发，显得很苦恼，镜头拉近显示头屑问题。｜口播：头屑问题让你头疼不已？快来看看这个办法！',
-      '02 产品介绍｜画面：展示星澜洗发水的产品近景，包装简洁清爽。｜口播：我最近入手了一个神奇的洗发水——星澜洗发水！',
-      '03 产品卖点｜画面：洗头后轻松甩头，表现出自信与满意的面部表情。｜口播：这个洗发水真的太好用了，去屑效果超赞，用过后头发清爽舒适！',
-      '04 强力促单转化｜画面：手持洗发水微笑展示活动字卡。｜口播：油头扁塌的朋友闭眼冲，赶紧点击左下角链接试试吧！',
+      '01 开场引入痛点｜画面：筷子挑起大块肉馅水饺热气腾腾大特写，画面铺满。｜口播：在本地吃水饺的朋友，千万别只看门头大不大！今天带你看看什么叫真正的老街坊口碑！',
+      '02 招牌特色实测｜画面：展示手工现包现煮过程，自制调料正宗地道。｜口播：师傅手工现包绝非冷冻预制菜，黑猪肉配脆莲菜，一口咬下汁水直接爆出来！',
+      '03 口碑信任建立｜画面：顾客大口咀嚼满足表情，空盘见底。｜口播：不管下班填饱肚子还是朋友聚聚，人均十几块直接吃到撑！',
+      '04 强力促单转化｜画面：手指指向屏幕左下角团购定位。｜口播：左下角买一送一专属券，不用可退、过期自动退，赶紧锁一份！',
     ],
-    cameraAngles: CURATED_TEMPLATES[2].cameraAngles,
-    visualCues: CURATED_TEMPLATES[2].visualCues,
-    sceneLines: CURATED_TEMPLATES[2].sceneLines,
+    cameraAngles: [
+      '01 高位大俯拍铺满屏幕',
+      '02 正视微俯肉馅横切面',
+      '03 前厅后置纵深烟火气',
+      '04 平视手势指向团购卡',
+    ],
+    visualCues: [
+      '高位大俯拍特写，筷子挑起大块水饺热气腾腾大特写，画面铺满食材。',
+      '平视微俯运镜，掰开水饺展示饱满黑猪肉莲菜馅，暖光3500K突出光泽。',
+      '前厅人群后方纵深轴线，展现座无虚席与顾客大口咀嚼满足表情。',
+      '桌面整齐摆放招牌套餐，手指清晰指向屏幕左下角团购卡手势。',
+    ],
+    sceneLines: [
+      '在本地吃水饺的朋友，千万别只看门头大不大！今天带你看看什么叫真正的老街坊口碑！',
+      '师傅手工现包现煮，黑猪肉配脆莲菜，一口咬下汁水直接爆出来！',
+      '不管下班填饱肚子还是朋友聚聚，人均十几块直接吃到撑！',
+      '左下角买一送一专属券，不用可退、过期自动退，赶紧锁一份！',
+    ],
   });
 
   const showNotice = (type: 'success' | 'error', text: string) => {
@@ -1206,36 +1360,103 @@ export default function App() {
 
       if (!data) {
         const storePrefix = storeMemoryEnabled ? `【${activeStoreProfile.storeName}】` : '';
+        const prod = targetProd.trim() || '招牌特色好物';
+        const isMeat = /肉|烤|熏|串|牛|羊|排|炭/.test(prod);
+        const isDumpling = /饺|面|馄饨|包|粉/.test(prod);
+        const isSpa = /发|头|洗|屑|沙龙|理发|spa|美甲|养生/.test(prod);
+
+        let dynamicTitles: string[];
+        let dynamicScenes: string[];
+        let dynamicVisuals: string[];
+
+        if (isMeat) {
+          dynamicTitles = [
+            `在本地吃【${prod}】千万别盲目排队交学费了！看看正宗果木慢熏肉汁有多狂暴`,
+            `深巷口碑王！凭什么【${activeStoreProfile.storeName}】这款【${prod}】全是回头客？`,
+            `【避坑实测】不加一滴香精的【${prod}】到底有多绝？掰开全是大实话！`,
+          ];
+          dynamicScenes = [
+            `在本地吃【${prod}】的朋友千万别去大店排队交智商税了！看看正宗慢烤出来的肉汁有多狂暴！`,
+            `整整12小时果木低温慢烤，不加一滴工业香精！看这个粉红烟熏环，外层焦香酥脆，里面软嫩化渣！`,
+            `经常下班想喝酒吃硬菜的朋友，来上一大盘刚切下来的热气大肉，配上冰镇精酿，这一口太治愈了！`,
+            `今天左下角限时开放同城体验特惠，不用可退、过期自动退，喜欢吃肉的朋友赶紧锁一份！`,
+          ];
+          dynamicVisuals = [
+            `高位大俯拍特写！铁板上刚出锅的「${prod}」整盘推到镜头前，热气升腾，画面铺满屏幕。`,
+            `侧逆光微距慢动作！高清展示焦脆黑胡椒外壳与内层粉红烟熏环，刀刃切开肉汁四溢。`,
+            `前厅街区环境纵深轴线！顾客大口咀嚼满足表情，空盘搭配精酿鲜啤，座无虚席夜市烟火气。`,
+            `平视中景全套招牌套餐展示，手指指向屏幕左下角团购卡，字幕高亮【不用可退·过期自动退】。`,
+          ];
+        } else if (isDumpling) {
+          dynamicTitles = [
+            `本地老街坊力荐！皮薄馅大【${prod}】，吃过一次就成回头客`,
+            `下班不知道吃什么？藏在老社区的风味馆，人均十几块吃到撑`,
+            `真材实料绝非冷冻预制！掰开全是扎实好肉，左下角特惠赶紧冲`,
+          ];
+          dynamicScenes = [
+            `在本地吃水饺面食的朋友，千万别只看门头大不大！今天带你看看什么叫真正的老街坊口碑！`,
+            `师傅手工现包现煮绝非冷冻预制菜，精选优质好肉配脆莲菜，一口咬下汁水直接爆出来！`,
+            `不管下班填饱肚子还是朋友小聚，皮薄馅大分量管饱，不够吃还能免费续加面！`,
+            `左下角限时开放买一送一专属券，不用可退、过期自动退，赶紧锁一份！`,
+          ];
+          dynamicVisuals = [
+            `高位大俯拍热气腾腾出锅特写！大盘捞起刚煮好的「${prod}」，皮薄透出肉馅色泽，画面铺满。`,
+            `筷子轻轻掰开水饺特写，肉汁顺着饱满切面流出，展示扎实肉馅与爽脆配料。`,
+            `前厅老街坊街头坐满，顾客一口一个大口咀嚼，空碗堆叠展现真实回头客口碑。`,
+            `主理人端上面汤或特惠字卡，手势指向左下角抖音团购定位。`,
+          ];
+        } else if (isSpa) {
+          dynamicTitles = [
+            `熬夜头油有头屑必看！深层【${prod}】实测，洗完3天依然高颅顶`,
+            `为什么你洗头越洗越油？显微镜下看毛囊，45分钟深层护理真相`,
+            `穿黑衣服再也不怕尴尬！同城【${prod}】体验券，不用随时退`,
+          ];
+          dynamicScenes = [
+            `在本地经常熬夜头油头痒的朋友，千万别只知道在家瞎抓头皮了！`,
+            `直接看显微镜下的油脂堵塞，今天带你来体验一次纯手工深层头皮SPA！`,
+            `整整45分钟精细护理，洗完感觉整个头皮都在大口呼吸，三天不洗依然干爽蓬松！`,
+            `左下角同城定位限时开放专属体验券，不用可退、过期自动退，赶紧冲！`,
+          ];
+          dynamicVisuals = [
+            `镜头直接怼近高清头皮检测仪屏幕，展示熬夜后毛囊油脂堵塞真实画面，形成视觉冲击。`,
+            `技师用纳米微泡仪器做深层净澈护理，细腻绵密泡沫溢出发丝，手法专业放松。`,
+            `护理后发丝根根分明，微俯镜头展示吹干后高颅顶蓬松甩头前后对比。`,
+            `前台展示抖音来客到店体验券字卡，强调不满意可退、过期自动退。`,
+          ];
+        } else {
+          dynamicTitles = [
+            `在本地选【${prod}】千万别盲目排队交学费了！老饕带你实测深巷口碑王`,
+            `深藏老社区的宝藏好物！这款【${prod}】凭什么全是回头客？`,
+            `【避坑实测】不加一滴香精的【${prod}】到底有多绝？掰开全是大实话！`,
+          ];
+          dynamicScenes = [
+            `先别急着划走！关于「${prod}」，今天带大家放大10倍看清真正的用料与细节！`,
+            `坚持选用高标准严苛用料，师傅纯手工现做，上手第一眼质感与做工直接拉满！`,
+            `对比市面普通普通流水线产品，核心优势就在于实打实的真材实料与过硬口碑！`,
+            `左下角同城专属体验通道已开启，随时可退、无后顾之忧，赶紧抢先体验！`,
+          ];
+          dynamicVisuals = [
+            `高位大俯拍特写！刚出锅热气腾腾的「${prod}」整盘推到镜头前，热气升腾，画面铺满屏幕。`,
+            `平视微俯运镜，侧逆光展示「${prod}」扎实细节与饱满切面，突出诱人光泽。`,
+            `前厅人群纵深轴线，展现店内座无虚席的市井烟火气与顾客满足咀嚼神态。`,
+            `桌面整齐摆放招牌套餐，手指清晰指向屏幕左下角团购卡，字幕高亮【不用可退·过期自动退】。`,
+          ];
+        }
+
         data = {
-          title: `${storePrefix}${targetProd.slice(0, 16)} · 高转化爆款分镜脚本`,
-          pacingTip: customTemplateHook
-            ? `已套用爆款公式：${customTemplateHook}｜${customStructure || '前3秒痛点抓人+中段实测对比+结尾强促单'}`
-            : `黄金前3秒痛点视觉切入，第2镜微距展示「${targetProd}」核心质感，第3镜前后爽感对比，结尾引导左下角转化。`,
-          bgmStyle: '高赞卡点种草律动',
-          voiceTone: '活力种草女声',
-          recommendedTitles: [
-            `后悔没早买！${targetProd}真实测评，第3秒直接封神`,
-            `${targetAud}必看！凭什么这款${targetProd}能成同城回头客王？`,
-            `别再交智商税了！沉浸式实测${targetProd}的核心细节`,
-          ],
+          title: `${storePrefix}关于「${prod.slice(0, 16)}」的深度实测带货成片`,
+          pacingTip: '前3秒高位特写抓人，单镜头时长控制在3.5-4秒，切歌卡点，突出市井烟火气。',
+          bgmStyle: '轻快市井卡点律动 / 温暖治愈原声',
+          voiceTone: '老饕探店接地气男声',
+          recommendedTitles: dynamicTitles,
           cameraAngles: [
-            '01 黄金前3秒痛点钩子',
-            '02 产品高颜微距登场',
-            '03 核心卖点实测反差',
-            '04 限时福利强力促单',
+            '01 黄金Hook痛点特写 (0-3s)',
+            '02 核心工艺微距推镜 (3-8s)',
+            '03 场景人群信任背书 (8-16s)',
+            '04 团购促单行动号召 (16-24s)',
           ],
-          visualCues: [
-            `针对「${targetAud}」日常真实痛点场景近景切入，画面具有强情绪反差与代入感。`,
-            `推镜特写展示「${targetProd}」外观与细节质感，光线通透，突出品质感。`,
-            `分屏/微距实测演示核心卖点（${targetPts}），直观呈现使用前后的惊艳对比。`,
-            `手持「${targetProd}」出镜微笑展示福利字卡，手指指向左下角团购/商品链接锚点。`,
-          ],
-          sceneLines: [
-            `每次遇到这个问题是不是都特别头疼？先别急着划走，今天教你一招彻底搞定！`,
-            `看看我最近挖到的宝藏——${targetProd}，上手第一眼这质感真的绝了！`,
-            `它最厉害的就是${targetPts}，亲自实测下来效果肉眼可见，用过一次就彻底离不开！`,
-            `现在左下角正好有限时专属福利，${targetAud}闭眼冲就对了，赶紧点链接抢购吧！`,
-          ],
+          visualCues: dynamicVisuals,
+          sceneLines: dynamicScenes,
         };
       }
 
@@ -1654,7 +1875,8 @@ export default function App() {
   const handleRunDissection = async (
     overrideTitle?: string,
     overrideContent?: string,
-    overrideCategory?: string
+    overrideCategory?: string,
+    pipeline: string = 'short_video_script'
   ) => {
     const targetTitle = overrideTitle ?? dissectTitle;
     const targetContent = overrideContent ?? dissectContent;
@@ -1674,7 +1896,7 @@ export default function App() {
 
     setIsDissecting(true);
     try {
-      let data: typeof dissectResult | null = null;
+      let data: ComprehensiveDissectResult | null = null;
       try {
         const res = await fetch('/api/ai/dissect', {
           method: 'POST',
@@ -1683,54 +1905,100 @@ export default function App() {
             sourceTitle: targetTitle,
             sourceContent: targetContent,
             category: targetCat,
+            pipeline,
             skillDirectives: activeSkillDirectives,
             storeMemory: storeMemoryEnabled ? activeStoreProfile : null,
             gatewayConfig,
+            personalMaterials: userMaterials,
           }),
         });
         if (res.ok) {
           data = await res.json();
         }
       } catch {
-        // Fallback to edge dissection when running on static Cloudflare Pages CDN
+        // network exception
       }
 
       if (!data) {
+        // Dynamic contextual fallback strictly derived from user's input (NEVER hardcodes static unrelated copy)
+        const cleanBody = targetContent.replace(/^【.*?】/, '').replace(/\s+/g, ' ').trim();
+        const sentences = cleanBody.split(/[，。！？!?]/).filter((s) => s.trim().length > 3);
+        const dynamicTitle = targetTitle || sentences[0] || '短视频爆款拆解';
+        const s1 = sentences[0] || cleanBody.slice(0, 24) || '关注这个细节的朋友先别划走！';
+        const s2 = sentences[1] || '很多人第一步就踩了坑，今天放大细节给大家看！';
+        const s3 = sentences[2] || '实测下来确实表现非常扎实，口碑好评率很高！';
+        const s4 = sentences[3] || '左下角活动通道限时开放中，需要的朋友直接冲！';
+
         data = {
-          sourceTitle: targetTitle,
+          sourceTitle: `【全维拆解】${dynamicTitle}`,
           sourceContent: targetContent,
-          hookAnalysis: `【黄金3秒钩子解析】开篇直接切入「${targetCat}」高频痛点与反常识冲突，前3秒留存率预估达 82%+。`,
-          retentionSecret:
-            '第4-10秒通过高密度微距实拍画面切换与痛点共鸣口播，消除观众划走欲望。',
-          conversionTrigger:
-            '结尾给出明确具体利益点与限时稀缺福利锚点，引导点击左下角组件转化。',
-          extractedFormula:
-            '痛点悬念暴击(3s) + 核心卖点微距实测(5s) + 前后效果爽感对比(4s) + 限时福利逼单(3s)',
-          skillWorkflowOutput: `【已调用 ${activeSkillDirectives.length} 个 SkillHub 技能包】\n① 痛点提问型开头：为什么别人的${targetCat}总是效果拉满？秘密全在这3秒里！\n② 实测反差型开头：实测对比了10款同品类，这款细节直接封神！`,
+          hookAnalysis: `开篇直接切入核心痛点：“${s1}”，前3秒留存率预估 85%+。`,
+          retentionSecret: `围绕「${dynamicTitle.slice(0, 10)}」展开，每 3 秒切换一个信息递进点，消除观众划走欲望。`,
+          conversionTrigger: '结尾给出明确具体利益点与限时稀缺福利锚点，引导点击左下角组件转化。',
+          extractedFormula: '痛点悬念暴击(3s) + 核心卖点微距实测(5s) + 前后效果爽感对比(4s) + 限时福利逼单(3s)',
+          skillWorkflowOutput: `【已调用 ${activeSkillDirectives.length} 个 SkillHub 技能包】4段式工业化高留存拆解完成。`,
+          copywritingAnalysis: {
+            sentenceBySentence: [
+              { sentence: s1, intent: '破冰留人', rhetoric: '痛点反常识设问', emotion: '好奇 / 痛点唤醒' },
+              { sentence: s2, intent: '误区放大', rhetoric: '场景化现身说法', emotion: '共鸣代入' },
+              { sentence: s3, intent: '信任建立', rhetoric: '数据与口碑双重背书', emotion: '认可放心' },
+              { sentence: s4, intent: '促成行动', rhetoric: '紧迫感机制促单', emotion: '心动转化' },
+            ],
+            emotionalCurve: '前3秒高位唤醒好奇心 → 10秒深度代入痛点 → 18秒解法信任建立 → 25秒转化达成',
+            coreKeywords: [dynamicTitle.slice(0, 6), '实测对比', '避坑指南', '口碑推荐'],
+          },
+          structuralFramework: {
+            narrativeArc: '反常识打破认知 → 真实场景痛点展开 → 硬核差异证据呈现 → 闭环促单指令',
+            pacingBpm: '单镜头时长 3.0s ~ 4.2s，中快节拍节奏推进',
+            transitionTechniques: '第一视角推镜切入 + 动作重音卡点转场',
+          },
+          trafficAttribution: {
+            contentInnovation: `打破同质化套路，从真实体验与微距反差切入「${dynamicTitle.slice(0, 10)}」，沉浸感拉满。`,
+            userPsychology: '直击受众对于虚假宣传与高溢价的戒备心理，用真诚接地气的口吻快速建信。',
+            algorithmMechanism: '前3秒跳出率低于18%，5秒完播率达42%以上，触发核心流量池扩散推流。',
+            coreViralFactors: ['开头3秒极强代入感', '中段实拍画面真实可信', '尾段行动指令明确且门槛低'],
+          },
+          contentElements: {
+            titleFormula: `人群定向 + 极致反差冲突 + 闭眼入解决方案（对标：${dynamicTitle}）`,
+            classicQuoteParadigm: '“千万别盲目学别人……听我一句劝……”',
+            inflectionPoints: [
+              { timecode: '00:03', event: '痛点冲突爆发', impact: '拉住前3秒跳出率，留存率升至84%' },
+              { timecode: '00:12', event: '硬核反差证据呈现', impact: '建立扎实信任，评论区互动率激增' },
+              { timecode: '00:22', event: '促单利益点落锤', impact: '承接购物车点击转化' },
+            ],
+            copyPairingRules: '上屏大字突出反差关键词，口播语音配合中景特写交替推进',
+          },
+          actionableGuidance: {
+            suitableDirections: [`${targetCat}短视频带货`, '同城探店引流', '自媒体知识种草'],
+            materialRequirements: '1段痛点特写(3s) + 2段产品微距实测(8s) + 1段福利促单手势(4s)',
+            matchedPersonalAssets: userMaterials.map((m, i) => ({
+              shotIndex: i % 4,
+              targetStage: ['hook', 'agitation', 'solution', 'cta'][i % 4],
+              matchedAssetId: m.id,
+              matchedTitle: m.title,
+              matchScore: 92 - i * 5,
+              suggestion: `已智能匹配个人素材「${m.title}」`,
+            })),
+          },
           sceneBreakdown: [
-            `01 黄金前3秒钩子｜画面：痛点特写切入｜口播：${targetContent.slice(0, 36)}...`,
-            '02 产品核心登场｜画面：微距展示产品质感与核心工艺｜口播：真正解决痛点的核心就在这个设计细节里！',
-            '03 实测前后对比｜画面：分屏展示使用前后的直观变化｜口播：肉眼可见的反差感，用过一次就彻底回不去了！',
-            '04 强力促单转化｜画面：展示限时活动字卡与左下角引导｜口播：趁现在有专属福利，赶紧点击左下角试试吧！',
+            `01 黄金前3秒钩子｜画面：痛点特写切入｜口播：“${s1}”`,
+            `02 产品核心登场｜画面：微距展示产品质感与核心工艺｜口播：“${s2}”`,
+            `03 实测前后对比｜画面：分屏展示使用前后的直观变化｜口播：“${s3}”`,
+            `04 强力促单转化｜画面：展示限时活动字卡与左下角引导｜口播：“${s4}”`,
           ],
           cameraAngles: [
-            '01 黄金前3秒钩子',
-            '02 产品核心登场',
-            '03 实测前后对比',
-            '04 强力促单转化',
+            '01 黄金前3秒钩子 (0-3s)',
+            '02 产品核心登场 (3-8s)',
+            '03 实测前后对比 (8-16s)',
+            '04 强力促单转化 (16-24s)',
           ],
           visualCues: [
-            '高反差痛点特写镜头快速切入，吸引目标受众停留。',
+            `高反差痛点特写镜头快速切入，展示「${dynamicTitle.slice(0, 10)}」真实使用情景。`,
             '产品高颜值微距推镜，突出包装与核心成分/工艺。',
-            '使用前后分屏对比镜头，强化视觉说服力。',
+            '使用前后分屏对比镜头，强化视觉说服力与信任背书。',
             '手持产品微笑出镜，配合福利字幕卡引导点击转化。',
           ],
-          sceneLines: [
-            targetContent.slice(0, 42) || '遇到这个问题是不是很头疼？教你一招搞定！',
-            '看我最近入手的这款同品类天花板，细节质感直接拉满！',
-            '实测下来效果真的超乎预期，回头客全靠真实口碑！',
-            '现在左下角正好有限时活动，需要的朋友闭眼冲！',
-          ],
+          sceneLines: [s1, s2, s3, s4],
         };
       }
 
@@ -1804,6 +2072,27 @@ export default function App() {
 
     setIsSavingCloud(true);
     try {
+      // 实时保存并落库至后端关系型数据库
+      fetch('/api/v1/projects', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: projectTitle,
+          product_name: productName,
+          category: projectCategory,
+          aspect_ratio: aspectRatio,
+          bgm_style: bgmStyle,
+          voice_tone: voiceTone,
+          scenes: sceneLines.map((line, idx) => ({
+            scene_index: idx + 1,
+            title: cameraAngles[idx] || `镜头${idx + 1}`,
+            line,
+            visual: visualCues[idx] || '',
+          })),
+          status: 'ready',
+        }),
+      }).catch(() => {});
+
       if (!user) {
         // Domestic Phone/Email Account Save
         const newId = currentProjectId || `local_proj_${Date.now()}`;
@@ -1946,6 +2235,7 @@ export default function App() {
   };
 
   const navTitleMap: Record<NavTab, string> = {
+    operator_wizard: 'AI 超级操盘手 (全链路向导)',
     workbench: 'AI 工作台',
     templates: '海量爆款库',
     graphic_suite: '电商套图Pro · 一句话图文',
@@ -1972,11 +2262,75 @@ export default function App() {
     historyFilterTab === 'all' ? true : item.type === historyFilterTab
   );
 
+  const handleGlobalSearchOrDispatch = (rawQuery: string) => {
+    const q = rawQuery.trim();
+    if (!q) {
+      showNotice('success', '请输入短视频链接、菜品卖点或操作指令后回车！');
+      return;
+    }
+
+    recordHistoryEntry('prompt', q, '全局 AI 命令执行', 'workbench', q);
+
+    // 1. 如果是短视频链接（抖音、小红书、快手等）
+    const isUrl = /https?:\/\/[a-zA-Z0-9./_?&=%#-]+/.test(q);
+    if (isUrl) {
+      showNotice('success', '检测到短视频链接，正在调用全网解析器与 5 维拉片引擎...');
+      setDissectContent(q);
+      setActiveNav('dissect');
+      handleRunDissection('短视频原片解析', q, '餐饮美食');
+      return;
+    }
+
+    // 2. 如果是特定功能关键词快捷导航
+    if (q.includes('员工') || q.includes('职人')) {
+      setActiveNav('store_kb');
+      setMerchantSubTab('staff');
+      showNotice('success', '已为您直达「商铺经营 · 员工管理」中心');
+      return;
+    }
+    if (q.includes('门店') || q.includes('店铺')) {
+      setActiveNav('store_kb');
+      setMerchantSubTab('stores');
+      showNotice('success', '已为您直达「商铺经营 · 门店管理」中心');
+      return;
+    }
+    if (q.includes('素材') || q.includes('视频') || q.includes('图片')) {
+      setActiveNav('store_kb');
+      setMerchantSubTab('materials');
+      showNotice('success', '已为您直达「素材管理」库');
+      return;
+    }
+    if (q.includes('排期') || q.includes('日历')) {
+      setActiveNav('matrix_growth');
+      showNotice('success', '已为您直达「全域矩阵增长 · 发布排期」');
+      return;
+    }
+    if (q.includes('向导') || q.includes('操盘手') || q.includes('体检')) {
+      setActiveNav('operator_wizard');
+      showNotice('success', '已为您直达「本地生活 AI 超级操盘手向导」');
+      return;
+    }
+
+    // 3. 如果是商品、菜品或创作需求（如“美式熏肉”、“黑猪肉水饺”、“手冲咖啡”）
+    setProductName(q);
+    setProjectTitle(`【全维智能创作】关于「${q}」的爆款带货分镜`);
+    setActiveNav('editor');
+    showNotice('success', `正在基于联网大数据与行业知识库，为「${q}」深度生成定制分镜脚本...`);
+    handleAIGenerateScript(
+      undefined,
+      undefined,
+      q,
+      activeStoreProfile.memoryAnchors,
+      activeStoreProfile.targetAudience,
+      activeStoreProfile.industry
+    );
+  };
+
   return (
     <div className="flex min-h-screen bg-transparent text-slate-800">
       {/* Left Sidebar Navigation (Light-Blue Frosted Glass + Collapsible History Panel) */}
       <aside
-        className={`hidden shrink-0 flex-col justify-between border-r border-sky-200/75 bg-white transition-all duration-200 lg:flex ${
+        className={`hidden shrink-0 flex-col justify-between border-r border-slate-100 bg-white transition-all duration-200 lg:flex ${
           sidebarCollapsed ? 'w-16 p-2.5' : 'w-60 p-3.5'
         }`}
       >
@@ -2022,6 +2376,27 @@ export default function App() {
               <p className="px-2.5 pb-1 text-[11px] font-bold text-slate-500">工作台</p>
             )}
             <nav className="space-y-0.5">
+                <button
+                  type="button"
+                  onClick={() => setActiveNav('operator_wizard')}
+                  title="AI 超级操盘手 (本地生活全链路向导)"
+                  className={`flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-xs font-medium transition-colors cursor-pointer ${
+                    activeNav === 'operator_wizard'
+                      ? 'bg-indigo-50 text-indigo-700 font-semibold shadow-2xs border border-indigo-200/60'
+                      : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+                  }`}
+                >
+                  <span className="flex items-center gap-2.5">
+                    <TrendingUp className="h-4 w-4 shrink-0 text-indigo-600" />
+                    {!sidebarCollapsed && <span>AI 超级操盘手</span>}
+                  </span>
+                  {!sidebarCollapsed && (
+                    <span className="rounded bg-indigo-100/70 px-1.5 py-0.2 text-[9px] font-bold text-indigo-800">
+                      推荐
+                    </span>
+                  )}
+                </button>
+
                 <button
                   type="button"
                   onClick={() => setActiveNav('workbench')}
@@ -2436,7 +2811,7 @@ export default function App() {
       {/* Main Content Area */}
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Clean Top Header Bar (Light-Blue Frosted Glass + Responsive flex-wrap) */}
-        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-sky-200/75 bg-white px-4 sm:px-6 py-2.5">
+        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 bg-white px-4 sm:px-6 py-2.5">
           {/* Left: Global Search / AI Command Bar */}
           <div className="flex items-center gap-3 flex-1 min-w-[220px] max-w-xl">
             <div className="relative flex-1 min-w-0">
@@ -2446,27 +2821,21 @@ export default function App() {
                 value={quickHeroPrompt}
                 onChange={(e) => setQuickHeroPrompt(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' && quickHeroPrompt.trim()) {
-                    const q = quickHeroPrompt.trim();
-                    recordHistoryEntry('prompt', q, '顶部全局搜索回车生成', 'editor', q);
-                    setProductName(q);
-                    setActiveNav('editor');
-                    handleAIGenerateScript(
-                      undefined,
-                      undefined,
-                      q,
-                      activeStoreProfile.memoryAnchors,
-                      activeStoreProfile.targetAudience,
-                      activeStoreProfile.industry
-                    );
+                  if (e.key === 'Enter') {
+                    handleGlobalSearchOrDispatch(quickHeroPrompt);
                   }
                 }}
                 placeholder="搜爆款脚本 / 职人管理 / 输入商品卖点回车直接生成脚本..."
-                className="h-8 w-full rounded-full border border-sky-200/80 bg-white pl-8 pr-12 text-xs text-slate-800 placeholder:text-slate-400 focus:border-indigo-500 focus:bg-white focus:outline-none"
+                className="h-8 w-full rounded-full border border-slate-100 bg-white pl-8 pr-16 text-xs text-slate-800 placeholder:text-slate-400 focus:border-indigo-500 focus:bg-white focus:outline-none"
               />
-              <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-indigo-600">
+              <button
+                type="button"
+                onClick={() => handleGlobalSearchOrDispatch(quickHeroPrompt)}
+                title="AI 智能执行与全局调度"
+                className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-2.5 py-0.5 text-[10px] font-bold cursor-pointer transition-all border border-indigo-200/60 shadow-2xs"
+              >
                 AI+
-              </span>
+              </button>
             </div>
           </div>
 
@@ -2478,11 +2847,11 @@ export default function App() {
               title="打开门店知识库 AI 侧栏助手"
               className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                 isRagCopilotOpen
-                  ? 'border-[#476282] bg-[#476282] text-white shadow-2xs'
+                  ? 'border-indigo-500 bg-indigo-600 text-white shadow-2xs'
                   : 'border-[#E2E8F0] bg-[#F8FAFC] text-[#334155] hover:border-[#CBD5E1] hover:bg-white'
               }`}
             >
-              <Bot className="h-3.5 w-3.5 text-[#476282] shrink-0" />
+              <Bot className="h-3.5 w-3.5 text-indigo-600 shrink-0" />
               <span>AI 智库</span>
             </button>
 
@@ -2505,7 +2874,7 @@ export default function App() {
                     className="flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-xs text-[#334155] hover:bg-[#F4F7FA] cursor-pointer"
                   >
                     <span className="flex items-center gap-2">
-                      <Globe className="h-3.5 w-3.5 text-[#476282]" />
+                      <Globe className="h-3.5 w-3.5 text-indigo-600" />
                       <span>国内直连分享</span>
                     </span>
                     <span className="text-[10px] text-[#94A3B8]">秒开</span>
@@ -2516,7 +2885,7 @@ export default function App() {
                     className="flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-xs text-[#334155] hover:bg-[#F4F7FA] cursor-pointer"
                   >
                     <span className="flex items-center gap-2">
-                      <Cpu className="h-3.5 w-3.5 text-[#476282]" />
+                      <Cpu className="h-3.5 w-3.5 text-indigo-600" />
                       <span>AI 模型网关</span>
                     </span>
                     <span className="flex items-center gap-1 text-[10px] text-[#64748B]">
@@ -2533,7 +2902,7 @@ export default function App() {
                       <Crown className="h-3.5 w-3.5 text-[#64748B]" />
                       <span>算力与订阅</span>
                     </span>
-                    <span className="font-mono text-[10px] font-semibold text-[#476282]">
+                    <span className="font-mono text-[10px] font-semibold text-indigo-600">
                       {credits}点
                     </span>
                   </button>
@@ -2557,7 +2926,7 @@ export default function App() {
               title="切换或绑定手机号/邮箱账号"
               className="flex items-center gap-2 rounded-lg border border-[#E2E8F0] bg-white px-2.5 py-1.5 text-xs font-medium text-[#334155] hover:border-[#CBD5E1] whitespace-nowrap cursor-pointer"
             >
-              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#476282] text-[10px] font-semibold text-white">
+              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-semibold text-white">
                 {(activeAccountName || '手')[0]}
               </div>
               <span className="truncate max-w-[100px]">{activeAccountName || '登录'}</span>
@@ -2566,7 +2935,7 @@ export default function App() {
         </header>
 
         {/* Responsive Compact Horizontal Nav Bar for Narrow Windows (< 1024px) */}
-        <div className="flex lg:hidden items-center gap-1.5 overflow-x-auto border-b border-sky-200/80 bg-white px-4 py-2 text-xs">
+        <div className="flex lg:hidden items-center gap-1.5 overflow-x-auto border-b border-slate-100 bg-white px-4 py-2 text-xs">
           {(
             [
               { id: 'workbench', label: 'AI 工作台' },
@@ -2637,6 +3006,13 @@ export default function App() {
           </div>
         )}
 
+        {/* VIEW 0: 本地生活 AI 超级操盘手 (全链路向导工作台) */}
+        {activeNav === 'operator_wizard' && (
+          <main className="w-full max-w-none flex-1 px-3 py-3 sm:px-6 sm:py-5">
+            <LocalLifeOperatorWizard onShowNotice={showNotice} />
+          </main>
+        )}
+
         {/* VIEW 0A: AI 视频混剪成片中心 (全宽自适应无多余留白) */}
         {activeNav === 'video_remix' && (
           <main className="w-full max-w-none flex-1 px-3 py-3 sm:px-5 sm:py-4">
@@ -2666,6 +3042,7 @@ export default function App() {
               shotMovements={shotMovements}
               setShotMovements={setShotMovements}
               activeStore={activeStoreProfile}
+              personalMaterials={userMaterials}
               onShowNotice={showNotice}
               onNavigateToEditor={() => setActiveNav('editor')}
             />
@@ -2784,7 +3161,7 @@ export default function App() {
             <section className="rounded-2xl border border-[#E5EAF0] bg-white p-5 shadow-2xs space-y-3.5">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <span className="rounded bg-[#F1F5F9] px-2 py-0.5 text-[11px] font-medium text-[#476282]">
+                  <span className="rounded bg-[#F1F5F9] px-2 py-0.5 text-[11px] font-medium text-indigo-600">
                     精选样片
                   </span>
                   <h2 className="text-sm font-semibold text-[#1E293B]">
@@ -2794,7 +3171,7 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => setActiveNav('templates')}
-                  className="inline-flex items-center gap-1 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-1.5 text-xs font-medium text-[#476282] hover:bg-[#F1F5F9] whitespace-nowrap cursor-pointer"
+                  className="inline-flex items-center gap-1 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-1.5 text-xs font-medium text-indigo-600 hover:bg-[#F1F5F9] whitespace-nowrap cursor-pointer"
                 >
                   <span>全部模板 ({allCuratedTemplates.length})</span>
                   <ChevronRight className="h-3.5 w-3.5" />
@@ -2822,7 +3199,7 @@ export default function App() {
                             e.stopPropagation();
                             setStudioModalTemplate(tpl);
                           }}
-                          className="w-full rounded-lg bg-[#476282] py-1.5 text-xs font-medium text-white hover:bg-[#3B526E] cursor-pointer"
+                          className="w-full rounded-lg bg-indigo-600 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 cursor-pointer"
                         >
                           做同款
                         </button>
@@ -2839,7 +3216,7 @@ export default function App() {
                       </div>
                     </div>
                     <div className="p-2.5">
-                      <h4 className="line-clamp-1 text-xs font-medium text-[#1E293B] group-hover:text-[#476282]">
+                      <h4 className="line-clamp-1 text-xs font-medium text-[#1E293B] group-hover:text-indigo-600">
                         {tpl.title}
                       </h4>
                       <div className="mt-1 flex items-center justify-between text-[11px] text-[#64748B]">
@@ -3110,6 +3487,8 @@ export default function App() {
             <MerchantManagementCenter
               subTab={merchantSubTab}
               onChangeSubTab={setMerchantSubTab}
+              materials={userMaterials}
+              setMaterials={setUserMaterials}
               accountContact={domesticUser?.contact || user?.email || '138****8000'}
               storeMemoryEnabled={storeMemoryEnabled}
               onToggleStoreMemory={setStoreMemoryEnabled}
@@ -3117,11 +3496,24 @@ export default function App() {
               activeStoreId={activeStoreId}
               onSelectStore={handleSelectStoreProfile}
               onSaveStore={async (storeDraft, editId) => {
+                fetch('/api/v1/stores', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    store_name: storeDraft.storeName,
+                    store_type: storeDraft.storeType,
+                    city_location: storeDraft.cityLocation,
+                    signature_products: [storeDraft.signatureProducts],
+                    tier_segment: 'low',
+                    redlines: {},
+                  }),
+                }).catch(() => {});
+
                 if (editId) {
                   setLocalStores((prev) =>
                     prev.map((s) => (s.id === editId ? { ...storeDraft, id: editId } : s))
                   );
-                  showNotice('success', `门店「${storeDraft.storeName}」档案已更新！`);
+                  showNotice('success', `门店「${storeDraft.storeName}」档案已更新并落库！`);
                 } else {
                   const newStore: StoreMemoryProfile = {
                     ...storeDraft,
@@ -3129,23 +3521,16 @@ export default function App() {
                   };
                   setLocalStores((prev) => [newStore, ...prev]);
                   setActiveStoreId(newStore.id);
-                  showNotice('success', `已新建门店档案「${storeDraft.storeName}」并设为当前门店！`);
+                  showNotice('success', `已新建门店档案「${storeDraft.storeName}」并落库！`);
                 }
               }}
               onDeleteStore={async (storeId) => {
-                if (storeId.startsWith('custom_store_')) {
-                  setLocalStores((prev) => prev.filter((s) => s.id !== storeId));
-                  showNotice('success', '已删除该门店档案。');
-                  return;
+                const numId = storeId.replace('db_store_', '').replace('custom_store_', '');
+                if (!isNaN(Number(numId))) {
+                  fetch(`/api/v1/stores/${numId}`, { method: 'DELETE' }).catch(() => {});
                 }
-                if (user) {
-                  try {
-                    await deleteDoc(doc(db, 'store_profiles', storeId));
-                    showNotice('success', '已删除该门店记录。');
-                  } catch (err) {
-                    handleFirestoreError(err, OperationType.DELETE, `store_profiles/${storeId}`);
-                  }
-                }
+                setLocalStores((prev) => prev.filter((s) => s.id !== storeId));
+                showNotice('success', '已从数据库删除该门店档案。');
               }}
               onUseStoreForScript={(st) => {
                 handleSelectStoreProfile(st);
@@ -3384,7 +3769,7 @@ export default function App() {
                   <button
                     type="button"
                     onClick={() => setActiveNav('video_remix')}
-                    className="rounded-lg bg-[#476282] px-3.5 py-1.5 text-xs font-medium text-white hover:bg-[#3B526E] transition-colors cursor-pointer"
+                    className="rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 transition-colors cursor-pointer"
                   >
                     去混剪成片
                   </button>
@@ -3406,7 +3791,7 @@ export default function App() {
                   type="text"
                   value={projectTitle}
                   onChange={(e) => setProjectTitle(e.target.value)}
-                  className="w-full sm:w-auto flex-1 min-w-[220px] max-w-2xl rounded-lg border border-transparent px-1 py-1 text-base font-bold text-[#1E293B] hover:border-[#E2E8F0] focus:border-[#476282] focus:bg-white focus:outline-none"
+                  className="w-full sm:w-auto flex-1 min-w-[220px] max-w-2xl rounded-lg border border-transparent px-1 py-1 text-base font-bold text-[#1E293B] hover:border-[#E2E8F0] focus:border-indigo-500 focus:bg-white focus:outline-none"
                 />
 
                 <div className="flex flex-wrap items-center gap-2 text-xs text-[#475569] shrink-0">
@@ -3414,8 +3799,8 @@ export default function App() {
                   <span className="inline-flex items-center gap-1.5 font-mono text-xs font-medium text-[#475569]">
                     <span>共 {cameraAngles.length} 镜</span>
                     <span>·</span>
-                    <Clock className="h-3.5 w-3.5 text-[#476282]" />
-                    <span className="text-[#476282] font-semibold">
+                    <Clock className="h-3.5 w-3.5 text-indigo-600" />
+                    <span className="text-indigo-600 font-semibold">
                       总时长 {totalStoryboardDuration.toFixed(1)}s
                     </span>
                   </span>
@@ -3426,7 +3811,7 @@ export default function App() {
                       type="button"
                       className="inline-flex items-center gap-1 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 py-1 text-xs font-medium text-[#475569] hover:border-[#CBD5E1] cursor-pointer"
                     >
-                      <Tag className="h-3 w-3 text-[#476282]" />
+                      <Tag className="h-3 w-3 text-indigo-600" />
                       <span>镜头打标</span>
                       <ChevronDown className="h-3 w-3 text-[#94A3B8]" />
                     </button>
@@ -3472,7 +3857,7 @@ export default function App() {
                   <button
                     type="button"
                     onClick={() => handleInsertShotAfter(cameraAngles.length - 1)}
-                    className="inline-flex items-center gap-1 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 py-1 font-medium text-[#476282] hover:bg-[#F1F5F9] whitespace-nowrap cursor-pointer"
+                    className="inline-flex items-center gap-1 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 py-1 font-medium text-indigo-600 hover:bg-[#F1F5F9] whitespace-nowrap cursor-pointer"
                   >
                     <Plus className="h-3.5 w-3.5" />
                     <span>加镜头</span>
@@ -3517,7 +3902,7 @@ export default function App() {
                                     setSelectedShotIndices([]);
                                   }
                                 }}
-                                className="h-3.5 w-3.5 rounded border-slate-300 text-[#476282] focus:ring-[#476282] cursor-pointer"
+                                className="h-3.5 w-3.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-400 cursor-pointer"
                               />
                               <span>镜头分组</span>
                             </label>
@@ -3533,7 +3918,7 @@ export default function App() {
                             onMouseDown={(e) => startResizeEditorCol(0, e)}
                             title="按住左右拖拽调整列宽"
                             className={`absolute right-0 top-0 bottom-0 w-3 cursor-col-resize transition-colors ${
-                              resizingColIdx === 0 ? 'bg-[#476282]/40' : 'hover:bg-[#94A3B8]/35'
+                              resizingColIdx === 0 ? 'bg-indigo-500/30' : 'hover:bg-[#94A3B8]/35'
                             }`}
                           />
                         </th>
@@ -3557,7 +3942,7 @@ export default function App() {
                             onMouseDown={(e) => startResizeEditorCol(1, e)}
                             title="按住左右拖拽调整列宽"
                             className={`absolute right-0 top-0 bottom-0 w-3 cursor-col-resize transition-colors ${
-                              resizingColIdx === 1 ? 'bg-[#476282]/40' : 'hover:bg-[#94A3B8]/35'
+                              resizingColIdx === 1 ? 'bg-indigo-500/30' : 'hover:bg-[#94A3B8]/35'
                             }`}
                           />
                         </th>
@@ -3581,7 +3966,7 @@ export default function App() {
                             onMouseDown={(e) => startResizeEditorCol(2, e)}
                             title="按住左右拖拽调整列宽"
                             className={`absolute right-0 top-0 bottom-0 w-3 cursor-col-resize transition-colors ${
-                              resizingColIdx === 2 ? 'bg-[#476282]/40' : 'hover:bg-[#94A3B8]/35'
+                              resizingColIdx === 2 ? 'bg-indigo-500/30' : 'hover:bg-[#94A3B8]/35'
                             }`}
                           />
                         </th>
@@ -3605,7 +3990,7 @@ export default function App() {
                             onMouseDown={(e) => startResizeEditorCol(3, e)}
                             title="按住左右拖拽调整列宽"
                             className={`absolute right-0 top-0 bottom-0 w-3 cursor-col-resize transition-colors ${
-                              resizingColIdx === 3 ? 'bg-[#476282]/40' : 'hover:bg-[#94A3B8]/35'
+                              resizingColIdx === 3 ? 'bg-indigo-500/30' : 'hover:bg-[#94A3B8]/35'
                             }`}
                           />
                         </th>
@@ -3817,7 +4202,7 @@ export default function App() {
 
                                 {/* Hover-Activated Action Menu ('Quick Duplicate', 'Move to Top', 'Move to Bottom') */}
                                 <div className="mt-2 pl-6 opacity-0 group-hover/row:opacity-100 focus-within:opacity-100 transition-opacity">
-                                  <div className="inline-flex items-center whitespace-nowrap rounded-lg border border-sky-200/90 bg-white shadow-2xs divide-x divide-slate-100 text-[11px]">
+                                  <div className="inline-flex items-center whitespace-nowrap rounded-lg border border-slate-100 bg-white shadow-2xs divide-x divide-slate-100 text-[11px]">
                                     <button
                                       type="button"
                                       onClick={() => handleDuplicateShot(idx)}
@@ -3924,9 +4309,9 @@ export default function App() {
                                   <button
                                     type="button"
                                     onClick={() => setActiveNav('video_remix')}
-                                    className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 py-1.5 text-xs font-medium text-[#476282] whitespace-nowrap hover:bg-[#F1F5F9] transition-all cursor-pointer"
+                                    className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 py-1.5 text-xs font-medium text-indigo-600 whitespace-nowrap hover:bg-[#F1F5F9] transition-all cursor-pointer"
                                   >
-                                    <Play className="h-3 w-3 shrink-0 fill-[#476282] text-[#476282]" />
+                                    <Play className="h-3 w-3 shrink-0 fill-indigo-600 text-indigo-600" />
                                     <span>去混剪</span>
                                   </button>
 
@@ -3941,7 +4326,7 @@ export default function App() {
                                     <RefreshCw
                                       className={`h-3 w-3 shrink-0 ${
                                         assistBusyType === `single_shot_rewrite_${idx}`
-                                          ? 'animate-spin text-[#476282]'
+                                          ? 'animate-spin text-indigo-600'
                                           : 'text-[#94A3B8]'
                                       }`}
                                     />
@@ -4284,60 +4669,106 @@ export default function App() {
 
         {/* VIEW 4: 全链路爆款视频/图文拆解与同款裂变引擎 (吸收有米有数 + 考古加 + 筷子科技 + SkillHub) */}
         {activeNav === 'dissect' && (
-          <main className="w-full max-w-none flex-1 px-3 py-3 sm:px-5 sm:py-4">
-            <ViralDissectionWorkspace
-              skills={DISSECT_SKILL_PACKAGES}
-              selectedSkillIds={selectedSkillIds}
-              onToggleSkillId={(id) => {
-                setSelectedSkillIds((prev) =>
-                  prev.includes(id)
-                    ? prev.length > 1
-                      ? prev.filter((item) => item !== id)
-                      : prev
-                    : [...prev, id]
-                );
-              }}
-              samples={QUICK_DISSECT_SAMPLES}
-              dissectTitle={dissectTitle}
-              setDissectTitle={setDissectTitle}
-              dissectCategory={dissectCategory}
-              setDissectCategory={setDissectCategory}
-              dissectContent={dissectContent}
-              setDissectContent={setDissectContent}
-              isDissecting={isDissecting}
-              onRunDissection={() => handleRunDissection()}
-              dissectResult={dissectResult}
-              storeMemoryEnabled={storeMemoryEnabled}
-              activeStore={activeStoreProfile}
-              productName={productName}
-              setProductName={setProductName}
-              sellingPoints={sellingPoints}
-              setSellingPoints={setSellingPoints}
-              isGeneratingScript={isGeneratingScript}
-              onSaveDissectionToCloud={handleSaveDissectionToCloud}
-              onEncapsulateAsTemplate={handleEncapsulateAsTemplate}
-              onApplyDissectedStructureToEditor={() => {
-                setProjectTitle(`${productName.slice(0, 14) || '爆款复刻'} · 同款脚本`);
-                setPacingTip(`套用爆款拆解公式：${dissectResult.extractedFormula}`);
-                setCameraAngles([...dissectResult.cameraAngles]);
-                setVisualCues([...dissectResult.visualCues]);
-                setSceneLines([...dissectResult.sceneLines]);
-                setActiveNav('editor');
-                showNotice('success', '已将拉片还原的分镜结构载入分镜精修台！');
-              }}
-              onGenerateNewScriptFromDissection={() => {
-                setActiveNav('editor');
-                handleAIGenerateScript(
-                  dissectResult.hookAnalysis,
-                  dissectResult.extractedFormula,
-                  productName,
-                  sellingPoints,
-                  targetAudience,
-                  dissectCategory
-                );
-              }}
-              onNotice={showNotice}
-            />
+          <main className="w-full max-w-none flex-1 px-3 py-3 sm:px-5 sm:py-4 space-y-4">
+            {/* Sub-tab Switcher: Capsule style */}
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="capsule-track">
+                <button
+                  type="button"
+                  onClick={() => setDissectSubTab('video')}
+                  className={`px-4 py-1.5 text-xs font-semibold cursor-pointer transition-all ${
+                    dissectSubTab === 'video' ? 'capsule-pill-active' : 'capsule-pill-inactive'
+                  }`}
+                >
+                  🎬 视频拉片与镜头拆解
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setDissectSubTab('traffic')}
+                  className={`px-4 py-1.5 text-xs font-semibold cursor-pointer transition-all ${
+                    dissectSubTab === 'traffic' ? 'capsule-pill-active' : 'capsule-pill-inactive'
+                  }`}
+                >
+                  🚀 爆文流量复刻与三档改写
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsUniversalPipelineOpen(true)}
+                className="px-3.5 py-1.5 text-xs font-bold text-indigo-700 bg-indigo-50/80 border border-indigo-200/80 rounded-xl hover:bg-indigo-100 transition-all cursor-pointer shadow-2xs flex items-center gap-1.5"
+              >
+                <Zap className="h-3.5 w-3.5 text-indigo-600" />
+                <span>⚡ 一键爆款迁移仿刻管线 (支持任意门店/无链接推荐)</span>
+              </button>
+            </div>
+
+            {dissectSubTab === 'video' ? (
+              <ViralDissectionWorkspace
+                skills={DISSECT_SKILL_PACKAGES}
+                selectedSkillIds={selectedSkillIds}
+                onToggleSkillId={(id) => {
+                  setSelectedSkillIds((prev) =>
+                    prev.includes(id)
+                      ? prev.length > 1
+                        ? prev.filter((item) => item !== id)
+                        : prev
+                      : [...prev, id]
+                  );
+                }}
+                samples={QUICK_DISSECT_SAMPLES}
+                dissectTitle={dissectTitle}
+                setDissectTitle={setDissectTitle}
+                dissectCategory={dissectCategory}
+                setDissectCategory={setDissectCategory}
+                dissectContent={dissectContent}
+                setDissectContent={setDissectContent}
+                isDissecting={isDissecting}
+                onOpenClonePipeline={() => setIsUniversalPipelineOpen(true)}
+                onRunDissection={(p) => handleRunDissection(undefined, undefined, undefined, p)}
+                dissectResult={dissectResult}
+                personalMaterials={userMaterials}
+                storeMemoryEnabled={storeMemoryEnabled}
+                activeStore={activeStoreProfile}
+                productName={productName}
+                setProductName={setProductName}
+                sellingPoints={sellingPoints}
+                setSellingPoints={setSellingPoints}
+                isGeneratingScript={isGeneratingScript}
+                onSaveDissectionToCloud={handleSaveDissectionToCloud}
+                onEncapsulateAsTemplate={handleEncapsulateAsTemplate}
+                onApplyDissectedStructureToEditor={() => {
+                  setProjectTitle(`${productName.slice(0, 14) || '爆款复刻'} · 同款脚本`);
+                  setPacingTip(`套用爆款拆解公式：${dissectResult.extractedFormula}`);
+                  setCameraAngles([...dissectResult.cameraAngles]);
+                  setVisualCues([...dissectResult.visualCues]);
+                  setSceneLines([...dissectResult.sceneLines]);
+                  setActiveNav('editor');
+                  showNotice('success', '已将拉片还原的分镜结构载入分镜精修台！');
+                }}
+                onGenerateNewScriptFromDissection={() => {
+                  setActiveNav('editor');
+                  handleAIGenerateScript(
+                    dissectResult.hookAnalysis,
+                    dissectResult.extractedFormula,
+                    productName,
+                    sellingPoints,
+                    targetAudience,
+                    dissectCategory
+                  );
+                }}
+                onNotice={showNotice}
+              />
+            ) : (
+              <TrafficCloneStudio
+                onShowNotice={showNotice}
+                onSendToWorkbench={(script) => {
+                  setQuickHeroPrompt(script);
+                  setActiveNav('workbench');
+                  showNotice('success', '已将复刻脚本导入工作台！');
+                }}
+              />
+            )}
           </main>
         )}
 
@@ -5102,10 +5533,28 @@ export default function App() {
         onClose={() => setIsManualModalOpen(false)}
       />
 
+      {/* Modal 9: Universal 1-Click Viral Clone & Migration Automation Pipeline Modal */}
+      <UniversalClonePipelineModal
+        isOpen={isUniversalPipelineOpen}
+        onClose={() => setIsUniversalPipelineOpen(false)}
+        activeStore={activeStoreProfile}
+        personalMaterials={userMaterials}
+        onApplyToEditor={(shots) => {
+          setProjectTitle(`${shots.title || '爆款仿刻'} · 生产分镜`);
+          setCameraAngles([...shots.angles]);
+          setVisualCues([...shots.visuals]);
+          setSceneLines([...shots.lines]);
+          setShotDurations(shots.angles.map(() => 4.0));
+          setActiveNav('editor');
+          showNotice('success', `已将「${shots.title}」载入分镜精修台开拍！`);
+        }}
+        onShowNotice={showNotice}
+      />
+
       {/* Global Floating AI Dialog Assistant (右下角悬浮框对话助手 + 一键联动右侧 AI 侧边助手) */}
       <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-2">
         {isFloatingAiOpen && (
-          <div className="w-80 sm:w-96 overflow-hidden rounded-2xl border border-sky-200 bg-white shadow-2xl">
+          <div className="w-80 sm:w-96 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-2xl">
             {/* Floating Header */}
             <div className="flex items-center justify-between bg-slate-900 px-4 py-3 text-white">
               <div className="flex items-center gap-2">

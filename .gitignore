@@ -6,3 +6,6 @@ coverage/
 *.log
 .env*
 !.env.example
+.zcode/
+.local_db.json
+

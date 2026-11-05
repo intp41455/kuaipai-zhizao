@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useMemo } from 'react';
 import {
   X,
@@ -599,7 +600,7 @@ export const SkillHubMarketplaceModal: React.FC<SkillHubMarketplaceModalProps> =
 
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
+                onChange={(e) => setSortBy(e.target.value as 'installs' | 'rating' | 'stars')}
                 className="h-8 rounded-xl border border-slate-200 bg-slate-50/70 px-2.5 text-xs text-slate-700 focus:outline-none cursor-pointer"
               >
                 <option value="installs">🔥 按装载量排序</option>
@@ -855,7 +856,11 @@ export const SkillHubMarketplaceModal: React.FC<SkillHubMarketplaceModalProps> =
                     </label>
                     <select
                       value={importCategory}
-                      onChange={(e) => setImportCategory(e.target.value as any)}
+                      onChange={(e) =>
+                        setImportCategory(
+                          e.target.value as 'hook' | 'script' | 'rag_store' | 'ecommerce' | 'tts_avatar'
+                        )
+                      }
                       className="h-9 w-full rounded-xl border border-slate-200 bg-slate-50/70 px-3 text-xs text-slate-800 focus:border-indigo-500 focus:bg-white focus:outline-none cursor-pointer"
                     >
                       <option value="hook">爆款钩子</option>
