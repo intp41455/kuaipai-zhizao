@@ -2953,8 +2953,9 @@ export default function App() {
         {/* VIEW 1A: 独立「AI 工作台」首页 */}
         {activeNav === 'workbench' && (
           <main className="w-full max-w-none flex-1 space-y-4 px-3 py-3 sm:px-5 sm:py-4">
-            {/* 核心单输入框中枢：仅需输入店名，多智能体全网爬取美团/抖音/小红书并全自动交付 */}
+            {/* 核心单输入框中枢：仅需输入店名，多智能体后台全网调研并全自动交付 */}
             <AutonomousStoreSwarmStudio
+              gatewayConfig={gatewayConfig}
               onApplyStoryboardToEditor={(sb, sp) => {
                 setProjectTitle(sb.title);
                 setProductName(sp.signature_products);
@@ -2966,9 +2967,9 @@ export default function App() {
                 setCameraAngles([...sb.camera_angles]);
                 setVisualCues([...sb.visual_cues]);
                 setSceneLines([...sb.scene_lines]);
-                setShotDurations(sb.camera_angles.map(() => 4.0));
+                setShotDurations((sb.camera_angles as string[]).map(() => 4.0));
                 setActiveNav('editor');
-                showNotice('success', `已将「${sp.store_name}」多智能体全套分镜载入精修台！`);
+                showNotice('success', `已将「${sp.store_name}」分镜载入精修台`);
               }}
               onOpenMixPlayer={() => {
                 setRemixStudioMode('pro_nle');
@@ -3068,9 +3069,8 @@ export default function App() {
                 const q = trend.title;
                 recordHistoryEntry('prompt', q, `借势热点：${trend.category}`, 'editor', q);
                 setProductName(q.slice(0, 36));
-                setSellingPoints(trend.hook_angle);
                 setProjectTitle(`【借势热点】${q.slice(0, 24)}`);
-                showNotice('success', `已借势热点「${trend.title.slice(0, 16)}...」，正在深度生成视听分镜！`);
+                showNotice('success', `已借势热点「${q.slice(0, 16)}...」，正在生成视听分镜！`);
                 handleGlobalSearchOrDispatch(q);
               }}
               onShowNotice={showNotice}

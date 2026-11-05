@@ -1,11 +1,9 @@
 /**
- * 本地生活与短视频大数据智能检索、行业特征深度洞察与知识库构建器。
- * 
- * 拒绝公式化死板模板！
- * 1. 真实接入百度/联网检索提炼行业工艺与网络爆款卖点；
- * 2. 深度行业图谱（美式熏肉、烤肉、水饺、咖啡、美发等垂直专业工艺）；
- * 3. 融入商户画像与红线约束（免后厨拍摄、老板不出镜等）；
- * 4. 输出极富针对性、烟火气与专业细节的高转化分镜脚本。
+ * 本地生活行业知识图谱与联网检索辅助（公测红线：不生成任何模板假文案）。
+ *
+ * - searchWebKnowledgeSummary：真实联网检索行业工艺摘要；
+ * - matchIndustryKnowledge：品类识别，仅供 LLM 提示词组装参考；
+ * - 内容生成一律由 LLM 完成，无模型连接时由调用方明确报错。
  */
 
 export interface IndustryKnowledge {
@@ -198,66 +196,4 @@ export function matchIndustryKnowledge(text: string): IndustryKnowledge {
     return INDUSTRY_KNOWLEDGE_BASE['咖啡'];
   }
   return INDUSTRY_KNOWLEDGE_BASE['美式熏肉'];
-}
-
-export function buildAgenticSmartScript(options: {
-  productName: string;
-  sellingPoints?: string;
-  category?: string;
-  storeMemory?: {
-    storeName?: string;
-    cityLocation?: string;
-    redlines?: { disallow_kitchen?: boolean; owner_not_on_camera?: boolean };
-    disallow_kitchen?: boolean;
-    owner_not_on_camera?: boolean;
-  } | null;
-}) {
-  const { productName, sellingPoints = '', category = '餐饮美食', storeMemory } = options;
-  const storeName = storeMemory?.storeName || '本地特色名店';
-  const redlines = storeMemory?.redlines || {};
-  const disallowKitchen = Boolean(redlines.disallow_kitchen ?? storeMemory?.disallow_kitchen);
-  const ownerNoCamera = Boolean(redlines.owner_not_on_camera ?? storeMemory?.owner_not_on_camera);
-
-  const knowledge = matchIndustryKnowledge(`${productName} ${sellingPoints} ${category}`);
-  const prodClean = productName.replace(/[【】]/g, '').trim() || '招牌好物';
-
-  const titles = [
-    `在本地吃【${prodClean}】千万别盲目去大店排队交智商税！看完这条少走弯路`,
-    `深巷口碑王！凭什么【${storeName}】这款【${prodClean}】全是回头客？`,
-    `【实拍避坑】不加一滴香精的${prodClean}到底长什么样？掰开全是扎实真功夫！`,
-  ];
-
-  let v1 = '';
-  let v2 = '';
-  if (disallowKitchen) {
-    v1 = `高位大俯拍特写！铁板上刚出锅的【${prodClean}】冒着滋滋滚烫热气，热气升腾，用筷子/夹子挑起大份铺满屏幕（免后厨拍摄，视觉加法显丰盛）。`;
-    v2 = `平视微俯视角推进！侧逆光3500K暖光打在【${prodClean}】饱满切面上，清晰展示真实肉质纹理与自然色泽，绝非工业预制拼接。`;
-  } else {
-    v1 = `明档出餐口大俯拍！刚出炉热气腾腾的【${prodClean}】整盘推到镜头前，油花翻滚，视觉冲击力拉满。`;
-    v2 = `侧逆光双手切开/挑起【${prodClean}】微距特写，慢动作展示充盈肉汁与手工制作细节。`;
-  }
-
-  const v3 = `站至前厅人群后方拉开纵深轴线！画面展现店内座无虚席的市井烟火气，近景顾客大口咀嚼满足表情，空盘见底。`;
-  const v4 = `平视中景全套招牌套餐整齐摆放，手指清晰指向屏幕左下角同城团购卡，字幕高亮【不用可退·过期自动退】。`;
-
-  return {
-    title: titles[0],
-    pacingTip: '前3秒高位特写抓人，单镜头时长严格控制在3.5-4秒，切歌卡点，突出市井烟火气。',
-    bgmStyle: '轻快市井卡点律动 / 温暖治愈原声',
-    voiceTone: ownerNoCamera ? '老饕探店接地气男声' : '主理人真诚亲切原声',
-    recommendedTitles: titles,
-    cameraAngles: [
-      '01 黄金Hook痛点特写 (0-3s)',
-      '02 核心工艺微距推镜 (3-8s)',
-      '03 场景人群信任背书 (8-16s)',
-      '04 团购促单行动号召 (16-24s)',
-    ],
-    visualCues: [v1, v2, v3, v4],
-    sceneLines: [
-      `在本地选【${prodClean}】的朋友，千万别只看门头大不大或盲目排队交学费！今天带你看看什么叫真正的口碑硬核好味！`,
-      `整整坚持【${knowledge.keywords[0] || '真材实料细作'}】，不加一滴多余工业添加！仔细看这个诱人成色与手工细节，一口咬下香气直接爆开！`,
-      `不管是下班填饱肚子还是约上朋友小聚，来上一大盘刚出锅的【${prodClean}】，热气腾腾大口咀嚼，这一口太治愈了！`,
-      `今天屏幕左下角限时开放同城体验特惠，不用随时可退、过期自动退，想体验正宗【${prodClean}】的朋友赶紧先锁一份！`,
-    ],
-  };
 }

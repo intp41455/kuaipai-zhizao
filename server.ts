@@ -6,7 +6,6 @@ import { fileURLToPath } from 'url';
 import { GoogleGenAI, Type } from '@google/genai';
 import { localDb } from './localDb.js';
 import {
-  buildAgenticSmartScript,
   searchWebKnowledgeSummary,
   matchIndustryKnowledge,
 } from './webIntel.js';
@@ -500,24 +499,19 @@ ${storeBlock}
         return;
       }
     } catch {
-      // 优雅回退到自研行业深度知识图谱（彻底消除机械 mad-lib 模板）
+      // fall through to explicit error below
     }
 
-    const fallbackScript = buildAgenticSmartScript({
-      productName: cleanProduct,
-      sellingPoints: cleanPoints,
-      category: cleanCategory,
-      storeMemory,
+    // 公测红线：无模型连接时明确报错，绝不输出模板假文案
+    res.status(503).json({
+      error: 'AI_MODEL_UNAVAILABLE',
+      message: 'AI 模型网关未连接或调用失败，无法生成分镜。请在「AI 模型网关」中配置模型服务后重试。',
     });
-    res.json(fallbackScript);
   } catch (error) {
-    const fallbackScript = buildAgenticSmartScript({
-      productName: String(req.body?.productName || '招牌特色好物'),
-      sellingPoints: String(req.body?.sellingPoints || ''),
-      category: String(req.body?.category || '餐饮美食'),
-      storeMemory: req.body?.storeMemory,
+    res.status(503).json({
+      error: 'AI_MODEL_UNAVAILABLE',
+      message: 'AI 模型网关调用异常，无法生成分镜。请稍后重试或检查模型网关配置。',
     });
-    res.json(fallbackScript);
   }
 });
 
@@ -1775,13 +1769,92 @@ app.get('/api/v1/skills/:id', (req: Request, res: Response) => {
 });
 
 // Autonomous Store Swarm (仅需输入店名 -> 调度多智能体全网爬取分析 -> 全自动交付)
+// 公测红线：无模型/无网络时返回 503 + 明确错误，绝不输出模板假文案
 app.post('/api/v1/agent/autonomous-research', async (req: Request, res: Response) => {
-  const { store_name, city, optional_notes } = req.body;
+  const { store_name, city, optional_notes } = req.body || {};
+
+  const callLLM = async (
+    prompt: string,
+    systemInstruction: string
+  ): Promise<Record<string, unknown> | null> => {
+    const withTimeout = <T,>(p: Promise<T>, ms: number): Promise<T> =>
+      Promise.race([
+        p,
+        new Promise<T>((_, reject) => setTimeout(() => reject(new Error('LLM_TIMEOUT')), ms)),
+      ]);
+
+    // 路径1：OpenAI 协议直连网关 GLM 路由（实测最稳）
+    const base = (process.env.GEMINI_BASE_URL || '').replace(/\/+$/, '');
+    const key = process.env.GEMINI_API_KEY || '';
+    if (base && key) {
+      try {
+        const endpoint = base.endsWith('/v1') ? `${base}/chat/completions` : `${base}/v1/chat/completions`;
+        const resp = await withTimeout(
+          fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${key}`,
+            },
+            body: JSON.stringify({
+              model: 'auto/glm-5.3-flash',
+              messages: [
+                { role: 'system', content: `${systemInstruction}\n请严格只输出合法 JSON 对象，不要 Markdown 代码块。` },
+                { role: 'user', content: prompt },
+              ],
+              temperature: 0.7,
+            }),
+          }),
+          60_000
+        );
+        if (resp.ok) {
+          const data = (await resp.json()) as { choices?: { message?: { content?: string } }[] };
+          const cleaned = (data?.choices?.[0]?.message?.content || '')
+            .replace(/```json|```/g, '')
+            .trim();
+          const parsed = JSON.parse(cleaned);
+          if (parsed && typeof parsed === 'object') return parsed;
+        }
+      } catch {
+        // fall through
+      }
+    }
+
+    // 路径2：Gemini SDK 协议依次尝试模型路由
+    for (const model of ['auto/glm-5.3-flash', 'gemini-3.8-flash']) {
+      try {
+        const ai = getGenAIClient();
+        const response = await withTimeout(
+          ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: {
+              systemInstruction,
+              responseMimeType: 'application/json',
+            },
+          }),
+          45_000
+        );
+        const cleaned = (response.text ?? '').replace(/```json|```/g, '').trim();
+        const parsed = JSON.parse(cleaned);
+        if (parsed && typeof parsed === 'object') return parsed;
+      } catch {
+        continue;
+      }
+    }
+    return null;
+  };
+
   const result = await runAutonomousStoreSwarm({
     storeName: store_name || '',
     city: city || '本地同城',
     optionalNotes: optional_notes || '',
+    callLLM,
   });
+  if (!result.ok) {
+    res.status(503).json(result);
+    return;
+  }
   res.json(result);
 });
 
