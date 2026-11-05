@@ -11,6 +11,13 @@ import {
   matchIndustryKnowledge,
 } from './webIntel.js';
 import { getAggregatedHotTrends } from './hotTrendsHarvester.js';
+import { runAutonomousStoreSwarm } from './autonomousStoreAgent.js';
+import {
+  discoverMatchingSkills,
+  trackAndCrystallizeWorkflow,
+  recordSkillFeedback,
+  getMetaSkillsOverview,
+} from './metaSkillsEngine.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -1765,6 +1772,44 @@ app.get('/api/v1/skills/:id', (req: Request, res: Response) => {
   } else {
     res.status(404).json({ error: 'Skill not found' });
   }
+});
+
+// Autonomous Store Swarm (仅需输入店名 -> 调度多智能体全网爬取分析 -> 全自动交付)
+app.post('/api/v1/agent/autonomous-research', async (req: Request, res: Response) => {
+  const { store_name, city, optional_notes } = req.body;
+  const result = await runAutonomousStoreSwarm({
+    storeName: store_name || '',
+    city: city || '本地同城',
+    optionalNotes: optional_notes || '',
+  });
+  res.json(result);
+});
+
+// Meta-Skills Endpoints (元能力中枢)
+app.post('/api/v1/meta/discover-skills', (req: Request, res: Response) => {
+  const { query, top_k } = req.body;
+  const matches = discoverMatchingSkills(query || '', BUILTIN_SKILLS, top_k || 3);
+  res.json(matches);
+});
+
+app.post('/api/v1/meta/track-workflow', (req: Request, res: Response) => {
+  const { workflow_signature, workflow_name, steps_data } = req.body;
+  const result = trackAndCrystallizeWorkflow(
+    workflow_signature || 'generic_workflow',
+    workflow_name || '自动化工作流',
+    steps_data || []
+  );
+  res.json(result);
+});
+
+app.post('/api/v1/meta/rate-skill', (req: Request, res: Response) => {
+  const { skill_id, score, feedback } = req.body;
+  const result = recordSkillFeedback(skill_id || '', score || 5, feedback || '');
+  res.json(result);
+});
+
+app.get('/api/v1/meta/stats', (_req: Request, res: Response) => {
+  res.json(getMetaSkillsOverview());
 });
 
 async function startServer() {

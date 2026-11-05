@@ -126,6 +126,7 @@ import { TrafficCloneStudio } from './components/TrafficCloneStudio';
 import { UniversalClonePipelineModal } from './components/UniversalClonePipelineModal';
 import { LocalLifeOperatorWizard } from './components/LocalLifeOperatorWizard';
 import { ViralHotTrendsRadar, HotTrendItem } from './components/ViralHotTrendsRadar';
+import { AutonomousStoreSwarmStudio } from './components/AutonomousStoreSwarmStudio';
 import {
   TrendingUp,
   PanelLeftClose,
@@ -285,33 +286,7 @@ export default function App() {
     } catch {
       // ignore
     }
-    return [
-      {
-        id: 'hist_01',
-        type: 'prompt',
-        title: '同城爆款带货前3秒黄金脚本',
-        subtitle: '超能 Agent · short-video-script',
-        timeText: '刚刚',
-        targetNav: 'workbench',
-        payloadPrompt: '帮我写一条招牌特色好物的前3秒痛点短视频脚本，并直接合成混剪预览',
-      },
-      {
-        id: 'hist_02',
-        type: 'project',
-        title: '同城招牌好物高转化带货成片',
-        subtitle: '4镜分镜表 · 9:16混剪工程',
-        timeText: '5分钟前',
-        targetNav: 'editor',
-      },
-      {
-        id: 'hist_03',
-        type: 'action',
-        title: '套用「本地人私藏好店探店模型」',
-        subtitle: 'AI 视频混剪成片中心',
-        timeText: '12分钟前',
-        targetNav: 'video_remix',
-      },
-    ];
+    return [];
   });
   const [showQuickGenDrawer, setShowQuickGenDrawer] = useState(false);
   const [studioModalTemplate, setStudioModalTemplate] = useState<CuratedTemplate | null>(null);
@@ -366,35 +341,7 @@ export default function App() {
     } catch {
       // ignore
     }
-    return [
-      {
-        id: 'mat_1',
-        title: '拯救头屑大作战_混剪成片.mp4',
-        type: 'video',
-        category: '实拍素材',
-        createdAt: '2026-11-02',
-        previewUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80',
-        source: '本地上传',
-      },
-      {
-        id: 'mat_2',
-        title: '01_旗舰商拍主图_实拍原图.png',
-        type: 'image',
-        category: '商品图片',
-        createdAt: '2026-11-02',
-        previewUrl: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80',
-        source: '本地上传',
-      },
-      {
-        id: 'mat_3',
-        title: '办公室治愈挂耳咖啡豆研磨微距.mp4',
-        type: 'video',
-        category: '实拍素材',
-        createdAt: '2026-11-03',
-        previewUrl: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80',
-        source: '本地上传',
-      },
-    ];
+    return [];
   });
 
   useEffect(() => {
@@ -407,40 +354,9 @@ export default function App() {
 
   // Cloud Firestore Data + Domestic Phone/Email Account Local Sync Data
   const [cloudProjects, setCloudProjects] = useState<CloudVideoProject[]>([]);
-  const [localProjects, setLocalProjects] = useState<CloudVideoProject[]>([
-    {
-      id: 'local_proj_01',
-      ownerId: 'cn_default_creator',
-      title: '同城招牌好物高转化带货成片',
-      productName: '氨基酸温和去屑控油洗发露',
-      sellingPoints: '深层净澈头皮、72小时长效控油蓬松、温和去屑不紧绷',
-      targetAudience: '熬夜油头、有头屑困扰的年轻上班族与学生党',
-      category: '个护',
-      aspectRatio: '9:16',
-      bgmStyle: '轻快种草卡点律动',
-      voiceTone: '活力种草女声',
-      pacingTip: '前3秒镜前抓头发痛点切入，第2镜微距泡沫特写，结尾引导左下角团购转化。',
-      cameraAngles: CURATED_TEMPLATES[2].cameraAngles,
-      visualCues: CURATED_TEMPLATES[2].visualCues,
-      sceneLines: CURATED_TEMPLATES[2].sceneLines,
-    },
-  ]);
+  const [localProjects, setLocalProjects] = useState<CloudVideoProject[]>([]);
   const [cloudTemplates, setCloudTemplates] = useState<CloudViralTemplate[]>([]);
-  const [localTemplates, setLocalTemplates] = useState<CloudViralTemplate[]>([
-    {
-      id: 'local_tpl_01',
-      ownerId: 'cn_default_creator',
-      title: '同城好物高留存转化（拉片拆解复用模板）',
-      category: '个护',
-      hookFormula: '前3秒镜前抓头皮屑+穿黑衣尴尬视觉痛点提问，锁定油头人群停留',
-      structureSummary: '视觉痛点暴击(3s) + 产品高颜微距(4s) + 使用前后爽感反差(5s) + 门店团购福利逼单(3s)',
-      pacingStyle: 'AI拆解高完播节奏',
-      bgmStyle: '轻快种草卡点律动',
-      cameraAngles: CURATED_TEMPLATES[2].cameraAngles,
-      visualCues: CURATED_TEMPLATES[2].visualCues,
-      sceneLines: CURATED_TEMPLATES[2].sceneLines,
-    },
-  ]);
+  const [localTemplates, setLocalTemplates] = useState<CloudViralTemplate[]>([]);
   const [cloudDissections, setCloudDissections] = useState<CloudDissection[]>([]);
   const [cloudStores, setCloudStores] = useState<CloudStoreProfile[]>([]);
   const [localStores, setLocalStores] = useState<StoreMemoryProfile[]>([]);
@@ -522,34 +438,18 @@ export default function App() {
       .catch(() => {});
   }, []);
 
-  // Douyin Laike Store / Brand Persona Long-Term Memory Knowledge Base State
-  const [activeStoreId, setActiveStoreId] = useState<string>(PRESET_STORE_PROFILES[0].id);
-  const [storeMemoryEnabled, setStoreMemoryEnabled] = useState<boolean>(true);
+  // Douyin Laike Store / Brand Persona Long-Term Memory Knowledge Base State (初始全空，无默认预填)
+  const [activeStoreId, setActiveStoreId] = useState<string>('');
+  const [storeMemoryEnabled, setStoreMemoryEnabled] = useState<boolean>(false);
   const [editingStoreId, setEditingStoreId] = useState<string | null>(null);
-  const [storeNameInput, setStoreNameInput] = useState<string>(
-    PRESET_STORE_PROFILES[0].storeName
-  );
-  const [storeTypeInput, setStoreTypeInput] = useState<string>(
-    PRESET_STORE_PROFILES[0].storeType
-  );
-  const [storeIndustryInput, setStoreIndustryInput] = useState<string>(
-    PRESET_STORE_PROFILES[0].industry
-  );
-  const [storeCityInput, setStoreCityInput] = useState<string>(
-    PRESET_STORE_PROFILES[0].cityLocation
-  );
-  const [storeProductsInput, setStoreProductsInput] = useState<string>(
-    PRESET_STORE_PROFILES[0].signatureProducts
-  );
-  const [storePersonaInput, setStorePersonaInput] = useState<string>(
-    PRESET_STORE_PROFILES[0].storePersona
-  );
-  const [storeAudienceInput, setStoreAudienceInput] = useState<string>(
-    PRESET_STORE_PROFILES[0].targetAudience
-  );
-  const [storeAnchorsInput, setStoreAnchorsInput] = useState<string>(
-    PRESET_STORE_PROFILES[0].memoryAnchors
-  );
+  const [storeNameInput, setStoreNameInput] = useState<string>('');
+  const [storeTypeInput, setStoreTypeInput] = useState<string>('');
+  const [storeIndustryInput, setStoreIndustryInput] = useState<string>('');
+  const [storeCityInput, setStoreCityInput] = useState<string>('');
+  const [storeProductsInput, setStoreProductsInput] = useState<string>('');
+  const [storePersonaInput, setStorePersonaInput] = useState<string>('');
+  const [storeAudienceInput, setStoreAudienceInput] = useState<string>('');
+  const [storeAnchorsInput, setStoreAnchorsInput] = useState<string>('');
   const [isSavingStore, setIsSavingStore] = useState<boolean>(false);
 
   // Combine preset stores + user's local & cloud stores
@@ -599,46 +499,21 @@ export default function App() {
   const [searchKeyword, setSearchKeyword] = useState<string>('');
   const [favoriteIds, setFavoriteIds] = useState<string[]>(['kuaizi_shampoo_01', 'huotu_pet_02']);
 
-  // Script Detail & Smart Editor State
+  // Script Detail & Smart Editor State (初始全空，无任何预填占位数据)
   const [currentProjectId, setCurrentProjectId] = useState<string | null>(null);
-  const [projectTitle, setProjectTitle] = useState<string>('同城特色风味爆款带货分镜工程');
-  const [productName, setProductName] = useState<string>('招牌特色好物');
-  const [sellingPoints, setSellingPoints] = useState<string>(
-    '真材实料纯手工现做、地道正宗风味、老客户口碑力荐'
-  );
-  const [targetAudience, setTargetAudience] = useState<string>(
-    '同城食客、上班族、注重高性价比与地道体验的消费者'
-  );
+  const [projectTitle, setProjectTitle] = useState<string>('');
+  const [productName, setProductName] = useState<string>('');
+  const [sellingPoints, setSellingPoints] = useState<string>('');
+  const [targetAudience, setTargetAudience] = useState<string>('');
   const [projectCategory, setProjectCategory] = useState<string>('餐饮美食');
   const [aspectRatio, setAspectRatio] = useState<'9:16' | '16:9' | '4:3'>('9:16');
-  const [bgmStyle, setBgmStyle] = useState<string>('轻快市井卡点律动');
-  const [voiceTone, setVoiceTone] = useState<string>('老饕探店接地气男声');
-  const [pacingTip, setPacingTip] = useState<string>(
-    '前1.5秒使用特写出锅热气切入，第2镜头展示招牌爆品核心细节，第3镜头顾客大口咀嚼微表情，结尾引导左下角尝鲜团购。'
-  );
-  const [recommendedTitles, setRecommendedTitles] = useState<string[]>([
-    '本地老街坊力荐！真材实料特色风味，吃过一次就成回头客',
-    '深藏老商圈的宝藏小店！凭什么这款招牌菜全是回头客？',
-    '【避坑实测】不加一滴香精的招牌美味到底有多绝？',
-  ]);
-  const [cameraAngles, setCameraAngles] = useState<string[]>([
-    '01 黄金Hook痛点特写 (0-3s)',
-    '02 核心卖点微距推镜 (3-8s)',
-    '03 场景人群信任背书 (8-16s)',
-    '04 团购促单行动号召 (16-24s)',
-  ]);
-  const [visualCues, setVisualCues] = useState<string[]>([
-    '高位大俯拍特写，刚出炉的招牌特色好物冒着滚烫热气，画面饱满铺满屏幕。',
-    '平视微俯运镜，侧逆光展示产品扎实用料与饱满切面，突出诱人成色。',
-    '前厅人群后方纵深轴线，展现座无虚席的市井烟火气与顾客满足咀嚼神态。',
-    '桌面整齐摆放招牌套餐，手指清晰指向屏幕左下角团购卡手势。',
-  ]);
-  const [sceneLines, setSceneLines] = useState<string[]>([
-    '在本地选特色好物的朋友，千万别只看门头大不大！今天带你看看什么叫真正的口碑硬核好味！',
-    '师傅坚持手工现做绝非冷冻预制，严选好料，一口咬下香气直接爆开！',
-    '不管下班填饱肚子还是朋友聚聚，分量扎实管饱，吃得爽快又实在！',
-    '屏幕左下角专属体验通道已开启，不用可退、过期自动退，赶紧锁一份！',
-  ]);
+  const [bgmStyle, setBgmStyle] = useState<string>('');
+  const [voiceTone, setVoiceTone] = useState<string>('');
+  const [pacingTip, setPacingTip] = useState<string>('');
+  const [recommendedTitles, setRecommendedTitles] = useState<string[]>([]);
+  const [cameraAngles, setCameraAngles] = useState<string[]>([]);
+  const [visualCues, setVisualCues] = useState<string[]>([]);
+  const [sceneLines, setSceneLines] = useState<string[]>([]);
   // Per-shot fine-grained editing metadata (durations & camera movement) + Resizable Columns/Rows
   const [shotDurations, setShotDurations] = useState<number[]>([3.5, 4.0, 4.0, 3.5]);
   const [shotMovements, setShotMovements] = useState<string[]>([
@@ -3078,6 +2953,30 @@ export default function App() {
         {/* VIEW 1A: 独立「AI 工作台」首页 */}
         {activeNav === 'workbench' && (
           <main className="w-full max-w-none flex-1 space-y-4 px-3 py-3 sm:px-5 sm:py-4">
+            {/* 核心单输入框中枢：仅需输入店名，多智能体全网爬取美团/抖音/小红书并全自动交付 */}
+            <AutonomousStoreSwarmStudio
+              onApplyStoryboardToEditor={(sb, sp) => {
+                setProjectTitle(sb.title);
+                setProductName(sp.signature_products);
+                setSellingPoints(sp.memory_anchors);
+                setTargetAudience(sp.target_audience);
+                setPacingTip(sb.pacing_tip);
+                setBgmStyle(sb.bgm_style);
+                setVoiceTone(sb.voice_tone);
+                setCameraAngles([...sb.camera_angles]);
+                setVisualCues([...sb.visual_cues]);
+                setSceneLines([...sb.scene_lines]);
+                setShotDurations(sb.camera_angles.map(() => 4.0));
+                setActiveNav('editor');
+                showNotice('success', `已将「${sp.store_name}」多智能体全套分镜载入精修台！`);
+              }}
+              onOpenMixPlayer={() => {
+                setRemixStudioMode('pro_nle');
+                setActiveNav('video_remix');
+              }}
+              onShowNotice={showNotice}
+            />
+
             <KuaiziAgentHomeWorkbench
               promptValue={quickHeroPrompt}
               onChangePrompt={setQuickHeroPrompt}
