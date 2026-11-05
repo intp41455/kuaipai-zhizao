@@ -1194,9 +1194,14 @@ export default function App() {
     const targetAud = overrideAudience ?? targetAudience;
     const targetCat = overrideCat ?? projectCategory;
 
-    if (!targetProd.trim() || !targetPts.trim()) {
-      showNotice('error', '请先填写商品名称和核心卖点（或点击上方快捷示例一键填入）。');
+    if (!targetProd.trim()) {
+      showNotice('error', '请先输入商品或门店名称。');
       return;
+    }
+    // 极简自动兜底：卖点未填时由商品名自动派生，杜绝"静默 return 死按钮"
+    const effectivePts = targetPts.trim() || `${targetProd.trim()}的招牌主打，真材实料，同城口碑之选`;
+    if (!targetPts.trim()) {
+      setSellingPoints(effectivePts);
     }
 
     const ok = await consumeCredits(10);
@@ -1221,7 +1226,7 @@ export default function App() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             productName: targetProd,
-            sellingPoints: targetPts,
+            sellingPoints: effectivePts,
             targetAudience: targetAud,
             category: targetCat,
             templateHook: customTemplateHook,
@@ -1238,105 +1243,14 @@ export default function App() {
       }
 
       if (!data) {
-        const storePrefix = storeMemoryEnabled ? `【${activeStoreProfile.storeName}】` : '';
-        const prod = targetProd.trim() || '招牌特色好物';
-        const isMeat = /肉|烤|熏|串|牛|羊|排|炭/.test(prod);
-        const isDumpling = /饺|面|馄饨|包|粉/.test(prod);
-        const isSpa = /发|头|洗|屑|沙龙|理发|spa|美甲|养生/.test(prod);
-
-        let dynamicTitles: string[];
-        let dynamicScenes: string[];
-        let dynamicVisuals: string[];
-
-        if (isMeat) {
-          dynamicTitles = [
-            `在本地吃【${prod}】千万别盲目排队交学费了！看看正宗果木慢熏肉汁有多狂暴`,
-            `深巷口碑王！凭什么【${activeStoreProfile.storeName}】这款【${prod}】全是回头客？`,
-            `【避坑实测】不加一滴香精的【${prod}】到底有多绝？掰开全是大实话！`,
-          ];
-          dynamicScenes = [
-            `在本地吃【${prod}】的朋友千万别去大店排队交智商税了！看看正宗慢烤出来的肉汁有多狂暴！`,
-            `整整12小时果木低温慢烤，不加一滴工业香精！看这个粉红烟熏环，外层焦香酥脆，里面软嫩化渣！`,
-            `经常下班想喝酒吃硬菜的朋友，来上一大盘刚切下来的热气大肉，配上冰镇精酿，这一口太治愈了！`,
-            `今天左下角限时开放同城体验特惠，不用可退、过期自动退，喜欢吃肉的朋友赶紧锁一份！`,
-          ];
-          dynamicVisuals = [
-            `高位大俯拍特写！铁板上刚出锅的「${prod}」整盘推到镜头前，热气升腾，画面铺满屏幕。`,
-            `侧逆光微距慢动作！高清展示焦脆黑胡椒外壳与内层粉红烟熏环，刀刃切开肉汁四溢。`,
-            `前厅街区环境纵深轴线！顾客大口咀嚼满足表情，空盘搭配精酿鲜啤，座无虚席夜市烟火气。`,
-            `平视中景全套招牌套餐展示，手指指向屏幕左下角团购卡，字幕高亮【不用可退·过期自动退】。`,
-          ];
-        } else if (isDumpling) {
-          dynamicTitles = [
-            `本地老街坊力荐！皮薄馅大【${prod}】，吃过一次就成回头客`,
-            `下班不知道吃什么？藏在老社区的风味馆，人均十几块吃到撑`,
-            `真材实料绝非冷冻预制！掰开全是扎实好肉，左下角特惠赶紧冲`,
-          ];
-          dynamicScenes = [
-            `在本地吃水饺面食的朋友，千万别只看门头大不大！今天带你看看什么叫真正的老街坊口碑！`,
-            `师傅手工现包现煮绝非冷冻预制菜，精选优质好肉配脆莲菜，一口咬下汁水直接爆出来！`,
-            `不管下班填饱肚子还是朋友小聚，皮薄馅大分量管饱，不够吃还能免费续加面！`,
-            `左下角限时开放买一送一专属券，不用可退、过期自动退，赶紧锁一份！`,
-          ];
-          dynamicVisuals = [
-            `高位大俯拍热气腾腾出锅特写！大盘捞起刚煮好的「${prod}」，皮薄透出肉馅色泽，画面铺满。`,
-            `筷子轻轻掰开水饺特写，肉汁顺着饱满切面流出，展示扎实肉馅与爽脆配料。`,
-            `前厅老街坊街头坐满，顾客一口一个大口咀嚼，空碗堆叠展现真实回头客口碑。`,
-            `主理人端上面汤或特惠字卡，手势指向左下角抖音团购定位。`,
-          ];
-        } else if (isSpa) {
-          dynamicTitles = [
-            `熬夜头油有头屑必看！深层【${prod}】实测，洗完3天依然高颅顶`,
-            `为什么你洗头越洗越油？显微镜下看毛囊，45分钟深层护理真相`,
-            `穿黑衣服再也不怕尴尬！同城【${prod}】体验券，不用随时退`,
-          ];
-          dynamicScenes = [
-            `在本地经常熬夜头油头痒的朋友，千万别只知道在家瞎抓头皮了！`,
-            `直接看显微镜下的油脂堵塞，今天带你来体验一次纯手工深层头皮SPA！`,
-            `整整45分钟精细护理，洗完感觉整个头皮都在大口呼吸，三天不洗依然干爽蓬松！`,
-            `左下角同城定位限时开放专属体验券，不用可退、过期自动退，赶紧冲！`,
-          ];
-          dynamicVisuals = [
-            `镜头直接怼近高清头皮检测仪屏幕，展示熬夜后毛囊油脂堵塞真实画面，形成视觉冲击。`,
-            `技师用纳米微泡仪器做深层净澈护理，细腻绵密泡沫溢出发丝，手法专业放松。`,
-            `护理后发丝根根分明，微俯镜头展示吹干后高颅顶蓬松甩头前后对比。`,
-            `前台展示抖音来客到店体验券字卡，强调不满意可退、过期自动退。`,
-          ];
-        } else {
-          dynamicTitles = [
-            `在本地选【${prod}】千万别盲目排队交学费了！老饕带你实测深巷口碑王`,
-            `深藏老社区的宝藏好物！这款【${prod}】凭什么全是回头客？`,
-            `【避坑实测】不加一滴香精的【${prod}】到底有多绝？掰开全是大实话！`,
-          ];
-          dynamicScenes = [
-            `先别急着划走！关于「${prod}」，今天带大家放大10倍看清真正的用料与细节！`,
-            `坚持选用高标准严苛用料，师傅纯手工现做，上手第一眼质感与做工直接拉满！`,
-            `对比市面普通普通流水线产品，核心优势就在于实打实的真材实料与过硬口碑！`,
-            `左下角同城专属体验通道已开启，随时可退、无后顾之忧，赶紧抢先体验！`,
-          ];
-          dynamicVisuals = [
-            `高位大俯拍特写！刚出锅热气腾腾的「${prod}」整盘推到镜头前，热气升腾，画面铺满屏幕。`,
-            `平视微俯运镜，侧逆光展示「${prod}」扎实细节与饱满切面，突出诱人光泽。`,
-            `前厅人群纵深轴线，展现店内座无虚席的市井烟火气与顾客满足咀嚼神态。`,
-            `桌面整齐摆放招牌套餐，手指清晰指向屏幕左下角团购卡，字幕高亮【不用可退·过期自动退】。`,
-          ];
-        }
-
-        data = {
-          title: `${storePrefix}关于「${prod.slice(0, 16)}」的深度实测带货成片`,
-          pacingTip: '前3秒高位特写抓人，单镜头时长控制在3.5-4秒，切歌卡点，突出市井烟火气。',
-          bgmStyle: '轻快市井卡点律动 / 温暖治愈原声',
-          voiceTone: '老饕探店接地气男声',
-          recommendedTitles: dynamicTitles,
-          cameraAngles: [
-            '01 黄金Hook痛点特写 (0-3s)',
-            '02 核心工艺微距推镜 (3-8s)',
-            '03 场景人群信任背书 (8-16s)',
-            '04 团购促单行动号召 (16-24s)',
-          ],
-          visualCues: dynamicVisuals,
-          sceneLines: dynamicScenes,
-        };
+        // 公测红线（ACCEPTANCE G1/G2）：模型不可用时必须明确报错。
+        // 历史实现会按品类关键字拼装整套「标题/分镜/台词/画面」本地文案并当作
+        // AI 生成结果返回，等同伪造，已按验证门禁彻底删除。
+        showNotice(
+          'error',
+          'AI 模型网关未连接或调用失败，无法生成脚本与分镜。请在「工具与网关 → AI 模型网关」配置模型服务后重试。'
+        );
+        return;
       }
 
       setProjectTitle(data.title);
@@ -1420,29 +1334,12 @@ export default function App() {
       }
 
       if (!data) {
-        const nextAngles = [...cameraAngles];
-        const nextVisuals = [...visualCues];
-        const nextLines = [...sceneLines];
-        if (targetShotIndex !== undefined && nextLines[targetShotIndex] !== undefined) {
-          nextVisuals[targetShotIndex] = `【AI 精修高光镜头】超清特写推镜展示${productName}的核心卖点细节（${sellingPoints.slice(0, 24)}），光影层次饱满。`;
-          nextLines[targetShotIndex] = `说实话，像「${productName}」这样把${sellingPoints.slice(0, 18)}做到极致的，试过一次就会彻底被圈粉！`;
-        } else if (actionType === 'hook_boost' && nextLines.length > 0) {
-          nextLines[0] = `先别划走！如果你也在找真正好用的${productName}，接下来这10秒一定要看完！`;
-        } else if (actionType === 'punchy_copy') {
-          for (let i = 0; i < nextLines.length; i++) {
-            nextLines[i] = nextLines[i].replace(/。$/, '！节奏拉满！');
-          }
-        } else if (actionType === 'visual_upgrade') {
-          for (let i = 0; i < nextVisuals.length; i++) {
-            nextVisuals[i] = `【4K商业级运镜】${nextVisuals[i]}`;
-          }
-        }
-        data = {
-          pacingTip: `已完成 AI 镜头与台词锐化精修（${actionType}），画面节奏感与停留率显著提升。`,
-          cameraAngles: nextAngles,
-          visualCues: nextVisuals,
-          sceneLines: nextLines,
-        };
+        // 公测红线：模型不可用时明确报错，绝不本地「锐化」后冒充 AI 精修结果。
+        showNotice(
+          'error',
+          'AI 模型网关未连接或调用失败，本次精修未执行（分镜保持原样）。请在「工具与网关 → AI 模型网关」配置模型服务后重试。'
+        );
+        return;
       }
 
       setPacingTip(data.pacingTip);
