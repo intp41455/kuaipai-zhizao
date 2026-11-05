@@ -125,6 +125,7 @@ import { MatrixGrowthCenter } from './components/MatrixGrowthCenter';
 import { TrafficCloneStudio } from './components/TrafficCloneStudio';
 import { UniversalClonePipelineModal } from './components/UniversalClonePipelineModal';
 import { LocalLifeOperatorWizard } from './components/LocalLifeOperatorWizard';
+import { ViralHotTrendsRadar, HotTrendItem } from './components/ViralHotTrendsRadar';
 import {
   TrendingUp,
   PanelLeftClose,
@@ -3155,6 +3156,20 @@ export default function App() {
                   setKuaiziToolModalId(toolId);
                 }
               }}
+            />
+
+            {/* 全网热点与爆款大数据雷达 (7x24h 自动化监测与借势创作中枢) */}
+            <ViralHotTrendsRadar
+              onApplyTrendToScript={(trend: HotTrendItem) => {
+                const q = trend.title;
+                recordHistoryEntry('prompt', q, `借势热点：${trend.category}`, 'editor', q);
+                setProductName(q.slice(0, 36));
+                setSellingPoints(trend.hook_angle);
+                setProjectTitle(`【借势热点】${q.slice(0, 24)}`);
+                showNotice('success', `已借势热点「${trend.title.slice(0, 16)}...」，正在深度生成视听分镜！`);
+                handleGlobalSearchOrDispatch(q);
+              }}
+              onShowNotice={showNotice}
             />
 
             {/* 下方封装精选爆款模板推荐（低饱和度极简卡片，悬停显示操作） */}

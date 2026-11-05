@@ -10,6 +10,7 @@ import {
   searchWebKnowledgeSummary,
   matchIndustryKnowledge,
 } from './webIntel.js';
+import { getAggregatedHotTrends } from './hotTrendsHarvester.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -1650,6 +1651,120 @@ app.post('/api/ai/resolve-link', (req: Request, res: Response) => {
     author: '老饕同城探店',
     cover_url: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800',
   });
+});
+
+// Intel Hot Trends & Harvester
+app.get('/api/v1/intel/hot-trends', async (req: Request, res: Response) => {
+  const city = String(req.query.city || '全国');
+  const category = String(req.query.category || '全部');
+  const data = await getAggregatedHotTrends(city);
+  if (category && category !== '全部') {
+    const filtered = data.items.filter((it) => it.category === category);
+    res.json({ ...data, items: filtered, total_count: filtered.length });
+    return;
+  }
+  res.json(data);
+});
+
+app.post('/api/v1/intel/refresh', async (req: Request, res: Response) => {
+  const city = String(req.query.city || '全国');
+  const data = await getAggregatedHotTrends(city);
+  res.json({ ok: true, refreshed: true, data });
+});
+
+// Builtin Skills Registry
+const BUILTIN_SKILLS = [
+  {
+    id: 'local-store-research',
+    name: '门店四维调研与测款',
+    category: '调研与建档',
+    scene: '场景 01：四维调研与测款',
+    role: '操盘手 / 资深编导',
+    description: '门店四维画像档案（环境、客群、产品、IP人设）、首条打标签方案、A/B/C 三路测款脚本方案与负向拍摄红线探测。',
+    triggers: ['门店调研', '四维摸排', '门店体检', '测款方案', '本地生活立项'],
+    is_system_builtin: true,
+    is_installed: true,
+    is_memory_mounted: true,
+    version: '1.0.0',
+  },
+  {
+    id: 'local-script-adaptation',
+    name: '对标爆款拆解与同城洗稿',
+    category: '编导二创',
+    scene: '场景 02：对标拆解与洗稿',
+    role: '资深编导',
+    description: '爆款多模态骨架拆解、前 3 秒黄金钩子提炼、同城热点与门店卖点本土化二创脚本，严格杜绝侵权与同质化抄袭。',
+    triggers: ['爆款拆解', '视频拉片', '对标洗稿', '脚本二创', '黄金3秒钩子'],
+    is_system_builtin: true,
+    is_installed: true,
+    is_memory_mounted: true,
+    version: '1.0.0',
+  },
+  {
+    id: 'local-storyboard-director',
+    name: '视觉分镜与实拍导播',
+    category: '视觉分镜',
+    scene: '场景 03：分镜与实拍导播',
+    role: '编导 / 摄影 / 剪辑',
+    description: '口播文案一键转影视级四列标准视觉分镜表，配备机位角度、1080P 60fps / 1/50s / 3500K暖光实拍技术基准与免后厨红线安全防线。',
+    triggers: ['分镜脚本', '拍摄SOP', '视觉导播', '摄影机位', '实拍参数'],
+    is_system_builtin: true,
+    is_installed: true,
+    is_memory_mounted: true,
+    version: '1.0.0',
+  },
+  {
+    id: 'local-groupbuy-pricing',
+    name: '团购黄金6品组品与阶梯毛利精算',
+    category: '商业精算',
+    scene: '场景 04：组品与毛利精算',
+    role: '运营主管 / 商业精算师',
+    description: '菜单成本拆解、团购“黄金 6 品”矩阵构建、阶梯毛利率精算（引流款严格控制在 10%~20% 换人流）、保本核销率与投流 ROI 红线测算。',
+    triggers: ['团购组品', '毛利精算', '货盘矩阵', '引流款设计', '保本核销率'],
+    is_system_builtin: true,
+    is_installed: true,
+    is_memory_mounted: true,
+    version: '1.0.0',
+  },
+  {
+    id: 'local-campaign-analytics',
+    name: '种草人群资产监控与投流复盘反哺',
+    category: '投流与反哺',
+    scene: '场景 05：投流与人群反哺',
+    role: '投流优化师 / 商业分析师',
+    description: '云图 5A 人群资产健康度监控（A1 潜客 ≥ 30,000 安全阀）、巨量本地推展点/点购漏斗归因、素材红黑榜、反哺下周创作指令。',
+    triggers: ['投流复盘', '人群资产', '5A人群监控', '本地推分析', '素材红黑榜'],
+    is_system_builtin: true,
+    is_installed: true,
+    is_memory_mounted: true,
+    version: '1.0.0',
+  },
+  {
+    id: 'local-super-operator',
+    name: '本地生活超级操盘手总控中枢',
+    category: '总控中枢',
+    scene: '全流程总控中枢',
+    role: '项目总监 / 操盘手',
+    description: '串联 5 大子技能端到端编排、冷启动-爬坡-稳态全周期 SOP 推进、跨部门工单下发与交付物标准化质检验收。',
+    triggers: ['超级操盘手', '本地生活全案', '全周期SOP', '操盘总控', '交付物验收'],
+    is_system_builtin: true,
+    is_installed: true,
+    is_memory_mounted: true,
+    version: '1.0.0',
+  },
+];
+
+app.get('/api/v1/skills', (_req: Request, res: Response) => {
+  res.json(BUILTIN_SKILLS);
+});
+
+app.get('/api/v1/skills/:id', (req: Request, res: Response) => {
+  const s = BUILTIN_SKILLS.find((x) => x.id === req.params.id);
+  if (s) {
+    res.json(s);
+  } else {
+    res.status(404).json({ error: 'Skill not found' });
+  }
 });
 
 async function startServer() {
