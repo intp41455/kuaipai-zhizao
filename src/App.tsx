@@ -2343,16 +2343,21 @@ export default function App() {
               onClick={() => setActiveNav('workbench')}
               className="flex items-center gap-2.5 text-left cursor-pointer min-w-0"
             >
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg iridescent-btn text-white text-sm font-bold shadow-xs">
-                快
+              <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-xl p-[1.5px] bg-gradient-to-br from-[#ff6348] via-[#fed330] via-[#26de81] via-[#0fbcf9] to-[#575fcf] shadow-2xs">
+                <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-white">
+                  <span className="font-black text-xs bg-gradient-to-br from-[#ff6348] via-[#0fbcf9] to-[#575fcf] bg-clip-text text-transparent">
+                    快
+                  </span>
+                </div>
               </div>
               {!sidebarCollapsed && (
                 <div className="min-w-0">
-                  <span className="text-sm font-bold tracking-tight text-slate-900 block truncate">
+                  <span className="text-sm font-black tracking-tight bg-gradient-to-r from-[#ff6348] via-[#ff9f43] via-[#0fbcf9] to-[#575fcf] bg-clip-text text-transparent block truncate">
                     快拍智造
                   </span>
-                  <span className="text-[10px] text-slate-500 block truncate">
-                    AI 爆款视频工场
+                  <span className="text-[10px] font-medium text-slate-400 block truncate flex items-center gap-1 mt-0.5">
+                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-gradient-to-r from-[#26de81] to-[#0fbcf9]" />
+                    本地生活 AI 操盘系统
                   </span>
                 </div>
               )}
