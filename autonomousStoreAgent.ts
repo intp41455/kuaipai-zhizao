@@ -236,7 +236,8 @@ ${evidenceBlock}
     "voice_tone": "...",
     "camera_angles": ["01 黄金Hook痛点特写 (0-3s)", "02 核心工艺微距推镜 (3-8s)", "03 场景人群信任背书 (8-16s)", "04 团购促单行动号召 (16-24s)"],
     "visual_cues": ["镜1构图/机位/灯光（含视觉加法）", "镜2...", "镜3...", "镜4..."],
-    "scene_lines": ["镜1台词【据:xx】", "镜2台词【据:xx】", "镜3台词【据:xx】", "镜4台词【据:xx】"]
+    "scene_lines": ["镜1台词【据:xx】", "镜2台词【据:xx】", "镜3台词【据:xx】", "镜4台词【据:xx】"],
+    "beats": [{"index": 1, "visual_intent": "叙事意图", "visual_desc": "画面描述", "narration": "口播台词【据:xx】", "duration_sec": 3.5}]
   },
   "groupbuy_matrix": [
     {"tier": "tier1_loss_leader", "name": "单人尝鲜款（须含证据中的真实菜品）", "original_price": 0, "deal_price": 0, "margin_pct": 15, "strategy": "10%-20%毛利换人流，据人均${facts.avg_price || 'X'}元定价"},
