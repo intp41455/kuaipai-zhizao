@@ -1272,7 +1272,7 @@ export const MerchantManagementCenter: React.FC<{
                   type="text"
                   value={sName}
                   onChange={(e) => setSName(e.target.value)}
-                  placeholder="如：星澜洗护沙龙旗舰店"
+                  placeholder="如：同城特色美食旗舰店 / 品牌体验馆"
                   className="w-full h-9 rounded-lg border border-slate-200 px-3 focus:border-blue-500 focus:outline-none"
                 />
               </div>

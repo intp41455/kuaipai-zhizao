@@ -51,13 +51,13 @@ export const PRESET_AGENT_TEMPLATES = [
     accent: 'from-amber-500 to-orange-500',
   },
   {
-    name: '千川带货投流操盘 Agent',
+    name: '同城引流与团购转化操盘 Agent',
     persona: '情绪饱满·直击痛点·高促单逼单转化',
-    storeName: '星澜洗护美学沙龙',
-    industry: '美妆日化 · 个人护理',
-    cityLocation: '杭州 · 武林商圈旗舰店',
-    signatureProducts: '星澜氨基酸去屑控油洗发水、72h长效控油蓬松',
-    memoryAnchors: '72小时长效控油; 氨基酸微米级云朵泡沫; 官方破价大促买一赠一; 闭眼冲不满意退款',
+    storeName: '同城品质生活美学馆',
+    industry: '生活美学 · 品质护理',
+    cityLocation: '同城核心商圈示范店',
+    signatureProducts: '纳米级微泡头皮净澈SPA、高颅顶深层养护到店体验团购券',
+    memoryAnchors: '长效控油蓬松; 微泡深层净澈毛囊油脂; 官方特惠限时尝鲜; 闭眼冲不满意随时退',
     systemDirective: '遵循痛点暴击-4K微距-前后实测-限时逼单4段转化结构，ROI拉升至3.8+',
     avatar: '✨',
     accent: 'from-indigo-600 to-purple-600',
@@ -87,10 +87,10 @@ export const PersonalAgentRagStudioModal: React.FC<{
   const [activeStep, setActiveStep] = useState<1 | 2 | 3>(1);
 
   // Form States
-  const [agentName, setAgentName] = useState<string>(activeProfile.storePersona || '星澜同城爆款探店官');
+  const [agentName, setAgentName] = useState<string>(activeProfile.storePersona || '同城爆款精选探店官');
   const [rolePersona, setRolePersona] = useState<string>('老饕探店·真诚接地气·高转化操盘');
   const [selectedAvatar, setSelectedAvatar] = useState<string>('🤖');
-  const [storeName, setStoreName] = useState<string>(activeProfile.storeName || '星澜洗护沙龙');
+  const [storeName, setStoreName] = useState<string>(activeProfile.storeName || '我的品牌门店');
   const [industry, setIndustry] = useState<string>(activeProfile.industry || '餐饮美食 / 本地生活');
   const [cityLocation, setCityLocation] = useState<string>(activeProfile.cityLocation || '西安 · 碑林区老街深巷');
   const [signatureProducts, setSignatureProducts] = useState<string>(
@@ -324,7 +324,7 @@ export const PersonalAgentRagStudioModal: React.FC<{
                     type="text"
                     value={agentName}
                     onChange={(e) => setAgentName(e.target.value)}
-                    placeholder="如：星澜同城爆款探店官 / 千川美妆带货一姐"
+                    placeholder="如：同城爆款探店官 / 品牌主理人"
                     className="w-full rounded-xl border border-slate-800 bg-slate-900 px-3.5 py-2 text-xs text-white placeholder-slate-600 focus:border-cyan-400 focus:outline-none"
                   />
                 </div>
@@ -338,7 +338,7 @@ export const PersonalAgentRagStudioModal: React.FC<{
                     type="text"
                     value={storeName}
                     onChange={(e) => setStoreName(e.target.value)}
-                    placeholder="如：星澜洗护沙龙 / 阿强潮汕牛肉火锅"
+                    placeholder="如：同城特色美食旗舰店 / 连锁品牌体验馆"
                     className="w-full rounded-xl border border-slate-800 bg-slate-900 px-3.5 py-2 text-xs text-white placeholder-slate-600 focus:border-cyan-400 focus:outline-none"
                   />
                 </div>

@@ -219,7 +219,7 @@ interface CloudStoreProfile extends StoreMemoryProfile {
 const QUICK_PRODUCT_PRESETS = [
   {
     label: '去屑控油洗发水',
-    productName: '星澜氨基酸去屑控油洗发水',
+    productName: '氨基酸温和去屑控油洗发露',
     sellingPoints: '深层净澈头皮、72小时长效控油高颅顶、温和去屑止痒',
     targetAudience: '熬夜油头、有头屑困扰的上班族与学生党',
     category: '个护',
@@ -288,16 +288,16 @@ export default function App() {
       {
         id: 'hist_01',
         type: 'prompt',
-        title: '星澜去屑洗发水前3秒痛点脚本',
+        title: '同城爆款带货前3秒黄金脚本',
         subtitle: '超能 Agent · short-video-script',
         timeText: '刚刚',
         targetNav: 'workbench',
-        payloadPrompt: '帮我写一条星澜氨基酸去屑控油洗发水的前3秒痛点短视频脚本，并直接合成混剪预览',
+        payloadPrompt: '帮我写一条招牌特色好物的前3秒痛点短视频脚本，并直接合成混剪预览',
       },
       {
         id: 'hist_02',
         type: 'project',
-        title: '拯救头屑大作战：星澜洗发水成片',
+        title: '同城招牌好物高转化带货成片',
         subtitle: '4镜分镜表 · 9:16混剪工程',
         timeText: '5分钟前',
         targetNav: 'editor',
@@ -305,7 +305,7 @@ export default function App() {
       {
         id: 'hist_03',
         type: 'action',
-        title: '套用「本地人私藏小破店探店模型」',
+        title: '套用「本地人私藏好店探店模型」',
         subtitle: 'AI 视频混剪成片中心',
         timeText: '12分钟前',
         targetNav: 'video_remix',
@@ -410,8 +410,8 @@ export default function App() {
     {
       id: 'local_proj_01',
       ownerId: 'cn_default_creator',
-      title: '拯救头屑大作战：星澜洗发水同城爆款成片',
-      productName: '星澜氨基酸去屑控油洗发水',
+      title: '同城招牌好物高转化带货成片',
+      productName: '氨基酸温和去屑控油洗发露',
       sellingPoints: '深层净澈头皮、72小时长效控油蓬松、温和去屑不紧绷',
       targetAudience: '熬夜油头、有头屑困扰的年轻上班族与学生党',
       category: '个护',
@@ -429,7 +429,7 @@ export default function App() {
     {
       id: 'local_tpl_01',
       ownerId: 'cn_default_creator',
-      title: '拯救头屑大作战（拉片拆解复用模板）',
+      title: '同城好物高留存转化（拉片拆解复用模板）',
       category: '个护',
       hookFormula: '前3秒镜前抓头皮屑+穿黑衣尴尬视觉痛点提问，锁定油头人群停留',
       structureSummary: '视觉痛点暴击(3s) + 产品高颜微距(4s) + 使用前后爽感反差(5s) + 门店团购福利逼单(3s)',
@@ -600,43 +600,43 @@ export default function App() {
 
   // Script Detail & Smart Editor State
   const [currentProjectId, setCurrentProjectId] = useState<string | null>(null);
-  const [projectTitle, setProjectTitle] = useState<string>('聚福饺子馆：黑猪肉水饺同城爆款成片');
-  const [productName, setProductName] = useState<string>('黑猪肉莲菜手工水饺');
+  const [projectTitle, setProjectTitle] = useState<string>('同城特色风味爆款带货分镜工程');
+  const [productName, setProductName] = useState<string>('招牌特色好物');
   const [sellingPoints, setSellingPoints] = useState<string>(
-    '黑猪肉手工现包现煮、肉质鲜美多汁、老街坊三十年口碑'
+    '真材实料纯手工现做、地道正宗风味、老客户口碑力荐'
   );
   const [targetAudience, setTargetAudience] = useState<string>(
-    '下班打工人、社区居民、看重实惠量大出餐快的食客'
+    '同城食客、上班族、注重高性价比与地道体验的消费者'
   );
   const [projectCategory, setProjectCategory] = useState<string>('餐饮美食');
   const [aspectRatio, setAspectRatio] = useState<'9:16' | '16:9' | '4:3'>('9:16');
   const [bgmStyle, setBgmStyle] = useState<string>('轻快市井卡点律动');
   const [voiceTone, setVoiceTone] = useState<string>('老饕探店接地气男声');
   const [pacingTip, setPacingTip] = useState<string>(
-    '前1.5秒使用筷子挑起水饺大特写切入，第2镜头展示手工现包爆汁切面，第3镜头顾客大口咀嚼微表情，结尾引导左下角买一送一团购。'
+    '前1.5秒使用特写出锅热气切入，第2镜头展示招牌爆品核心细节，第3镜头顾客大口咀嚼微表情，结尾引导左下角尝鲜团购。'
   );
   const [recommendedTitles, setRecommendedTitles] = useState<string[]>([
-    '本地老街坊力荐！皮薄馅大黑猪肉水饺，吃过一次就成回头客',
-    '下班不知道吃什么？藏在老社区的水饺馆，人均十几块吃到撑',
-    '真材实料绝非冷冻预制！掰开全是扎实好肉，左下角特惠赶紧冲',
+    '本地老街坊力荐！真材实料特色风味，吃过一次就成回头客',
+    '深藏老商圈的宝藏小店！凭什么这款招牌菜全是回头客？',
+    '【避坑实测】不加一滴香精的招牌美味到底有多绝？',
   ]);
   const [cameraAngles, setCameraAngles] = useState<string[]>([
-    '01 高位大俯拍铺满屏幕',
-    '02 正视微俯肉馅横切面',
-    '03 前厅后置纵深烟火气',
-    '04 平视手势指向团购卡',
+    '01 黄金Hook痛点特写 (0-3s)',
+    '02 核心卖点微距推镜 (3-8s)',
+    '03 场景人群信任背书 (8-16s)',
+    '04 团购促单行动号召 (16-24s)',
   ]);
   const [visualCues, setVisualCues] = useState<string[]>([
-    '高位大俯拍特写，筷子挑起大块水饺热气腾腾大特写，画面铺满食材。',
-    '平视微俯运镜，掰开水饺展示饱满黑猪肉莲菜馅，暖光3500K突出光泽。',
-    '前厅人群后方纵深轴线，展现座无虚席与顾客大口咀嚼满足表情。',
+    '高位大俯拍特写，刚出炉的招牌特色好物冒着滚烫热气，画面饱满铺满屏幕。',
+    '平视微俯运镜，侧逆光展示产品扎实用料与饱满切面，突出诱人成色。',
+    '前厅人群后方纵深轴线，展现座无虚席的市井烟火气与顾客满足咀嚼神态。',
     '桌面整齐摆放招牌套餐，手指清晰指向屏幕左下角团购卡手势。',
   ]);
   const [sceneLines, setSceneLines] = useState<string[]>([
-    '在本地吃水饺的朋友，千万别只看门头大不大！今天带你看看什么叫真正的老街坊口碑！',
-    '师傅手工现包现煮，黑猪肉配脆莲菜，一口咬下汁水直接爆出来！',
-    '不管下班填饱肚子还是朋友聚聚，人均十几块直接吃到撑！',
-    '左下角买一送一专属券，不用可退、过期自动退，赶紧锁一份！',
+    '在本地选特色好物的朋友，千万别只看门头大不大！今天带你看看什么叫真正的口碑硬核好味！',
+    '师傅坚持手工现做绝非冷冻预制，严选好料，一口咬下香气直接爆开！',
+    '不管下班填饱肚子还是朋友聚聚，分量扎实管饱，吃得爽快又实在！',
+    '屏幕左下角专属体验通道已开启，不用可退、过期自动退，赶紧锁一份！',
   ]);
   // Per-shot fine-grained editing metadata (durations & camera movement) + Resizable Columns/Rows
   const [shotDurations, setShotDurations] = useState<number[]>([3.5, 4.0, 4.0, 3.5]);

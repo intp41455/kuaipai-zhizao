@@ -63,9 +63,9 @@ export const INDUSTRY_KNOWLEDGE_BASE: Record<string, IndustryKnowledge> = {
       '桌面整齐摆放招牌酒肉套餐，手指清晰指向屏幕左下角团购定位。',
     ],
     script_scenes: [
-      '下班想吃烤肉又讨厌满身油烟味？藏在铁路公园的这家店端上来的全是烤好的招牌硬菜！',
+      '下班想吃硬核烤肉又讨厌满身油烟味？藏在老街巷里的这家宝藏小馆端上来的全是烤好的招牌硬菜！',
       '看看这整根大油边和盘龙五花肉，师傅火候拿捏得恰到好处，外皮焦脆，咬一口里面全是滚烫肉汁！',
-      '一边听周杰伦金曲现场吉他驻唱，一边大口吃肉喝精酿，人均几十块直接爽到天灵盖！',
+      '一边听现场吉他民谣驻唱，一边大口吃肉喝精酿，人均几十块直接爽到天灵盖！',
       '同城专属引流特权已挂在左下角，两杯精酿加肉券随时可退，赶紧约上兄弟开整！',
     ],
   },
@@ -254,10 +254,10 @@ export function buildAgenticSmartScript(options: {
     ],
     visualCues: [v1, v2, v3, v4],
     sceneLines: [
-      knowledge.script_scenes[0].replace(/美式熏肉|水饺/g, prodClean),
-      knowledge.script_scenes[1].replace(/美式熏肉|水饺/g, prodClean),
-      knowledge.script_scenes[2].replace(/美式熏肉|水饺/g, prodClean),
-      knowledge.script_scenes[3].replace(/美式熏肉|水饺/g, prodClean),
+      `在本地选【${prodClean}】的朋友，千万别只看门头大不大或盲目排队交学费！今天带你看看什么叫真正的口碑硬核好味！`,
+      `整整坚持【${knowledge.keywords[0] || '真材实料细作'}】，不加一滴多余工业添加！仔细看这个诱人成色与手工细节，一口咬下香气直接爆开！`,
+      `不管是下班填饱肚子还是约上朋友小聚，来上一大盘刚出锅的【${prodClean}】，热气腾腾大口咀嚼，这一口太治愈了！`,
+      `今天屏幕左下角限时开放同城体验特惠，不用随时可退、过期自动退，想体验正宗【${prodClean}】的朋友赶紧先锁一份！`,
     ],
   };
 }

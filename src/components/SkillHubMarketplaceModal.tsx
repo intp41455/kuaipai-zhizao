@@ -79,7 +79,7 @@ export const BUILT_IN_MARKET_SKILLS: MarketSkill[] = [
     ],
     inputSchema: '{"topicOrProduct": "string", "targetAudience": "string", "hookType": "subversive|pain_point|benefit"}',
     outputSchema: '{"hook0_3s": "string", "agitation3_15s": "string", "solution15_45s": ["string"], "cta45_60s": "string"}',
-    examplePrompt: '帮我写一条「星澜去屑控油洗发水」4段式高留存口播带货脚本',
+    examplePrompt: '帮我写一条「招牌主打特色好物」4段式高留存口播带货脚本',
     avatarUrl: '/skills/short-video-script/assets/avatar.png',
     isMemoryMounted: true,
   },
@@ -135,7 +135,7 @@ export const BUILT_IN_MARKET_SKILLS: MarketSkill[] = [
     ],
     inputSchema: '{"storeId": "string", "query": "string", "limit": 4}',
     outputSchema: '{"matchedChunks": [{"anchor": "string", "benefit": "string", "persona": "string"}]}',
-    examplePrompt: '结合星澜洗护沙龙门店知识库，生成同城引流脚本',
+    examplePrompt: '结合当前绑定的门店画像与知识库，生成同城引流脚本',
   },
   {
     id: 'ag_skill_matrix_storyboard',
