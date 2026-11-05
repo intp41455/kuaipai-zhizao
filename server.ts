@@ -476,6 +476,12 @@ ${storeBlock}
   "sceneLines": ["第1镜口播台词", "第2镜口播台词", "第3镜口播台词", "第4镜口播台词"]
 }`;
 
+    const withTimeout = <T,>(p: Promise<T>, ms: number): Promise<T> =>
+      Promise.race([
+        p,
+        new Promise<T>((_, reject) => setTimeout(() => reject(new Error('LLM_TIMEOUT')), ms)),
+      ]);
+
     try {
       const extResult = await callExternalOpenAIGateway(undefined, '你是一位深谙短视频算法与实体门店转化的顶级商业编导。请严格输出纯JSON。', prompt);
       if (extResult && Array.isArray(extResult.sceneLines) && extResult.sceneLines.length >= 4) {
@@ -483,20 +489,25 @@ ${storeBlock}
         return;
       }
 
-      const ai = getGenAIClient();
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.8-flash',
-        contents: prompt,
-        config: {
-          systemInstruction: '你是一位深谙短视频算法与实体门店转化的顶级商业编导，擅长真实接地气的语言风格。请严格输出纯JSON。',
-          responseMimeType: 'application/json',
-        },
-      });
-
-      const parsed = JSON.parse((response.text ?? '{}').trim());
-      if (parsed && Array.isArray(parsed.sceneLines) && parsed.sceneLines.length >= 4) {
-        res.json(parsed);
-        return;
+      // 依次尝试模型路由（含 90s 硬超时），全部失败则明确报错，绝不输出模板假文案
+      for (const model of ['gemini-3.8-flash', 'auto/glm-5.3-flash']) {
+        const ai = getGenAIClient();
+        const response = await withTimeout(
+          ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: {
+              systemInstruction: '你是一位深谙短视频算法与实体门店转化的顶级商业编导，擅长真实接地气的语言风格。请严格输出纯JSON。',
+              responseMimeType: 'application/json',
+            },
+          }),
+          90_000
+        );
+        const parsed = JSON.parse((response.text ?? '{}').trim());
+        if (parsed && Array.isArray(parsed.sceneLines) && parsed.sceneLines.length >= 4) {
+          res.json(parsed);
+          return;
+        }
       }
     } catch {
       // fall through to explicit error below
@@ -1655,6 +1666,20 @@ app.post('/api/ai/resolve-link', (req: Request, res: Response) => {
 });
 
 // Intel Hot Trends & Harvester
+app.get('/api/v1/intel/capabilities', (_req: Request, res: Response) => {
+  const llmConfigured = Boolean((process.env.GEMINI_API_KEY || '').trim());
+  const tavilyConfigured = Boolean((process.env.TAVILY_API_KEY || '').trim());
+  res.json({
+    llm_configured: llmConfigured,
+    tavily_configured: tavilyConfigured,
+    search_sources: tavilyConfigured ? ['tavily'] : [],
+    search_fallback: 'baidu+bing',
+    behavior_when_unconfigured: llmConfigured
+      ? '生成链路就绪'
+      : '所有生成接口将返回 503 明确报错，绝不输出模板/占位文案',
+  });
+});
+
 app.get('/api/v1/intel/hot-trends', async (req: Request, res: Response) => {
   const city = String(req.query.city || '全国');
   const category = String(req.query.category || '全部');

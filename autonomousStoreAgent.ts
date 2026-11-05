@@ -28,6 +28,35 @@ async function searchWebSnippets(query: string, maxResults = 5): Promise<string[
   const cleanQ = query.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\s]/g, ' ').trim();
   if (!cleanQ) return [];
 
+  // 源 0：Tavily 搜索 API（生产级稳定性，配置 TAVILY_API_KEY 后启用；未配置则跳过）
+  const tavilyKey = process.env.TAVILY_API_KEY || '';
+  if (tavilyKey) {
+    try {
+      const res = await fetch('https://api.tavily.com/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          api_key: tavilyKey,
+          query: cleanQ,
+          max_results: maxResults,
+          search_depth: 'basic',
+        }),
+        signal: AbortSignal.timeout(8000),
+      });
+      if (res.ok) {
+        const data = (await res.json()) as {
+          results?: Array<{ title?: string; content?: string }>;
+        };
+        const snippets = (data.results || [])
+          .map((r) => `${(r.title || '').trim()}：${(r.content || '').slice(0, 110).trim()}`.replace(/^：/, ''))
+          .filter((s) => s.length > 4);
+        if (snippets.length > 0) return snippets.slice(0, maxResults);
+      }
+    } catch {
+      // fall through to scraping sources
+    }
+  }
+
   // 多源容错：百度被反爬时回落到必应
   const sources = [
     `https://www.baidu.com/s?wd=${encodeURIComponent(cleanQ)}`,

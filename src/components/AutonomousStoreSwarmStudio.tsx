@@ -48,7 +48,6 @@ interface AutonomousStoreSwarmStudioProps {
   onShowNotice?: (type: 'success' | 'error', text: string) => void;
   gatewayConfig?: unknown;
 }
-
 /**
  * 极简单输入框多智能体中枢（对标筷子科技/火兔的设计语言）：
  * - 一句大标题 + 一个输入框 + 一个按钮，过程全部后台执行，前台零过程噪音；
@@ -66,6 +65,15 @@ export const AutonomousStoreSwarmStudio: React.FC<AutonomousStoreSwarmStudioProp
   const [isRunning, setIsRunning] = useState(false);
   const [result, setResult] = useState<SwarmResult | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
+  // 能力自检（环境先行门禁）：仅一行真实状态，模型未配置时预先告知将报错
+  const [llmReady, setLlmReady] = useState<boolean | null>(null);
+
+  React.useEffect(() => {
+    fetch('/api/v1/intel/capabilities')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => setLlmReady(d ? Boolean(d.llm_configured) : null))
+      .catch(() => setLlmReady(null));
+  }, []);
 
   const handleRun = async () => {
     const name = storeNameInput.trim();
@@ -87,10 +95,24 @@ export const AutonomousStoreSwarmStudio: React.FC<AutonomousStoreSwarmStudioProp
           gateway_config: gatewayConfig ?? undefined,
         }),
       });
-      const data = await res.json();
+      const data: SwarmResult = await res.json();
       if (res.ok && data.ok) {
         setResult(data);
         onShowNotice?.('success', `「${data.store_name}」全案已生成`);
+        // 元能力：本次全流程自动计入工作流沉淀统计（后台静默执行，无前台噪音）
+        fetch('/api/v1/meta/track-workflow', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            workflow_signature: `store_swarm_${data.store_name}`.slice(0, 40),
+            workflow_name: `全自动${data.store_name}操盘交付工作流`,
+            steps_data: [
+              { name: '多源真实搜索', description: 'Tavily/百度/必应爬取公开情报' },
+              { name: '事实提取', description: '菜名/人均/地标/评价词结构化' },
+              { name: 'LLM证据生成', description: '全量技能SOP装配下的证据驱动交付' },
+            ],
+          }),
+        }).catch(() => {});
       } else {
         setErrorMsg(data.message || data.error || '请求失败');
       }
@@ -151,7 +173,21 @@ export const AutonomousStoreSwarmStudio: React.FC<AutonomousStoreSwarmStudioProp
         </div>
 
         <div className="flex items-center justify-center gap-3 text-[11px] text-slate-400">
-          <span>数据来自公开网络，AI 未连接时将明确报错，不生成占位内容</span>
+          <span
+            className={
+              llmReady === true
+                ? 'text-emerald-600'
+                : llmReady === false
+                ? 'text-amber-600'
+                : 'text-slate-400'
+            }
+          >
+            {llmReady === true
+              ? '● 模型已连接，可生成真实分析'
+              : llmReady === false
+              ? '● 模型未配置——提交后将明确报错，不会生成模板内容（在「工具与网关」配置密钥后可用）'
+              : '数据来自公开网络，AI 未连接时将明确报错，不生成占位内容'}
+          </span>
           <button
             type="button"
             onClick={() => setShowOptional(!showOptional)}
@@ -286,7 +322,7 @@ export const AutonomousStoreSwarmStudio: React.FC<AutonomousStoreSwarmStudioProp
 
           <p className="flex items-center justify-center gap-1 text-center text-[10px] text-slate-300">
             <CheckCircle2 className="h-3 w-3" />
-            本次流程已计入工作流沉淀统计
+            本次全流程已自动计入技能沉淀统计
           </p>
         </div>
       )}
