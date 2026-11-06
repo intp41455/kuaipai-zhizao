@@ -1459,37 +1459,78 @@ app.delete('/api/v1/templates/:id', (req: Request, res: Response) => {
 });
 
 // Operator Pipeline (动态选题、全案归档)
-app.post('/api/v1/operator/generate-topics', (req: Request, res: Response) => {
-  const { store_name, signature_dish } = req.body;
-  const dish = signature_dish || '招牌特色好物';
-  const name = store_name || '本地名店';
-  const topics = [
-    {
-      id: 't_1',
-      title: `在本地吃【${dish}】千万别盲目去大店排队交智商税！`,
-      hook: `老饕带你实拍深巷口碑王！看看正宗【${dish}】肉汁有多狂暴！`,
-      scene_focus: `高位大俯拍出锅滚烫热气特写，双手挑起大份铺满屏幕`,
-      rationale: `反常识痛点唤醒 + 视觉加法铺满，前3秒留存率超88%`,
-      traffic_type: `同城精准客流`,
-    },
-    {
-      id: 't_2',
-      title: `深巷口碑王！凭什么【${name}】这款【${dish}】全是回头客？`,
-      hook: `不加一滴工业香精，真材实料慢工细作，掰开全是扎实真功夫！`,
-      scene_focus: `侧逆光微距慢动作，清晰呈现扎实手工制作细节`,
-      rationale: `老街坊口碑背书 + 食材暴力拆解，消除客户决策防线`,
-      traffic_type: `高信任沉淀客流`,
-    },
-    {
-      id: 't_3',
-      title: `下班不知道吃什么？人均十几块吃到撑，同城羊毛赶紧锁！`,
-      hook: `藏在老社区的宝藏小馆，招牌【${dish}】限时买一送一！`,
-      scene_focus: `座无虚席夜市烟火气全景，顾客大口咀嚼满足表情`,
-      rationale: `极致性价比驱动 + 紧迫感限时机制，直冲来客团购核销`,
-      traffic_type: `高转化拔草客流`,
-    },
-  ];
-  res.json({ ok: true, topics });
+// 诚实报错契约：模型不可用时返回 503 + 明确原因，严禁回落到本地预置选题池。
+app.post('/api/v1/operator/generate-topics', async (req: Request, res: Response) => {
+  const { store_name, signature_dish, tier_segment } = req.body ?? {};
+  const dish = typeof signature_dish === 'string' && signature_dish.trim() ? signature_dish.trim() : '招牌特色';
+  const name = typeof store_name === 'string' && store_name.trim() ? store_name.trim() : '本地名店';
+  const tier = typeof tier_segment === 'string' && tier_segment.trim() ? tier_segment.trim() : 'low';
+
+  try {
+    const ai = getGenAIClient();
+    const prompt = `作为本地生活短视频超级操盘手，请为实体门店【${name}】定制 3 个符合同城热点与算法推流机制的爆款短视频选题。
+门店招牌爆品：${dish}
+客群分层：${tier}（low:低端社区注重实惠量大出餐快 / mid:中端注重喜好聚餐 / high:高端注重品质与服务）
+
+所有文案必须紧扣门店【${name}】与招牌【${dish}】，禁止使用与门店无关的通用套话。`;
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-3.8-flash',
+      contents: prompt,
+      config: {
+        systemInstruction: '你是精通抖音与小红书同城本地生活流量算法的顶级操盘手，只输出 JSON。',
+        responseMimeType: 'application/json',
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            topics: {
+              type: Type.ARRAY,
+              items: {
+                type: Type.OBJECT,
+                properties: {
+                  tag: { type: Type.STRING },
+                  tagColor: { type: Type.STRING },
+                  title: { type: Type.STRING },
+                  desc: { type: Type.STRING },
+                  hook: { type: Type.STRING },
+                  mode: { type: Type.STRING },
+                },
+                required: ['tag', 'title', 'desc', 'hook', 'mode'],
+              },
+            },
+          },
+          required: ['topics'],
+        },
+      },
+    });
+
+    const parsed = JSON.parse((response.text ?? '{}').trim());
+    const topics = Array.isArray(parsed.topics)
+      ? parsed.topics.filter(
+          (t: Record<string, unknown>) =>
+            t && typeof t.title === 'string' && typeof t.hook === 'string' && String(t.title).trim(),
+        )
+      : [];
+    if (topics.length === 0) {
+      res.status(503).json({
+        error: 'AI_MODEL_UNAVAILABLE',
+        message: 'AI 模型未返回可用的选题结构，请稍后重试。系统不会使用预置文案冒充结果。',
+      });
+      return;
+    }
+    res.json({ topics });
+  } catch (error) {
+    const raw = error instanceof Error ? error.message : String(error);
+    if (raw.includes('GEMINI_API_KEY')) {
+      res.status(503).json({
+        error: 'AI_MODEL_UNAVAILABLE',
+        message: 'AI 模型网关未连接：请在 .env 配置 GEMINI_API_KEY 后重启服务。系统不会使用预置文案冒充结果。',
+      });
+      return;
+    }
+    const formatted = formatGeminiError(error);
+    res.status(formatted.status).json({ error: formatted.message });
+  }
 });
 
 // Leads & Group Buy (团购私信客资与现场核销)
@@ -1685,7 +1726,7 @@ app.get('/api/v1/intel/hot-trends', async (req: Request, res: Response) => {
   const category = String(req.query.category || '全部');
   const data = await getAggregatedHotTrends(city);
   if (category && category !== '全部') {
-    const filtered = data.items.filter((it) => it.category === category);
+    const filtered = data.items.filter((it: { category?: string }) => it.category === category);
     res.json({ ...data, items: filtered, total_count: filtered.length });
     return;
   }

@@ -107,11 +107,13 @@ export const LocalLifeOperatorWizard: React.FC<LocalLifeOperatorWizardProps> = (
   }
 
   const [topics, setTopics] = useState<DynamicTopicItem[]>([]);
+  const [topicsError, setTopicsError] = useState('');
   const [isLoadingTopics, setIsLoadingTopics] = useState(false);
   const [selectedTopicIdx, setSelectedTopicIdx] = useState(0);
 
   const fetchTopics = async (customStore?: string, customDish?: string) => {
     setIsLoadingTopics(true);
+    setTopicsError('');
     const curStore = (customStore ?? storeName).trim() || '特色名店';
     const curDish = (customDish ?? signatureDish).trim() || '招牌特色';
     try {
@@ -126,46 +128,25 @@ export const LocalLifeOperatorWizard: React.FC<LocalLifeOperatorWizardProps> = (
           redline_owner_no_camera: redlineOwnerNoCamera,
         }),
       });
-      if (res.ok) {
-        const data = await res.json();
-        if (Array.isArray(data.topics) && data.topics.length > 0) {
-          setTopics(data.topics);
-          setSelectedTopicIdx(0);
-          setIsLoadingTopics(false);
-          return;
-        }
+      const data = await res.json().catch(() => null);
+      if (res.ok && Array.isArray(data?.topics) && data.topics.length > 0) {
+        setTopics(data.topics);
+        setSelectedTopicIdx(0);
+        setIsLoadingTopics(false);
+        return;
       }
-    } catch {}
-
-    // 动态启发式兜底（绝无固定菜名，100% 动态绑定用户输入的店铺与招牌）
-    setTopics([
-      {
-        tag: '同城反常识',
-        tagColor: 'bg-indigo-50 text-indigo-700 border-indigo-200/60',
-        title: `老街坊避坑：在本地选【${curDish}】千万别看门头大不大`,
-        desc: `别以为大牌网红连锁才正宗！带你走进【${curStore}】，看看真正纯手工制作的招牌真功夫...`,
-        hook: `在本地找【${curDish}】的朋友，千万别去网红大店排队交智商税了！看看这家老街坊私藏有多硬核！`,
-        mode: redlineOwnerNoCamera ? '老饕探店第三方视角 (老板不出镜)' : '主理人真诚接地气流',
-      },
-      {
-        tag: '极致性价比',
-        tagColor: 'bg-amber-50 text-amber-700 border-amber-200/60',
-        title: `人均十几块吃到撑：打工人专属【${curDish}】破冰体验`,
-        desc: `下班肚子饿扁了？热腾腾的一大份【${curDish}】，分量扎实，不够吃免费续加，治愈打工人疲惫...`,
-        hook: `如果你也是每天辛苦打拼的打工人，这一份热气腾腾的【${curDish}】能帮你省下一大笔冤枉钱！`,
-        mode: '市井烟火温情流',
-      },
-      {
-        tag: '食材暴力拆解',
-        tagColor: 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
-        title: `真材实料 vs 工业预制：一筷子掰开【${curDish}】看真相`,
-        desc: `特写推镜！绝无拼接预制，师傅手工现做，一口咬下汁水四溢，对比市面普通货肉眼可见...`,
-        hook: `买【${curDish}】别再当大冤种了！今天把我们【${curStore}】镇店的招牌掰开放大10倍给你们看细节！`,
-        mode: redlineNoKitchen ? '微距实测流 (免后厨聚焦成品)' : '明档现做实录流',
-      },
-    ]);
-    setSelectedTopicIdx(0);
-    setIsLoadingTopics(false);
+      // 诚实报错（ACCEPTANCE G2）：模型不可用即明确告知，绝不本地编造选题。
+      setTopics([]);
+      setTopicsError(
+        data?.message ||
+          'AI 模型网关未连接或调用失败，无法生成选题。请在「工具与网关 → AI 模型网关」配置模型服务后重试。'
+      );
+    } catch {
+      setTopics([]);
+      setTopicsError('请求失败：无法连接后端服务，请确认 API 已启动后重试。');
+    } finally {
+      setIsLoadingTopics(false);
+    }
   };
 
   // --- Step 3: 视听分镜状态 ---
@@ -588,6 +569,28 @@ export const LocalLifeOperatorWizard: React.FC<LocalLifeOperatorWizardProps> = (
                 <RefreshCw className="h-6 w-6 animate-spin mx-auto text-indigo-600" />
                 <p className="font-medium text-slate-700">正在调用同城流量算法，为【{storeName}】定制爆款选题...</p>
                 <p className="text-[11px] text-slate-400">正在分析客群痛点、招牌特色【{signatureDish}】与同城飙升热搜...</p>
+              </div>
+            ) : topicsError ? (
+              <div className="rounded-2xl border border-rose-200 bg-rose-50/60 p-4">
+                <div className="flex items-start gap-2.5">
+                  <AlertTriangle className="h-4 w-4 shrink-0 text-rose-500 mt-0.5" />
+                  <div className="space-y-1">
+                    <p className="text-xs font-bold text-rose-700">选题生成失败（未使用任何预置文案冒充结果）</p>
+                    <p className="text-[11px] leading-relaxed text-rose-600">{topicsError}</p>
+                    <button
+                      type="button"
+                      onClick={() => fetchTopics()}
+                      className="mt-1 inline-flex items-center gap-1 rounded-lg border border-rose-300 bg-white px-2.5 py-1 text-[11px] font-semibold text-rose-600 hover:bg-rose-50 cursor-pointer"
+                    >
+                      <RefreshCw className="h-3 w-3" />
+                      重试
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : topics.length === 0 ? (
+              <div className="py-12 text-center text-xs text-slate-400">
+                暂无选题数据，点击右上角「换一批同城爆款」开始生成。
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-3">
