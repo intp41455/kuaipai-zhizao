@@ -9,3 +9,4 @@ coverage/
 .zcode/
 .local_db.json
 
+data/renders/
